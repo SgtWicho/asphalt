@@ -31,7 +31,7 @@ export default function ExplorarScreen() {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filters} contentContainerStyle={{ gap: 10 }}>
         {filters.map((f) => (
           <Pressable key={f} style={[styles.chip, active === f && styles.chipActive]} onPress={() => setActive(f)}>
-            <Text style={[styles.chipText, active === f && styles.chipTextActive]}>{f}</Text>
+            <Text style={[styles.chipText, active === f && styles.chipTextActive]} numberOfLines={1}>{f}</Text>
           </Pressable>
         ))}
       </ScrollView>
@@ -69,9 +69,9 @@ const styles = StyleSheet.create({
   searchBar: { flexDirection: 'row', alignItems: 'center', gap: 10, marginHorizontal: 20, marginTop: 16, paddingHorizontal: 14, paddingVertical: 12, borderRadius: 14, backgroundColor: colors.surface },
   searchPlaceholder: { fontFamily: fonts.sairaRegular, fontSize: 13.5, color: colors.textSecondary },
   filters: { marginTop: 16, paddingLeft: 20 },
-  chip: { paddingHorizontal: 14, paddingVertical: 8, borderRadius: 16, backgroundColor: colors.surface },
+  chip: { flexShrink: 0, alignSelf: 'flex-start', paddingHorizontal: 16, paddingVertical: 9, borderRadius: 16, backgroundColor: colors.surface },
   chipActive: { backgroundColor: colors.amber },
-  chipText: { fontFamily: fonts.sairaSemiBold, fontSize: 12.5, color: colors.textSecondary },
+  chipText: { fontFamily: fonts.sairaSemiBold, fontSize: 12.5, color: colors.textSecondary, flexShrink: 0 },
   chipTextActive: { color: colors.bg },
   list: { padding: 20, gap: 14, paddingBottom: 40 },
   card: { backgroundColor: colors.surface, borderRadius: 16, overflow: 'hidden' },
