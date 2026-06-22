@@ -169,6 +169,23 @@ export const profile = {
   ],
 };
 
+export type SavedRoute = {
+  id: string;
+  name: string;
+  region: string;
+  km: string;
+  duration: string;
+  desn: string;
+  date: string;
+};
+
+export const savedRoutes: SavedRoute[] = [
+  { id: '1', name: 'Desfiladero de la Hermida', region: 'Picos de Europa', km: '142', duration: '3h 12m', desn: '1.840', date: '14 jun 2026' },
+  { id: '2', name: 'Puerto del Pico', region: 'Gredos', km: '98', duration: '2h 04m', desn: '1.260', date: '2 jun 2026' },
+  { id: 'e3', name: 'Costa da Morte', region: 'Galicia', km: '76', duration: '1h 35m', desn: '540', date: '28 may 2026' },
+  { id: '4', name: 'Lagos de Covadonga', region: 'Asturias', km: '64', duration: '1h 50m', desn: '1.100', date: '19 may 2026' },
+];
+
 export const poiDetail = {
   name: 'Mirador de Santa Catalina',
   type: 'Mirador',

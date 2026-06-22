@@ -185,13 +185,16 @@ export function AddPoiIcon({ size = 26, color = '#f9a825' }: IconProps) {
   );
 }
 
-export function MotoIcon({ size = 26, color = '#f9a825' }: IconProps) {
+export function MotoIcon({ size = 30, color = '#f9a825' }: IconProps) {
   return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2}>
-      <Circle cx="5.5" cy="17.5" r="3" />
-      <Circle cx="18.5" cy="17.5" r="3" />
-      <Path d="M5.5 17.5h6l2.5-6h4.5M8 17.5l3-7 3 1" strokeLinecap="round" strokeLinejoin="round" />
-      <Path d="M12 6.5h2.5l1 2" strokeLinecap="round" strokeLinejoin="round" />
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+      <Rect x="9.5" y="2.5" width="5" height="2.6" rx="1.3" />
+      <Path d="M12 5.1v2.4" />
+      <Path d="M10 5.6l-1.3 1M14 5.6l1.3 1" />
+      <Path d="M9 8.2c0 1.6 1.3 2.6 3 2.6s3-1 3-2.6" />
+      <Path d="M8.3 11c1-.7 2.2-1 3.7-1s2.7.3 3.7 1c.9.7 1.3 2 1.3 3.6v3.6c0 .9-.5 1.5-1.3 1.7-2.5.6-5.1.6-7.4 0-.8-.2-1.3-.8-1.3-1.7v-3.6c0-1.6.4-2.9 1.3-3.6z" />
+      <Rect x="9.8" y="20.3" width="4.4" height="1.4" rx="0.7" />
+      <Rect x="8.7" y="9" width="6.6" height="3" rx="1.4" />
     </Svg>
   );
 }
@@ -308,6 +311,15 @@ export function FlagIcon({ size = 22, color = '#f5f5f5' }: IconProps) {
   return (
     <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2}>
       <Path d="M6 21V4M6 4h12l-3 4 3 4H6" strokeLinejoin="round" />
+    </Svg>
+  );
+}
+
+export function UserIcon({ size = 24, color = '#9a99a2' }: IconProps) {
+  return (
+    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2}>
+      <Circle cx="12" cy="8" r="4" />
+      <Path d="M4 20c0-3.3 3.6-6 8-6s8 2.7 8 6" strokeLinecap="round" />
     </Svg>
   );
 }
