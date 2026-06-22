@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  @keyframes navpulse{0%{r:14px;opacity:.5}100%{r:42px;opacity:0}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:56px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:402px;margin-bottom:22px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Navegación</div>
+    <div style="font-family:'Saira',sans-serif;font-size:13.5px;color:#6b6a72;margin-top:2px">Turn-by-turn en marcha. Maniobra grande arriba, esenciales abajo, todo a gran tamaño para leer sobre la moto.</div>
+  </div>
+
+  <div style="width:402px">
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+      <div style="position:relative;height:100%;overflow:hidden;background:#18171c;color:#f5f5f5;font-family:'Saira',sans-serif">
+
+        <!-- ============ MAP ============ -->
+        <div style="position:absolute;inset:0">
+          <svg viewBox="0 0 402 874" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block">
+            <rect width="402" height="874" fill="#191820"/>
+            <path d="M0,120 H402 M0,240 H402 M0,360 H402 M0,480 H402 M0,600 H402 M0,720 H402 M67,0 V874 M134,0 V874 M201,0 V874 M268,0 V874 M335,0 V874" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <!-- faint surrounding roads -->
+            <path d="M-20,440 C90,410 140,520 250,490 C340,466 380,520 420,500" stroke="rgba(255,255,255,.05)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M40,900 C70,760 10,690 60,560" stroke="rgba(255,255,255,.04)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M430,360 C330,390 320,470 230,470" stroke="rgba(255,255,255,.038)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <!-- traveled (dim) -->
+            <path d="M201,1000 C201,860 201,800 201,720" fill="none" stroke="rgba(255,255,255,.16)" stroke-width="15" stroke-linecap="round"/>
+            <!-- active route (glow + bright), goes up then turns right at maneuver point -->
+            <path d="M201,720 C201,640 201,560 201,470 C201,430 230,410 280,410 C330,410 360,380 372,330" fill="none" stroke="rgba(249,168,37,.22)" stroke-width="22" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M201,720 C201,640 201,560 201,470 C201,430 230,410 280,410 C330,410 360,380 372,330" fill="none" stroke="#f9a825" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- maneuver node -->
+            <circle cx="201" cy="470" r="9" fill="#191820" stroke="#f9a825" stroke-width="4"/>
+            <!-- current position (chevron) -->
+            <circle cx="201" cy="720" r="14" fill="#d32f2f" style="animation:navpulse 1.8s ease-out infinite"/>
+            <g transform="translate(201,720)">
+              <circle r="22" fill="#191820"/>
+              <circle r="18" fill="#d32f2f"/>
+              <path d="M0,-9 l8,13 h-16 z" fill="#fff"/>
+            </g>
+          </svg>
+          <!-- top scrim under maneuver band -->
+          <div style="position:absolute;top:0;left:0;right:0;height:260px;background:linear-gradient(180deg,#18171c 52%,transparent)"></div>
+          <!-- bottom scrim -->
+          <div style="position:absolute;bottom:0;left:0;right:0;height:150px;background:linear-gradient(0deg,#18171c,transparent)"></div>
+        </div>
+
+        <!-- ============ OVERLAY ============ -->
+        <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column">
+
+          <!-- MANEUVER BAND -->
+          <div style="margin:52px 14px 0;background:#232229;border-radius:22px;border:1px solid rgba(255,255,255,.07);box-shadow:0 14px 34px rgba(0,0,0,.5);padding:18px 18px 16px">
+            <div style="display:flex;align-items:center;gap:18px">
+              <!-- big arrow -->
+              <div style="width:84px;height:84px;border-radius:20px;background:rgba(249,168,37,.14);display:flex;align-items:center;justify-content:center;flex:none">
+                <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2.4"><path d="M5 20v-5a5 5 0 0 1 5-5h7" stroke-linecap="round" stroke-linejoin="round"/><path d="M13 6l5 4-5 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div style="flex:1;min-width:0">
+                <div style="display:flex;align-items:baseline;gap:8px">
+                  <span style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:52px;line-height:.9;color:#f5f5f5;letter-spacing:-.01em">400</span>
+                  <span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:24px;color:#9a99a2">m</span>
+                </div>
+                <div style="font-size:18px;font-weight:600;color:#cfcdd4;margin-top:6px;line-height:1.15">Gira a la derecha</div>
+              </div>
+            </div>
+            <!-- street name -->
+            <div style="margin-top:14px;padding-top:13px;border-top:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:9px">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="#f9a825" style="flex:none"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.4" fill="#232229"/></svg>
+              <span style="font-size:21px;font-weight:600;color:#f5f5f5;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">CA-185 · Puerto de San Glorio</span>
+            </div>
+          </div>
+
+          <!-- then-next chip -->
+          <div style="margin:11px 14px 0;display:flex;align-items:center;gap:10px;padding:9px 14px;background:rgba(35,34,41,.85);backdrop-filter:blur(8px);border-radius:14px;border:1px solid rgba(255,255,255,.06);width:max-content">
+            <span style="font-size:13px;font-weight:600;color:#9a99a2;text-transform:uppercase;letter-spacing:.06em">Luego</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#cfcdd4" stroke-width="2.2"><path d="M5 20v-5a5 5 0 0 1 5-5h7" stroke-linecap="round" stroke-linejoin="round" transform="scale(-1,1) translate(-24,0)"/><path d="M11 6L6 10l5 4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            <span style="font-size:15px;font-weight:600;color:#f5f5f5">2,1 km</span>
+          </div>
+
+          <div style="flex:1"></div>
+
+          <!-- speed badge (floating, right) -->
+          <div style="align-self:flex-end;margin:0 16px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;width:74px;height:74px;border-radius:50%;background:#fff;box-shadow:0 8px 22px rgba(0,0,0,.45)">
+            <span style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:30px;color:#18171c;line-height:.9">82</span>
+            <span style="font-size:9px;font-weight:700;letter-spacing:.08em;color:#6b6a72;margin-top:1px">KM/H</span>
+          </div>
+
+          <!-- BOTTOM PANEL -->
+          <div style="position:relative;z-index:3;background:#232229;border-top-left-radius:26px;border-top-right-radius:26px;padding:16px 16px 30px;box-shadow:0 -14px 34px rgba(0,0,0,.5);border-top:1px solid rgba(255,255,255,.06)">
+            <div style="display:flex;align-items:center;gap:14px">
+              <!-- stats -->
+              <div style="flex:1;display:flex;align-items:stretch">
+                <div style="flex:1;text-align:center">
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:34px;color:#f9a825;line-height:1">1:48</div>
+                  <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9a99a2;margin-top:3px">Restante</div>
+                </div>
+                <div style="width:1px;background:rgba(255,255,255,.08);margin:4px 0"></div>
+                <div style="flex:1;text-align:center">
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:34px;color:#f5f5f5;line-height:1">68<span style="font-size:15px;color:#9a99a2;margin-left:2px">km</span></div>
+                  <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9a99a2;margin-top:3px">Distancia</div>
+                </div>
+                <div style="width:1px;background:rgba(255,255,255,.08);margin:4px 0"></div>
+                <div style="flex:1;text-align:center">
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:34px;color:#f5f5f5;line-height:1">14:32</div>
+                  <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#9a99a2;margin-top:3px">Llegada</div>
+                </div>
+              </div>
+            </div>
+            <!-- stop button -->
+            <button style="margin-top:16px;width:100%;height:56px;border:none;border-radius:16px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:700;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 10px 26px rgba(211,47,47,.45)" style-active="filter:brightness(.92)"><svg width="20" height="20" viewBox="0 0 24 24" fill="#fff"><rect x="5" y="5" width="14" height="14" rx="3"/></svg>Parar</button>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}"></script>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  .hscroll::-webkit-scrollbar{height:0}
+  @keyframes locpulse{0%{transform:scale(1);opacity:.5}100%{transform:scale(2.4);opacity:0}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:56px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:402px;margin-bottom:22px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Explorar</div>
+    <div style="font-family:'Saira',sans-serif;font-size:13.5px;color:#6b6a72;margin-top:2px">Descubre rutas de otros moteros. Trazados en ámbar, puntos de interés y rutas cercanas en el panel.</div>
+  </div>
+
+  <div style="width:402px">
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+      <div style="position:relative;height:100%;overflow:hidden;background:#18171c;color:#f5f5f5;font-family:'Saira',sans-serif">
+
+        <!-- ============ MAP ============ -->
+        <div style="position:absolute;inset:0">
+          <svg viewBox="0 0 402 874" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block">
+            <rect width="402" height="874" fill="#191820"/>
+            <path d="M0,120 H402 M0,240 H402 M0,360 H402 M0,480 H402 M0,600 H402 M0,720 H402 M67,0 V874 M134,0 V874 M201,0 V874 M268,0 V874 M335,0 V874" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <!-- faint road network -->
+            <path d="M-20,300 C90,270 140,380 250,350 C340,326 380,380 420,360" stroke="rgba(255,255,255,.05)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M60,-20 C90,140 30,230 80,360 C120,470 50,560 100,690" stroke="rgba(255,255,255,.042)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M430,180 C330,210 320,330 230,330 C150,330 150,250 50,280" stroke="rgba(255,255,255,.038)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <path d="M-20,560 C120,520 180,470 300,500 C360,515 400,500 430,508" stroke="rgba(255,255,255,.04)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <!-- secondary routes (dimmer) -->
+            <path d="M40,250 C110,230 120,330 200,320 C280,310 300,200 380,230" fill="none" stroke="rgba(249,168,37,.45)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M70,640 C140,600 150,500 240,500 C330,500 350,580 400,560" fill="none" stroke="rgba(249,168,37,.4)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M300,120 C260,200 320,260 300,360 C285,440 340,470 330,560" fill="none" stroke="rgba(249,168,37,.4)" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- highlighted route (bright + glow underlay) -->
+            <path d="M50,470 C120,440 140,360 220,360 C300,360 320,250 250,210 C200,180 150,210 120,170" fill="none" stroke="rgba(249,168,37,.2)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M50,470 C120,440 140,360 220,360 C300,360 320,250 250,210 C200,180 150,210 120,170" fill="none" stroke="#f9a825" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+
+            <!-- POI pins -->
+            <g transform="translate(220,360)"><path d="M0,-26 C-12,-26 -18,-17 -18,-9 C-18,3 0,12 0,12 C0,12 18,3 18,-9 C18,-17 12,-26 0,-26 Z" fill="#f9a825" stroke="#191820" stroke-width="2.5"/><circle cx="0" cy="-10" r="6" fill="#191820"/></g>
+            <g transform="translate(120,170)"><path d="M0,-26 C-12,-26 -18,-17 -18,-9 C-18,3 0,12 0,12 C0,12 18,3 18,-9 C18,-17 12,-26 0,-26 Z" fill="#f9a825" stroke="#191820" stroke-width="2.5"/><circle cx="0" cy="-10" r="6" fill="#191820"/></g>
+            <g transform="translate(330,250)"><path d="M0,-23 C-11,-23 -16,-15 -16,-8 C-16,3 0,11 0,11 C0,11 16,3 16,-8 C16,-15 11,-23 0,-23 Z" fill="rgba(249,168,37,.85)" stroke="#191820" stroke-width="2.5"/><circle cx="0" cy="-9" r="5.5" fill="#191820"/></g>
+            <g transform="translate(95,545)"><path d="M0,-23 C-11,-23 -16,-15 -16,-8 C-16,3 0,11 0,11 C0,11 16,3 16,-8 C16,-15 11,-23 0,-23 Z" fill="rgba(249,168,37,.85)" stroke="#191820" stroke-width="2.5"/><circle cx="0" cy="-9" r="5.5" fill="#191820"/></g>
+            <g transform="translate(345,470)"><path d="M0,-23 C-11,-23 -16,-15 -16,-8 C-16,3 0,11 0,11 C0,11 16,3 16,-8 C16,-15 11,-23 0,-23 Z" fill="rgba(249,168,37,.85)" stroke="#191820" stroke-width="2.5"/><circle cx="0" cy="-9" r="5.5" fill="#191820"/></g>
+
+            <!-- my location -->
+            <circle cx="178" cy="430" r="13" fill="#f9a825" opacity="0.18"/>
+            <circle cx="178" cy="430" r="9" fill="#fff" stroke="#191820" stroke-width="2.5"/>
+            <circle cx="178" cy="430" r="4" fill="#d32f2f"/>
+          </svg>
+          <!-- top gradient -->
+          <div style="position:absolute;top:0;left:0;right:0;height:220px;background:linear-gradient(180deg,rgba(24,23,28,.82),transparent)"></div>
+        </div>
+
+        <!-- ============ OVERLAY ============ -->
+        <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column">
+
+          <!-- search bar -->
+          <div style="padding:58px 16px 0">
+            <div style="display:flex;align-items:center;gap:10px;height:50px;padding:0 14px;border-radius:15px;background:rgba(35,34,41,.92);backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.08);box-shadow:0 8px 24px rgba(0,0,0,.35)">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-3.5-3.5" stroke-linecap="round"/></svg>
+              <span style="flex:1;font-size:15.5px;color:#9a99a2">Buscar rutas, puertos, lugares…</span>
+              <div style="width:1px;height:22px;background:rgba(255,255,255,.1)"></div>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4" stroke-linecap="round"/></svg>
+            </div>
+          </div>
+
+          <!-- filter pills -->
+          <div class="hscroll" style="display:flex;gap:9px;padding:12px 16px 2px;overflow-x:auto">
+            <sc-for list="{{ filters }}" as="f" hint-placeholder-count="5">
+              <button onClick="{{ f.onSelect }}" style="flex:none;display:flex;align-items:center;gap:6px;height:38px;padding:0 15px;border-radius:19px;cursor:pointer;font-family:'Saira',sans-serif;font-size:14px;font-weight:600;background:{{ f.bg }};color:{{ f.fg }};border:1px solid {{ f.border }};white-space:nowrap">{{ f.label }}</button>
+            </sc-for>
+          </div>
+
+          <div style="flex:1;position:relative">
+            <!-- center-location FAB -->
+            <button style="position:absolute;right:16px;bottom:18px;width:52px;height:52px;border-radius:16px;background:rgba(35,34,41,.95);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 22px rgba(0,0,0,.4);cursor:pointer;display:flex;align-items:center;justify-content:center" style-active="background:#36353e">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.8" fill="#f9a825"/></svg>
+            </button>
+          </div>
+
+          <!-- ============ BOTTOM SHEET ============ -->
+          <div style="position:relative;z-index:3;background:#232229;border-top-left-radius:28px;border-top-right-radius:28px;padding:12px 0 30px;box-shadow:0 -14px 34px rgba(0,0,0,.45);border-top:1px solid rgba(255,255,255,.06)">
+            <div style="width:42px;height:4px;border-radius:99px;background:rgba(255,255,255,.16);margin:0 auto 14px"></div>
+            <div style="display:flex;align-items:baseline;justify-content:space-between;padding:0 18px 12px">
+              <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:20px;color:#f5f5f5">Rutas cerca de ti</div>
+              <div style="font-size:13px;font-weight:600;color:#f9a825">Ver todas</div>
+            </div>
+            <div class="hscroll" style="display:flex;gap:13px;padding:0 16px 4px;overflow-x:auto">
+              <sc-for list="{{ routes }}" as="r" hint-placeholder-count="4">
+                <div style="flex:none;width:212px;background:#1e1d24;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.05)">
+                  <div style="position:relative;height:108px;background:radial-gradient(120% 80% at 25% 0%,rgba(211,47,47,.26),transparent 58%),radial-gradient(130% 95% at 92% 100%,rgba(249,168,37,.2),transparent 52%),repeating-linear-gradient(118deg,#26252f 0 15px,#2b2a34 15px 30px)">
+                    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(24,23,28,.5))"></div>
+                    <div style="position:absolute;left:10px;top:10px;display:flex;align-items:center;gap:5px;padding:4px 9px;border-radius:8px;background:rgba(24,23,28,.66);backdrop-filter:blur(6px);font-family:'Saira Semi Condensed',sans-serif;font-weight:700;font-size:12px;color:#fff"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f9a825"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/></svg>{{ r.region }}</div>
+                    <div style="position:absolute;right:10px;bottom:10px;display:flex;align-items:center;gap:4px;padding:3px 8px;border-radius:8px;background:rgba(24,23,28,.7);font-size:11.5px;font-weight:700;color:#f9a825"><svg width="11" height="11" viewBox="0 0 24 24" fill="#f9a825"><path d="M12 2l2.9 6.3 6.9.6-5.2 4.5 1.6 6.7L12 17l-6.2 3.6 1.6-6.7L2.2 8.9l6.9-.6z"/></svg>{{ r.rating }}</div>
+                  </div>
+                  <div style="padding:11px 12px 13px">
+                    <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16.5px;line-height:1.12;color:#f5f5f5">{{ r.name }}</div>
+                    <div style="display:flex;gap:16px;margin-top:9px">
+                      <div><div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px;color:#f9a825;line-height:1">{{ r.dist }}<span style="font-size:11px;color:#9a99a2;margin-left:1px">km</span></div><div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#9a99a2;margin-top:2px">Distancia</div></div>
+                      <div><div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px;color:#f9a825;line-height:1">{{ r.desn }}<span style="font-size:11px;color:#9a99a2;margin-left:1px">m</span></div><div style="font-size:9.5px;letter-spacing:.08em;text-transform:uppercase;color:#9a99a2;margin-top:2px">Desnivel</div></div>
+                    </div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { active: 0 };
+
+  renderVals() {
+    const labels = ['Cerca de mí', 'Curvas', 'Costa', 'Montaña'];
+    const active = this.state.active;
+    const filters = labels.map((label, i) => {
+      const on = i === active;
+      return {
+        label,
+        bg: on ? '#f9a825' : 'rgba(35,34,41,.92)',
+        fg: on ? '#18171c' : '#f5f5f5',
+        border: on ? '#f9a825' : 'rgba(255,255,255,.1)',
+        onSelect: () => this.setState({ active: i }),
+      };
+    });
+
+    const routes = [
+      { name: 'Desfiladero de la Hermida', region: 'Picos de Europa', dist: '142', desn: '1.840', rating: '4,9' },
+      { name: 'Puerto del Pico', region: 'Gredos', dist: '98', desn: '1.260', rating: '4,8' },
+      { name: 'Costa da Morte', region: 'Galicia', dist: '76', desn: '540', rating: '4,7' },
+      { name: 'Sa Calobra', region: 'Mallorca', dist: '52', desn: '820', rating: '5,0' },
+    ];
+
+    return { filters, routes };
+  }
+}
+</script>
+</body>
+</html>

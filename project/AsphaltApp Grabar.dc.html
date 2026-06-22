@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  @keyframes ringpulse{0%{transform:scale(1);opacity:.65}100%{transform:scale(1.55);opacity:0}}
+  @keyframes pospulse{0%{r:16px;opacity:.55}100%{r:46px;opacity:0}}
+  @keyframes dotblink{0%,100%{opacity:1}50%{opacity:.35}}
+  @keyframes routedraw{to{stroke-dashoffset:0}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:56px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:402px;margin-bottom:22px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Grabar ruta</div>
+    <div style="font-family:'Saira',sans-serif;font-size:13.5px;color:#6b6a72;margin-top:2px">Grabación en vivo. El trazado se dibuja en ámbar y el botón rojo inicia o detiene. Texto grande para leer en marcha.</div>
+  </div>
+
+  <div style="width:402px">
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+      <div style="position:relative;height:100%;overflow:hidden;background:#18171c;color:#f5f5f5;font-family:'Saira',sans-serif">
+
+        <!-- ============ MAP ============ -->
+        <div style="position:absolute;inset:0">
+          <svg viewBox="0 0 402 874" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block">
+            <rect width="402" height="874" fill="#191820"/>
+            <path d="M0,120 H402 M0,240 H402 M0,360 H402 M0,480 H402 M0,600 H402 M0,720 H402 M67,0 V874 M134,0 V874 M201,0 V874 M268,0 V874 M335,0 V874" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <!-- faint road network -->
+            <path d="M-20,470 C90,440 130,560 250,520 C340,490 380,540 420,520" stroke="rgba(255,255,255,.055)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M70,-20 C100,120 40,200 90,320 C130,420 60,520 110,640" stroke="rgba(255,255,255,.045)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M420,160 C320,180 300,300 220,300 C150,300 150,220 60,250" stroke="rgba(255,255,255,.04)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <!-- recorded route -->
+            <path d="M150,852 C118,762 212,724 200,632 C189,548 252,500 236,418 C224,356 200,360 216,306" fill="none" stroke="rgba(249,168,37,.22)" stroke-width="17" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M150,852 C118,762 212,724 200,632 C189,548 252,500 236,418 C224,356 200,360 216,306" fill="none" stroke="#f9a825" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- start marker -->
+            <circle cx="150" cy="852" r="9" fill="#191820" stroke="#f5f5f5" stroke-width="3.5"/>
+            <circle cx="150" cy="852" r="3.5" fill="#f5f5f5"/>
+            <!-- POIs already marked -->
+            <circle cx="200" cy="632" r="7" fill="#f9a825" stroke="#191820" stroke-width="3"/>
+            <circle cx="236" cy="418" r="7" fill="#f9a825" stroke="#191820" stroke-width="3"/>
+            <!-- current position -->
+            <sc-if value="{{ pulsing }}" hint-placeholder-val="{{ true }}">
+              <circle cx="216" cy="306" r="16" fill="#f9a825" style="animation:pospulse 1.9s ease-out infinite"/>
+            </sc-if>
+            <circle cx="216" cy="306" r="15" fill="#fff" stroke="rgba(0,0,0,.25)" stroke-width="1"/>
+            <circle cx="216" cy="306" r="7.5" fill="#f9a825"/>
+            <path d="M216,278 l9,15 h-18 z" fill="#f9a825"/>
+          </svg>
+          <!-- top gradient for legibility -->
+          <div style="position:absolute;top:0;left:0;right:0;height:170px;background:linear-gradient(180deg,rgba(24,23,28,.85),transparent)"></div>
+        </div>
+
+        <!-- ============ OVERLAY UI ============ -->
+        <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column">
+
+          <!-- top bar -->
+          <div style="padding:58px 16px 0;display:flex;align-items:center;justify-content:space-between">
+            <div style="display:flex;align-items:center;gap:7px;padding:7px 12px;border-radius:11px;background:rgba(35,34,41,.78);backdrop-filter:blur(10px)">
+              <svg width="16" height="13" viewBox="0 0 19 12"><rect x="0" y="7.5" width="3.2" height="4.5" rx=".7" fill="#f9a825"/><rect x="4.8" y="5" width="3.2" height="7" rx=".7" fill="#f9a825"/><rect x="9.6" y="2.5" width="3.2" height="9.5" rx=".7" fill="#f9a825"/><rect x="14.4" y="0" width="3.2" height="12" rx=".7" fill="rgba(249,168,37,.35)"/></svg>
+              <span style="font-family:'Saira',monospace;font-size:11px;font-weight:600;letter-spacing:.12em;color:#cfcdd4">GPS</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;padding:8px 15px;border-radius:13px;background:rgba(35,34,41,.82);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.06)">
+              <div style="width:9px;height:9px;border-radius:50%;background:{{ statusColor }};animation:dotblink 1.4s ease-in-out infinite"></div>
+              <span style="font-size:14px;font-weight:600;letter-spacing:.04em;color:#f5f5f5">{{ statusLabel }}</span>
+            </div>
+            <div style="width:44px;height:44px;border-radius:50%;background:rgba(35,34,41,.82);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2"><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.6" fill="#f5f5f5"/></svg>
+            </div>
+          </div>
+
+          <div style="flex:1"></div>
+
+          <!-- ============ STAT + CONTROL PANEL ============ -->
+          <div style="position:relative;z-index:3;background:#232229;border-top-left-radius:30px;border-top-right-radius:30px;padding:16px 18px 36px;box-shadow:0 -14px 34px rgba(0,0,0,.45);border-top:1px solid rgba(255,255,255,.06)">
+            <div style="width:42px;height:4px;border-radius:99px;background:rgba(255,255,255,.16);margin:0 auto 20px"></div>
+
+            <!-- stats -->
+            <div style="display:flex;align-items:flex-start">
+              <div style="flex:1;text-align:center">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#9a99a2">Tiempo</div>
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:44px;line-height:1.04;color:#f9a825;font-variant-numeric:tabular-nums;letter-spacing:.01em">{{ time }}</div>
+              </div>
+              <div style="width:1px;align-self:stretch;background:rgba(255,255,255,.08);margin:4px 0"></div>
+              <div style="flex:1;text-align:center">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#9a99a2">Distancia</div>
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:44px;line-height:1.04;color:#f9a825">{{ distance }}<span style="font-size:17px;font-weight:600;color:#9a99a2;margin-left:2px">km</span></div>
+              </div>
+              <div style="width:1px;align-self:stretch;background:rgba(255,255,255,.08);margin:4px 0"></div>
+              <div style="flex:1;text-align:center">
+                <div style="font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#9a99a2">Velocidad</div>
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:44px;line-height:1.04;color:#f9a825">{{ speed }}<span style="font-size:17px;font-weight:600;color:#9a99a2;margin-left:2px">km/h</span></div>
+              </div>
+            </div>
+
+            <!-- controls -->
+            <div style="display:flex;align-items:flex-start;justify-content:center;gap:30px;margin-top:26px">
+              <!-- pause / resume -->
+              <div style="display:flex;flex-direction:column;align-items:center;gap:9px">
+                <button onClick="{{ togglePause }}" style="width:62px;height:62px;border-radius:50%;background:#2c2b33;border:1px solid rgba(255,255,255,.08);cursor:pointer;display:flex;align-items:center;justify-content:center" style-active="background:#36353e">
+                  <sc-if value="{{ paused }}" hint-placeholder-val="{{ false }}"><svg width="24" height="24" viewBox="0 0 24 24" fill="#f5f5f5"><path d="M7 5l13 7-13 7z"/></svg></sc-if>
+                  <sc-if value="{{ running }}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="#f5f5f5"><rect x="6" y="4" width="4.5" height="16" rx="1.5"/><rect x="13.5" y="4" width="4.5" height="16" rx="1.5"/></svg></sc-if>
+                </button>
+                <span style="font-size:13px;font-weight:600;color:#9a99a2">{{ pauseLabel }}</span>
+              </div>
+
+              <!-- record / stop -->
+              <div style="display:flex;flex-direction:column;align-items:center;gap:9px">
+                <button onClick="{{ toggleRec }}" style="position:relative;width:104px;height:104px;border-radius:50%;background:#d32f2f;border:5px solid #2c2b33;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 12px 30px rgba(211,47,47,.5)" style-active="filter:brightness(.92)">
+                  <sc-if value="{{ pulsing }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;inset:-5px;border-radius:50%;border:3px solid rgba(211,47,47,.65);animation:ringpulse 1.9s ease-out infinite"></div></sc-if>
+                  <sc-if value="{{ recording }}" hint-placeholder-val="{{ true }}"><div style="width:36px;height:36px;border-radius:10px;background:#fff"></div></sc-if>
+                  <sc-if value="{{ stopped }}" hint-placeholder-val="{{ false }}"><div style="width:32px;height:32px;border-radius:50%;background:#fff"></div></sc-if>
+                </button>
+                <span style="font-size:15px;font-weight:700;color:#f5f5f5">{{ recLabel }}</span>
+              </div>
+
+              <!-- mark POI -->
+              <div style="display:flex;flex-direction:column;align-items:center;gap:9px">
+                <button onClick="{{ addPoi }}" style="position:relative;width:62px;height:62px;border-radius:50%;background:rgba(249,168,37,.14);border:1.5px solid rgba(249,168,37,.5);cursor:pointer;display:flex;align-items:center;justify-content:center" style-active="background:rgba(249,168,37,.28)">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M12 21s7-7.6 7-12a7 7 0 0 0-14 0c0 4.4 7 12 7 12z" stroke-linejoin="round"/><path d="M12 7v5M9.5 9.5h5" stroke-linecap="round"/></svg>
+                </button>
+                <span style="font-size:13px;font-weight:600;color:#9a99a2">Punto · {{ poi }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{
+  &quot;startRecording&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; },
+  &quot;liveSimulation&quot;: { &quot;editor&quot;: &quot;boolean&quot;, &quot;default&quot;: true, &quot;tsType&quot;: &quot;boolean&quot; }
+}">
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      recording: props.startRecording ?? true,
+      paused: false,
+      elapsed: 2538,
+      distance: 38.4,
+      speed: 82,
+      poi: 3,
+    };
+  }
+
+  componentDidMount() {
+    this._t = setInterval(() => {
+      if (this.props.liveSimulation === false) return;
+      this.setState((s) => {
+        if (!s.recording || s.paused) return {};
+        let sp = Math.round(s.speed + (Math.random() * 12 - 6));
+        sp = Math.min(132, Math.max(34, sp));
+        return { elapsed: s.elapsed + 1, speed: sp, distance: +(s.distance + sp / 3600).toFixed(2) };
+      });
+    }, 1000);
+  }
+
+  componentWillUnmount() { clearInterval(this._t); }
+
+  fmt(t) {
+    const h = Math.floor(t / 3600), m = Math.floor((t % 3600) / 60), s = t % 60;
+    const p = (n) => String(n).padStart(2, '0');
+    return h > 0 ? `${h}:${p(m)}:${p(s)}` : `${p(m)}:${p(s)}`;
+  }
+
+  renderVals() {
+    const { recording, paused, elapsed, distance, speed, poi } = this.state;
+    const running = recording && !paused;
+    return {
+      time: this.fmt(elapsed),
+      distance: distance.toFixed(1).replace('.', ','),
+      speed: String(speed),
+      poi,
+      recording,
+      stopped: !recording,
+      paused,
+      running,
+      pulsing: running,
+      statusLabel: !recording ? 'Detenido' : (paused ? 'En pausa' : 'Grabando'),
+      statusColor: !recording ? '#9a99a2' : (paused ? '#f9a825' : '#d32f2f'),
+      recLabel: recording ? 'Parar' : 'Grabar',
+      pauseLabel: paused ? 'Seguir' : 'Pausa',
+      toggleRec: () => this.setState((s) => ({ recording: !s.recording, paused: false })),
+      togglePause: () => this.setState((s) => ({ paused: !s.paused })),
+      addPoi: () => this.setState((s) => ({ poi: s.poi + 1 })),
+    };
+  }
+}
+</script>
+</body>
+</html>

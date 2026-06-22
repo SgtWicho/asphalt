@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  .hscroll::-webkit-scrollbar{height:0}
+</style>
+</helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:56px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:402px;margin-bottom:22px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Detalle de ruta</div>
+    <div style="font-family:'Saira',sans-serif;font-size:13.5px;color:#6b6a72;margin-top:2px">Ruta completa: mapa, perfil de altitud, fotos, puntos de interés y comentarios. El botón rojo queda fijo abajo.</div>
+  </div>
+
+  <div style="width:402px">
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+      <div style="height:100%;background:#18171c;color:#f5f5f5;font-family:'Saira',sans-serif;display:flex;flex-direction:column">
+
+        <!-- scroll content -->
+        <div style="flex:1">
+
+          <!-- MAP -->
+          <div style="position:relative;height:300px">
+            <svg viewBox="0 0 402 300" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block">
+              <rect width="402" height="300" fill="#191820"/>
+              <path d="M0,70 H402 M0,150 H402 M0,230 H402 M80,0 V300 M160,0 V300 M240,0 V300 M320,0 V300" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+              <path d="M-20,120 C90,100 140,180 250,150 C340,126 380,170 420,150" stroke="rgba(255,255,255,.05)" stroke-width="10" fill="none" stroke-linecap="round"/>
+              <path d="M70,-20 C100,80 40,140 90,230 C120,285 90,300 110,320" stroke="rgba(255,255,255,.04)" stroke-width="8" fill="none" stroke-linecap="round"/>
+              <!-- route -->
+              <path d="M44,232 C110,214 130,140 206,150 C282,160 300,96 250,70 C214,52 150,70 120,44" fill="none" stroke="rgba(249,168,37,.2)" stroke-width="15" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M44,232 C110,214 130,140 206,150 C282,160 300,96 250,70 C214,52 150,70 120,44" fill="none" stroke="#f9a825" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <!-- POI pins -->
+              <g transform="translate(206,150)"><path d="M0,-23 C-11,-23 -16,-15 -16,-8 C-16,3 0,11 0,11 C0,11 16,3 16,-8 C16,-15 11,-23 0,-23 Z" fill="rgba(249,168,37,.9)" stroke="#191820" stroke-width="2.5"/><circle cx="0" cy="-9" r="5.5" fill="#191820"/></g>
+              <g transform="translate(282,108)"><path d="M0,-23 C-11,-23 -16,-15 -16,-8 C-16,3 0,11 0,11 C0,11 16,3 16,-8 C16,-15 11,-23 0,-23 Z" fill="rgba(249,168,37,.9)" stroke="#191820" stroke-width="2.5"/><circle cx="0" cy="-9" r="5.5" fill="#191820"/></g>
+              <!-- start / end -->
+              <circle cx="44" cy="232" r="10" fill="#191820" stroke="#f5f5f5" stroke-width="4"/>
+              <circle cx="120" cy="44" r="11" fill="#d32f2f" stroke="#191820" stroke-width="4"/>
+            </svg>
+            <!-- top gradient -->
+            <div style="position:absolute;top:0;left:0;right:0;height:130px;background:linear-gradient(180deg,rgba(24,23,28,.8),transparent)"></div>
+            <div style="position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(0deg,#18171c,transparent)"></div>
+            <!-- back + share -->
+            <div style="position:absolute;top:58px;left:16px;width:42px;height:42px;border-radius:50%;background:rgba(35,34,41,.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2.4"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div style="position:absolute;top:58px;right:16px;width:42px;height:42px;border-radius:50%;background:rgba(35,34,41,.85);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 3v13M7 8l5-5 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+
+          <!-- TITLE + TAGS -->
+          <div style="padding:4px 18px 0">
+            <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;line-height:1.04;color:#f5f5f5;letter-spacing:-.01em">Desfiladero de la Hermida</div>
+            <div style="display:flex;gap:8px;margin-top:11px">
+              <sc-for list="{{ tags }}" as="t" hint-placeholder-count="2">
+                <div style="display:flex;align-items:center;gap:5px;height:28px;padding:0 11px;border-radius:14px;background:rgba(249,168,37,.13);border:1px solid rgba(249,168,37,.4);font-size:12.5px;font-weight:600;color:#f9a825">{{ t }}</div>
+              </sc-for>
+            </div>
+            <!-- author -->
+            <div style="display:flex;align-items:center;gap:11px;margin-top:15px">
+              <div style="width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#d32f2f,#f9a825);display:flex;align-items:center;justify-content:center;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#fff">MR</div>
+              <div style="flex:1;min-width:0">
+                <div style="font-weight:600;font-size:15px;color:#f5f5f5;line-height:1.1">Marina Ruiz</div>
+                <div style="font-size:12.5px;color:#9a99a2;margin-top:1px">Ducati Monster 937 · 14 jun 2026</div>
+              </div>
+              <div style="display:flex;align-items:center;gap:5px;height:34px;padding:0 13px;border-radius:17px;background:#232229;border:1px solid rgba(255,255,255,.08);font-size:13px;font-weight:600;color:#f5f5f5">Seguir</div>
+            </div>
+          </div>
+
+          <!-- STATS -->
+          <div style="margin:16px 16px 0;padding:14px 6px;background:#232229;border-radius:18px;display:flex;align-items:stretch">
+            <sc-for list="{{ stats }}" as="st" hint-placeholder-count="4">
+              <div style="flex:1;text-align:center;padding:0 2px">
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:24px;color:#f9a825;line-height:1">{{ st.n }}<span style="font-size:11px;color:#9a99a2;margin-left:1px">{{ st.u }}</span></div>
+                <div style="font-size:9.5px;letter-spacing:.07em;text-transform:uppercase;color:#9a99a2;margin-top:5px">{{ st.l }}</div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- ALTITUDE PROFILE -->
+          <div style="margin:22px 18px 0">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px">
+              <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f5f5f5">Perfil de altitud</div>
+              <div style="font-size:12px;color:#9a99a2">máx <span style="color:#f9a825;font-weight:600">1.840 m</span></div>
+            </div>
+            <div style="background:#232229;border-radius:16px;padding:14px 12px 10px;border:1px solid rgba(255,255,255,.05)">
+              <svg viewBox="0 0 360 120" width="100%" height="104" style="display:block;overflow:visible">
+                <defs><linearGradient id="alt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="rgba(249,168,37,.45)"/><stop offset="1" stop-color="rgba(249,168,37,0)"/></linearGradient></defs>
+                <line x1="0" y1="100" x2="360" y2="100" stroke="rgba(255,255,255,.08)" stroke-width="1"/>
+                <line x1="0" y1="60" x2="360" y2="60" stroke="rgba(255,255,255,.05)" stroke-width="1" stroke-dasharray="3 4"/>
+                <path d="M0,92 L30,80 L60,86 L95,52 L130,60 L170,26 L210,42 L250,18 L290,48 L325,36 L360,64 L360,100 L0,100 Z" fill="url(#alt)"/>
+                <path d="M0,92 L30,80 L60,86 L95,52 L130,60 L170,26 L210,42 L250,18 L290,48 L325,36 L360,64" fill="none" stroke="#f9a825" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="170" cy="26" r="4.5" fill="#f9a825" stroke="#232229" stroke-width="2.5"/>
+                <circle cx="250" cy="18" r="4.5" fill="#f9a825" stroke="#232229" stroke-width="2.5"/>
+              </svg>
+              <div style="display:flex;justify-content:space-between;margin-top:6px;font-family:'Saira',monospace;font-size:10px;letter-spacing:.08em;color:#9a99a2"><span>km 0</span><span>km 71</span><span>km 142</span></div>
+            </div>
+          </div>
+
+          <!-- PHOTO GALLERY -->
+          <div style="margin:22px 0 0">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:11px">
+              <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f5f5f5">Fotos del recorrido</div>
+              <div style="font-size:12.5px;font-weight:600;color:#f9a825">24 fotos</div>
+            </div>
+            <div class="hscroll" style="display:flex;gap:11px;padding:0 16px;overflow-x:auto">
+              <sc-for list="{{ photos }}" as="ph" hint-placeholder-count="4">
+                <div style="flex:none;width:148px;height:104px;border-radius:14px;overflow:hidden;position:relative;background:radial-gradient(120% 80% at 25% 0%,rgba(211,47,47,.26),transparent 58%),radial-gradient(130% 95% at 92% 100%,rgba(249,168,37,.2),transparent 52%),repeating-linear-gradient(118deg,#26252f 0 15px,#2b2a34 15px 30px)">
+                  <div style="position:absolute;left:9px;bottom:8px;font-family:'Saira',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:rgba(245,245,245,.7)">{{ ph.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- POI LIST -->
+          <div style="margin:24px 18px 0">
+            <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f5f5f5;margin-bottom:12px">Puntos de interés</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              <sc-for list="{{ pois }}" as="p" hint-placeholder-count="3">
+                <div style="display:flex;align-items:center;gap:13px;padding:12px;background:#232229;border-radius:15px;border:1px solid rgba(255,255,255,.05)">
+                  <div style="width:42px;height:42px;border-radius:12px;background:rgba(249,168,37,.14);display:flex;align-items:center;justify-content:center;flex:none">
+                    <sc-if value="{{ p.isView }}" hint-placeholder-val="{{ true }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M3 20l5-9 4 5 3-4 6 8z" stroke-linejoin="round"/><circle cx="8" cy="6" r="2.5"/></svg></sc-if>
+                    <sc-if value="{{ p.isFuel }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h14" stroke-linejoin="round"/><path d="M15 9h2.5a1.5 1.5 0 0 1 1.5 1.5V16a2 2 0 0 0 2 2v0" stroke-linecap="round"/><path d="M7 8h6" stroke-linecap="round"/></svg></sc-if>
+                    <sc-if value="{{ p.isFood }}" hint-placeholder-val="{{ false }}"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M5 3v7a2 2 0 0 0 4 0V3M7 3v18M16 3c-1.5 1.5-2 3.5-2 6s.5 4 2 4v8" stroke-linecap="round" stroke-linejoin="round"/></svg></sc-if>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-weight:600;font-size:14.5px;color:#f5f5f5;line-height:1.15">{{ p.name }}</div>
+                    <div style="font-size:12px;color:#9a99a2;margin-top:2px">{{ p.type }}</div>
+                  </div>
+                  <div style="font-family:'Saira Semi Condensed',sans-serif;font-weight:700;font-size:14px;color:#f9a825">{{ p.km }}</div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- ACTION BAR -->
+          <div style="display:flex;align-items:center;gap:22px;margin:22px 18px 0;padding:15px 4px;border-top:1px solid rgba(255,255,255,.07);border-bottom:1px solid rgba(255,255,255,.07)">
+            <button onClick="{{ onLike }}" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0;cursor:pointer;font-family:'Saira',sans-serif;font-size:14.5px;font-weight:600;color:#9a99a2"><svg width="24" height="24" viewBox="0 0 24 24" fill="{{ likeFill }}" stroke="{{ likeColor }}" stroke-width="2"><path d="M12 21s-7-4.7-9.5-9.2C1 8.5 2.5 5 6 5c2.1 0 3.4 1.2 4 2.3C10.6 6.2 11.9 5 14 5c3.5 0 5 3.5 3.5 6.8C19 16.3 12 21 12 21z" stroke-linejoin="round"/></svg>{{ likeCount }}</button>
+            <div style="display:flex;align-items:center;gap:7px;color:#9a99a2;font-size:14.5px;font-weight:600"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-6.5A8 8 0 1 1 21 12z" stroke-linejoin="round"/></svg>37</div>
+            <div style="flex:1"></div>
+            <button onClick="{{ onSave }}" style="display:flex;background:none;border:none;padding:0;cursor:pointer"><svg width="23" height="23" viewBox="0 0 24 24" fill="{{ saveFill }}" stroke="{{ saveColor }}" stroke-width="2"><path d="M6 3h12v18l-6-4.2L6 21z" stroke-linejoin="round"/></svg></button>
+            <div style="display:flex;align-items:center;color:#9a99a2"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 3v13M7 8l5-5 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          </div>
+
+          <!-- COMMENTS -->
+          <div style="margin:22px 18px 0">
+            <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f5f5f5;margin-bottom:14px">Comentarios · 37</div>
+            <div style="display:flex;flex-direction:column;gap:16px">
+              <sc-for list="{{ comments }}" as="c" hint-placeholder-count="3">
+                <div style="display:flex;gap:11px">
+                  <div style="width:36px;height:36px;border-radius:50%;background:{{ c.bg }};display:flex;align-items:center;justify-content:center;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:14px;color:#fff;flex:none">{{ c.ini }}</div>
+                  <div style="flex:1;min-width:0">
+                    <div style="display:flex;align-items:center;gap:8px"><span style="font-weight:600;font-size:13.5px;color:#f5f5f5">{{ c.name }}</span><span style="font-size:11.5px;color:#9a99a2">{{ c.time }}</span></div>
+                    <div style="font-size:13.5px;color:#cfcdd4;line-height:1.45;margin-top:3px">{{ c.text }}</div>
+                    <div style="display:flex;align-items:center;gap:5px;margin-top:6px;color:#9a99a2;font-size:12px;font-weight:600"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M12 21s-7-4.7-9.5-9.2C1 8.5 2.5 5 6 5c2.1 0 3.4 1.2 4 2.3C10.6 6.2 11.9 5 14 5c3.5 0 5 3.5 3.5 6.8C19 16.3 12 21 12 21z" stroke-linejoin="round"/></svg>{{ c.likes }}</div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+            <!-- add comment -->
+            <div style="display:flex;align-items:center;gap:10px;margin-top:18px;height:46px;padding:0 14px;border-radius:14px;background:#232229;border:1px solid rgba(255,255,255,.07)">
+              <span style="flex:1;font-size:14px;color:#9a99a2">Añade un comentario…</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M4 12l16-8-6 16-3-7-7-1z" stroke-linejoin="round"/></svg>
+            </div>
+            <div style="height:18px"></div>
+          </div>
+        </div>
+
+        <!-- STICKY CTA -->
+        <div style="position:sticky;bottom:0;z-index:10;padding:12px 16px 30px;background:rgba(24,23,28,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.08)">
+          <button style="width:100%;height:52px;border:none;border-radius:15px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:700;font-size:16.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 8px 22px rgba(211,47,47,.45)" style-active="filter:brightness(.92)">Hacer esta ruta<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+        </div>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { liked: false, saved: false };
+
+  renderVals() {
+    const { liked, saved } = this.state;
+    return {
+      tags: ['Curvas', 'Montaña'],
+      stats: [
+        { n: '142', u: 'km', l: 'Distancia' },
+        { n: '3h12', u: '', l: 'Duración' },
+        { n: '46', u: 'km/h', l: 'Vel. media' },
+        { n: '1.840', u: 'm', l: 'Desnivel' },
+      ],
+      photos: [
+        { label: 'km 12 · valle' },
+        { label: 'km 38 · mirador' },
+        { label: 'km 71 · puerto' },
+        { label: 'km 96 · curvas' },
+        { label: 'km 128 · costa' },
+      ],
+      pois: [
+        { name: 'Mirador de Santa Catalina', type: 'Mirador', km: 'km 38', isView: true, isFuel: false, isFood: false },
+        { name: 'Repsol La Hermida', type: 'Gasolinera', km: 'km 52', isView: false, isFuel: true, isFood: false },
+        { name: 'Mesón El Puente', type: 'Comida', km: 'km 74', isView: false, isFuel: false, isFood: true },
+      ],
+      comments: [
+        { ini: 'JL', name: 'Javier León', time: 'hace 3 h', text: 'Hecha el finde pasado. El tramo del desfiladero es una pasada, asfalto impecable.', likes: 12, bg: 'linear-gradient(135deg,#2a6fdb,#1f8a5b)' },
+        { ini: 'AC', name: 'Ana Castro', time: 'hace 1 d', text: '¿Cómo está el firme después del km 90? Pensaba hacerla en septiembre.', likes: 4, bg: 'linear-gradient(135deg,#d32f2f,#f9a825)' },
+        { ini: 'TR', name: 'Tomás Ríos', time: 'hace 2 d', text: 'Parada obligatoria en el Mesón El Puente, el cocido espectacular.', likes: 9, bg: 'linear-gradient(135deg,#6a3fd1,#2a6fdb)' },
+      ],
+      likeColor: liked ? '#f9a825' : '#9a99a2',
+      likeFill: liked ? '#f9a825' : 'none',
+      likeCount: 284 + (liked ? 1 : 0),
+      saveColor: saved ? '#f9a825' : '#9a99a2',
+      saveFill: saved ? '#f9a825' : 'none',
+      onLike: () => this.setState((s) => ({ liked: !s.liked })),
+      onSave: () => this.setState((s) => ({ saved: !s.saved })),
+    };
+  }
+}
+</script>
+</body>
+</html>

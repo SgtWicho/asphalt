@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  .hscroll::-webkit-scrollbar{height:0}
+</style>
+</helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:56px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:402px;margin-bottom:22px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Planificador</div>
+    <div style="font-family:'Saira',sans-serif;font-size:13.5px;color:#6b6a72;margin-top:2px">Origen, destino y estilo de ruta. Cambia las píldoras para ver cómo se redibuja el trazado y el resumen.</div>
+  </div>
+
+  <div style="width:402px">
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+      <div style="position:relative;height:100%;overflow:hidden;background:#18171c;color:#f5f5f5;font-family:'Saira',sans-serif">
+
+        <!-- ============ MAP ============ -->
+        <div style="position:absolute;inset:0">
+          <svg viewBox="0 0 402 874" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block">
+            <rect width="402" height="874" fill="#191820"/>
+            <path d="M0,120 H402 M0,240 H402 M0,360 H402 M0,480 H402 M0,600 H402 M67,0 V874 M134,0 V874 M201,0 V874 M268,0 V874 M335,0 V874" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+            <path d="M-20,330 C90,300 140,410 250,380 C340,356 380,410 420,390" stroke="rgba(255,255,255,.05)" stroke-width="11" fill="none" stroke-linecap="round"/>
+            <path d="M60,-20 C90,140 30,230 80,360 C120,470 50,560 100,690" stroke="rgba(255,255,255,.042)" stroke-width="9" fill="none" stroke-linecap="round"/>
+            <path d="M430,210 C330,240 320,360 230,360 C150,360 150,280 50,310" stroke="rgba(255,255,255,.038)" stroke-width="8" fill="none" stroke-linecap="round"/>
+            <!-- proposed route (glow + bright), morphs by style -->
+            <path d="{{ routePath }}" fill="none" stroke="rgba(249,168,37,.2)" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="{{ routePath }}" fill="none" stroke="#f9a825" stroke-width="6.5" stroke-linecap="round" stroke-linejoin="round"/>
+            <!-- origin -->
+            <circle cx="120" cy="612" r="13" fill="#f9a825" opacity="0.18"/>
+            <circle cx="120" cy="612" r="9" fill="#fff" stroke="#191820" stroke-width="2.5"/>
+            <circle cx="120" cy="612" r="4" fill="#d32f2f"/>
+            <!-- destination pin -->
+            <g transform="translate(286,250)"><path d="M0,-30 C-14,-30 -21,-20 -21,-11 C-21,3 0,16 0,16 C0,16 21,3 21,-11 C21,-20 14,-30 0,-30 Z" fill="#d32f2f" stroke="#191820" stroke-width="3"/><circle cx="0" cy="-12" r="7.5" fill="#191820"/></g>
+          </svg>
+          <div style="position:absolute;top:0;left:0;right:0;height:300px;background:linear-gradient(180deg,rgba(24,23,28,.92) 30%,transparent)"></div>
+        </div>
+
+        <!-- ============ OVERLAY ============ -->
+        <div style="position:relative;z-index:2;height:100%;display:flex;flex-direction:column">
+
+          <!-- header -->
+          <div style="display:flex;align-items:center;gap:12px;padding:56px 16px 0">
+            <div style="width:40px;height:40px;border-radius:50%;background:rgba(35,34,41,.9);display:flex;align-items:center;justify-content:center;flex:none"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2.4"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:21px;color:#f5f5f5">Planificar ruta</div>
+          </div>
+
+          <!-- origin / dest card -->
+          <div style="margin:14px 16px 0;background:rgba(35,34,41,.96);backdrop-filter:blur(12px);border-radius:18px;border:1px solid rgba(255,255,255,.08);box-shadow:0 12px 30px rgba(0,0,0,.4);padding:6px 14px">
+            <!-- origin -->
+            <div style="display:flex;align-items:center;gap:13px;height:52px">
+              <div style="width:11px;height:11px;border-radius:50%;background:#fff;border:3px solid #d32f2f;flex:none"></div>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9a99a2">Origen</div>
+                <div style="font-size:15px;font-weight:600;color:#f5f5f5;margin-top:1px">Mi ubicación</div>
+              </div>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke-linecap="round"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="1.6" fill="#f9a825"/></svg>
+            </div>
+            <div style="display:flex;align-items:center;padding-left:4px"><div style="width:3px;height:16px;border-radius:2px;background:repeating-linear-gradient(#5a5962 0 3px,transparent 3px 6px)"></div></div>
+            <!-- destination -->
+            <div style="display:flex;align-items:center;gap:13px;height:52px">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="#f9a825" style="flex:none"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.4" fill="#232229"/></svg>
+              <div style="flex:1;min-width:0">
+                <div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9a99a2">Destino</div>
+                <div style="font-size:15px;font-weight:600;color:#f5f5f5;margin-top:1px">Puerto de San Glorio</div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:center;width:30px;height:30px;border-radius:9px;background:rgba(255,255,255,.06)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M8 6l8 6-8 6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+            </div>
+            <!-- add stop -->
+            <div style="display:flex;align-items:center;gap:9px;height:46px;border-top:1px solid rgba(255,255,255,.07);cursor:pointer">
+              <div style="width:22px;height:22px;border-radius:50%;background:rgba(249,168,37,.15);display:flex;align-items:center;justify-content:center;margin-left:-1px"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2.6"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></div>
+              <span style="font-size:13.5px;font-weight:600;color:#f9a825">Añadir parada intermedia</span>
+            </div>
+          </div>
+
+          <!-- style pills -->
+          <div class="hscroll" style="display:flex;gap:9px;padding:14px 16px 0;overflow-x:auto">
+            <sc-for list="{{ styles }}" as="s" hint-placeholder-count="3">
+              <button onClick="{{ s.onSelect }}" style="flex:none;display:flex;align-items:center;gap:7px;height:42px;padding:0 16px;border-radius:21px;cursor:pointer;font-family:'Saira',sans-serif;font-size:14.5px;font-weight:600;background:{{ s.bg }};color:{{ s.fg }};border:1px solid {{ s.border }};white-space:nowrap">
+                <sc-if value="{{ s.isCurvas }}" hint-placeholder-val="{{ true }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{ s.fg }}" stroke-width="2" style="display:block"><path d="M5 21c0-5 4-5 4-9s-4-4-4-8M19 21c0-5-4-5-4-9s4-4 4-8" stroke-linecap="round"/></svg></sc-if>
+                <sc-if value="{{ s.isPaisaje }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{ s.fg }}" stroke-width="2" style="display:block"><path d="M3 20l5-8 3 4 3-5 7 9z" stroke-linejoin="round"/><circle cx="7" cy="6" r="2.5"/></svg></sc-if>
+                <sc-if value="{{ s.isRapida }}" hint-placeholder-val="{{ false }}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{ s.fg }}" stroke-width="2" style="display:block"><path d="M13 2L4 14h7l-1 8 9-12h-7z" stroke-linejoin="round"/></svg></sc-if>{{ s.label }}
+              </button>
+            </sc-for>
+          </div>
+
+          <div style="flex:1"></div>
+
+          <!-- ============ SUMMARY PANEL ============ -->
+          <div style="position:relative;z-index:3;background:#232229;border-top-left-radius:28px;border-top-right-radius:28px;padding:14px 18px 32px;box-shadow:0 -14px 34px rgba(0,0,0,.5);border-top:1px solid rgba(255,255,255,.06)">
+            <div style="width:42px;height:4px;border-radius:99px;background:rgba(255,255,255,.16);margin:0 auto 16px"></div>
+
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+              <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:19px;color:#f5f5f5">Ruta propuesta</div>
+              <div style="display:flex;align-items:center;gap:5px;height:26px;padding:0 10px;border-radius:13px;background:rgba(249,168,37,.13);border:1px solid rgba(249,168,37,.35);font-size:12px;font-weight:600;color:#f9a825">{{ styleLabel }}</div>
+            </div>
+
+            <!-- stats row -->
+            <div style="display:flex;align-items:stretch;background:#1e1d24;border-radius:16px;padding:14px 6px">
+              <div style="flex:1;text-align:center">
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:26px;color:#f9a825;line-height:1">{{ distance }}<span style="font-size:12px;color:#9a99a2;margin-left:2px">km</span></div>
+                <div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#9a99a2;margin-top:5px">Distancia</div>
+              </div>
+              <div style="width:1px;background:rgba(255,255,255,.08);margin:3px 0"></div>
+              <div style="flex:1;text-align:center">
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:26px;color:#f9a825;line-height:1">{{ duration }}</div>
+                <div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#9a99a2;margin-top:5px">Duración est.</div>
+              </div>
+              <div style="width:1px;background:rgba(255,255,255,.08);margin:3px 0"></div>
+              <div style="flex:1;text-align:center">
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:26px;color:#f9a825;line-height:1">{{ metricValue }}</div>
+                <div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#9a99a2;margin-top:5px">{{ metricLabel }}</div>
+              </div>
+            </div>
+
+            <!-- index bar -->
+            <div style="margin-top:14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:7px">
+                <span style="font-size:12.5px;font-weight:600;color:#cfcdd4">{{ indexLabel }}</span>
+                <span style="font-size:12.5px;font-weight:700;color:#f9a825">{{ indexTag }}</span>
+              </div>
+              <div style="height:9px;border-radius:99px;background:#1e1d24;overflow:hidden">
+                <div style="height:100%;width:{{ indexPct }};border-radius:99px;background:linear-gradient(90deg,#f9a825,#d32f2f);transition:width .3s"></div>
+              </div>
+            </div>
+
+            <!-- CTA -->
+            <button style="margin-top:18px;width:100%;height:54px;border:none;border-radius:15px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:700;font-size:16.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 10px 26px rgba(211,47,47,.45)" style-active="filter:brightness(.92)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M3 11l18-8-8 18-2-8-8-2z" stroke-linejoin="round"/></svg>Empezar navegación</button>
+          </div>
+        </div>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { style: 'curvas' };
+
+  renderVals() {
+    const cur = this.state.style;
+    const defs = {
+      curvas: {
+        label: 'Más curvas',
+        path: 'M120,612 C70,560 150,520 130,452 C112,392 200,388 196,330 C192,276 250,300 256,256 C262,214 240,200 286,250',
+        distance: '148', duration: '4h 05m',
+        metricValue: '212', metricLabel: 'Curvas',
+        indexLabel: 'Índice de curvas', indexTag: 'Muy alto', indexPct: '88%',
+      },
+      paisaje: {
+        label: 'Más paisaje',
+        path: 'M120,612 C90,556 60,520 110,470 C170,412 150,360 220,360 C300,360 300,290 286,250',
+        distance: '163', duration: '4h 28m',
+        metricValue: '7', metricLabel: 'Miradores',
+        indexLabel: 'Índice panorámico', indexTag: 'Espectacular', indexPct: '92%',
+      },
+      rapida: {
+        label: 'Más rápida',
+        path: 'M120,612 C140,540 180,470 200,400 C224,330 250,300 286,250',
+        distance: '121', duration: '2h 48m',
+        metricValue: '+38', metricLabel: 'Min ahorro',
+        indexLabel: 'Tiempo en marcha', indexTag: 'Directa', indexPct: '34%',
+      },
+    };
+    const d = defs[cur];
+
+    const order = [['curvas', 'Más curvas'], ['paisaje', 'Más paisaje'], ['rapida', 'Más rápida']];
+    const styles = order.map(([key, label]) => {
+      const on = key === cur;
+      return {
+        label,
+        isCurvas: key === 'curvas',
+        isPaisaje: key === 'paisaje',
+        isRapida: key === 'rapida',
+        bg: on ? '#f9a825' : 'rgba(35,34,41,.92)',
+        fg: on ? '#18171c' : '#f5f5f5',
+        border: on ? '#f9a825' : 'rgba(255,255,255,.1)',
+        onSelect: () => this.setState({ style: key }),
+      };
+    });
+
+    return {
+      styles,
+      routePath: d.path,
+      styleLabel: d.label,
+      distance: d.distance,
+      duration: d.duration,
+      metricValue: d.metricValue,
+      metricLabel: d.metricLabel,
+      indexLabel: d.indexLabel,
+      indexTag: d.indexTag,
+      indexPct: d.indexPct,
+    };
+  }
+}
+</script>
+</body>
+</html>

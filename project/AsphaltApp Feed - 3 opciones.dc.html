@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  ::-webkit-scrollbar{width:0px;height:8px;background:transparent}
+  ::-webkit-scrollbar-thumb{background:rgba(0,0,0,.2);border-radius:8px}
+  @keyframes recpulse{0%,100%{box-shadow:0 8px 20px rgba(211,47,47,.5),0 0 0 0 rgba(211,47,47,.45)}50%{box-shadow:0 8px 20px rgba(211,47,47,.6),0 0 0 9px rgba(211,47,47,0)}}
+</style>
+</helmet>
+
+<div style="width:max-content;min-width:100%;min-height:100vh;box-sizing:border-box;padding:56px 56px 72px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif">
+
+  <div style="margin-bottom:40px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:30px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Feed</div>
+    <div style="font-family:'Saira',sans-serif;font-size:14px;color:#6b6a72;margin-top:2px;max-width:560px">Tres tratamientos del feed de rutas. Toca el corazón o el marcador para ver el ámbar de acción. Cada publicación es una ruta completa: foto, recorrido en mini-mapa y estadísticas.</div>
+  </div>
+
+  <div style="display:flex;gap:48px;align-items:flex-start">
+
+    <!-- ============ VARIANT A ============ -->
+    <div style="flex:none;width:402px">
+      <div style="font-family:'Saira',monospace;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#8a8990;margin-bottom:14px">A · Tarjeta clásica</div>
+      <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+        <div style="min-height:100%;background:#18171c;color:#f5f5f5;display:flex;flex-direction:column;font-family:'Saira',sans-serif">
+
+          <!-- APP BAR -->
+          <div style="position:sticky;top:0;z-index:30;background:rgba(24,23,28,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:54px 18px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)">
+            <img src="assets/asphalt-logo.svg" alt="Asphalt" style="height:24px;display:block"/>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="width:38px;height:38px;border-radius:50%;background:#232229;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-3.5-3.5" stroke-linecap="round"/></svg></div>
+              <div style="position:relative;width:38px;height:38px;border-radius:50%;background:#232229;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke-linecap="round"/></svg><div style="position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:#d32f2f;border:2px solid #18171c"></div></div>
+            </div>
+          </div>
+
+          <!-- FEED -->
+          <div style="flex:1;padding:16px 16px 24px;display:flex;flex-direction:column;gap:18px">
+            <sc-for list="{{ postsA }}" as="post" hint-placeholder-count="2">
+              <div style="background:#232229;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.05)">
+
+                <!-- header -->
+                <div style="display:flex;align-items:center;gap:11px;padding:13px 14px 12px">
+                  <div style="position:relative;flex:none">
+                    <div style="width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,#d32f2f,#f9a825);display:flex;align-items:center;justify-content:center;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px;color:#fff">{{ post.ini }}</div>
+                    <div style="position:absolute;-bottom:0;bottom:-2px;right:-2px;width:18px;height:18px;border-radius:50%;background:#18171c;display:flex;align-items:center;justify-content:center"><div style="width:8px;height:8px;border-radius:50%;background:#f9a825"></div></div>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-weight:600;font-size:15px;color:#f5f5f5;line-height:1.1">{{ post.author }}</div>
+                    <div style="font-size:12.5px;color:#9a99a2;line-height:1.3;margin-top:1px">{{ post.moto }} · {{ post.time }}</div>
+                  </div>
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#9a99a2"><circle cx="5" cy="12" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="19" cy="12" r="2"/></svg>
+                </div>
+
+                <!-- photo + map inset -->
+                <div style="position:relative;width:100%;height:212px;background:radial-gradient(120% 80% at 25% 0%,rgba(211,47,47,.28),transparent 58%),radial-gradient(130% 95% at 92% 100%,rgba(249,168,37,.2),transparent 52%),repeating-linear-gradient(118deg,#25242d 0 17px,#2b2a34 17px 34px)">
+                  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04),rgba(24,23,28,.5))"></div>
+                  <div style="position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:9px;background:rgba(24,23,28,.6);backdrop-filter:blur(6px);font-family:'Saira Semi Condensed',sans-serif;font-weight:700;font-size:13px;color:#fff"><div style="width:7px;height:7px;border-radius:50%;background:#d32f2f"></div>{{ post.km }} km</div>
+                  <div style="position:absolute;left:13px;bottom:11px;display:flex;align-items:center;gap:6px;font-family:'Saira',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,245,245,.62)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,245,.62)" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/><path d="M8 6l1.5-2.5h5L16 6"/></svg>Foto · {{ post.loc }}</div>
+                  <!-- mini map inset -->
+                  <div style="position:absolute;right:12px;bottom:12px;width:120px;height:80px;border-radius:13px;overflow:hidden;border:2px solid #232229;box-shadow:0 6px 16px rgba(0,0,0,.4)">
+                    <svg viewBox="0 0 320 190" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="display:block">
+                      <rect width="320" height="190" fill="#1c1b22"/>
+                      <path d="M0,47 H320 M0,95 H320 M0,143 H320 M64,0 V190 M128,0 V190 M192,0 V190 M256,0 V190" stroke="rgba(255,255,255,.045)" stroke-width="1"/>
+                      <path d="M-10,150 C80,140 120,60 210,72 C270,80 305,42 330,28" stroke="rgba(255,255,255,.06)" stroke-width="7" fill="none"/>
+                      <path d="{{ post.route }}" fill="none" stroke="#f9a825" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 5px rgba(249,168,37,.55))"/>
+                      <sc-for list="{{ post.poi }}" as="poi" hint-placeholder-count="1"><circle cx="{{ poi.x }}" cy="{{ poi.y }}" r="5" fill="#f9a825" stroke="#1c1b22" stroke-width="2.5"/></sc-for>
+                      <circle cx="{{ post.sx }}" cy="{{ post.sy }}" r="6.5" fill="#f5f5f5" stroke="#1c1b22" stroke-width="3"/>
+                      <circle cx="{{ post.ex }}" cy="{{ post.ey }}" r="7" fill="#d32f2f" stroke="#1c1b22" stroke-width="3"/>
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- body -->
+                <div style="padding:14px 15px 15px">
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:21px;line-height:1.08;color:#f5f5f5;letter-spacing:-.005em">{{ post.title }}</div>
+                  <div style="display:flex;align-items:center;gap:5px;margin-top:5px;color:#9a99a2;font-size:13px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#f9a825"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.4" fill="#232229"/></svg>{{ post.loc }}</div>
+
+                  <!-- stats -->
+                  <div style="display:flex;gap:8px;margin-top:14px;padding:12px;background:#1e1d24;border-radius:14px">
+                    <sc-for list="{{ post.stats }}" as="st" hint-placeholder-count="3">
+                      <div style="flex:1;text-align:center">
+                        <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:22px;color:#f9a825;line-height:1">{{ st.n }}<span style="font-size:13px;color:#9a99a2;margin-left:2px">{{ st.u }}</span></div>
+                        <div style="font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#9a99a2;margin-top:4px">{{ st.l }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+
+                  <!-- actions -->
+                  <div style="display:flex;align-items:center;gap:20px;margin-top:14px">
+                    <button onClick="{{ post.onLike }}" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0;cursor:pointer;font-family:'Saira',sans-serif;font-size:14px;font-weight:600;color:#9a99a2">
+                      <svg width="23" height="23" viewBox="0 0 24 24" fill="{{ post.likeFill }}" stroke="{{ post.likeColor }}" stroke-width="2"><path d="M12 21s-7-4.7-9.5-9.2C1 8.5 2.5 5 6 5c2.1 0 3.4 1.2 4 2.3C10.6 6.2 11.9 5 14 5c3.5 0 5 3.5 3.5 6.8C19 16.3 12 21 12 21z" stroke-linejoin="round"/></svg>{{ post.likeCount }}
+                    </button>
+                    <div style="display:flex;align-items:center;gap:7px;color:#9a99a2;font-size:14px;font-weight:600"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-6.5A8 8 0 1 1 21 12z" stroke-linejoin="round"/></svg>{{ post.comments }}</div>
+                    <div style="display:flex;align-items:center;color:#9a99a2"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M4 12l16-8-6 16-3-7-7-1z" stroke-linejoin="round"/></svg></div>
+                    <div style="flex:1"></div>
+                    <button onClick="{{ post.onSave }}" style="display:flex;background:none;border:none;padding:0;cursor:pointer"><svg width="22" height="22" viewBox="0 0 24 24" fill="{{ post.saveFill }}" stroke="{{ post.saveColor }}" stroke-width="2"><path d="M6 3h12v18l-6-4.2L6 21z" stroke-linejoin="round"/></svg></button>
+                  </div>
+
+                  <!-- CTA -->
+                  <button style="margin-top:14px;width:100%;height:46px;border:none;border-radius:13px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:600;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px" style-active="filter:brightness(.9)">Hacer esta ruta<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <!-- TAB BAR -->
+          <div style="position:sticky;bottom:0;z-index:30;display:flex;align-items:flex-end;justify-content:space-around;padding:9px 14px 30px;background:rgba(24,23,28,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.06)">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M3 11l9-8 9 8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v10h14V10" stroke-linejoin="round"/></svg><span style="font-size:10px;font-weight:600;color:#f9a825">Inicio</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" stroke-linejoin="round"/><path d="M9 4v14M15 6v14"/></svg><span style="font-size:10px;color:#9a99a2">Mapa</span></div>
+            <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:64px"><div style="width:58px;height:58px;border-radius:50%;background:#d32f2f;display:flex;align-items:center;justify-content:center;margin-top:-26px;border:4px solid #18171c;animation:recpulse 2.6s ease-in-out infinite"><div style="width:18px;height:18px;border-radius:5px;background:#fff"></div></div><span style="font-size:10px;font-weight:600;color:#d32f2f;margin-top:2px">Grabar</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H14a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h5.5" stroke-linecap="round"/></svg><span style="font-size:10px;color:#9a99a2">Rutas</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><div style="width:25px;height:25px;border-radius:50%;background:linear-gradient(135deg,#3a3942,#26252d);border:1px solid rgba(255,255,255,.12)"></div><span style="font-size:10px;color:#9a99a2">Perfil</span></div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <!-- ============ VARIANT B ============ -->
+    <div style="flex:none;width:402px">
+      <div style="font-family:'Saira',monospace;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#8a8990;margin-bottom:14px">B · Mapa protagonista</div>
+      <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+        <div style="min-height:100%;background:#18171c;color:#f5f5f5;display:flex;flex-direction:column;font-family:'Saira',sans-serif">
+
+          <div style="position:sticky;top:0;z-index:30;background:rgba(24,23,28,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);padding:54px 18px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.06)">
+            <img src="assets/asphalt-logo.svg" alt="Asphalt" style="height:24px;display:block"/>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="width:38px;height:38px;border-radius:50%;background:#232229;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-3.5-3.5" stroke-linecap="round"/></svg></div>
+              <div style="position:relative;width:38px;height:38px;border-radius:50%;background:#232229;display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke-linecap="round"/></svg><div style="position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:#d32f2f;border:2px solid #18171c"></div></div>
+            </div>
+          </div>
+
+          <div style="flex:1;padding:16px 16px 24px;display:flex;flex-direction:column;gap:18px">
+            <sc-for list="{{ postsB }}" as="post" hint-placeholder-count="2">
+              <div style="background:#232229;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.05)">
+
+                <!-- split photo / map -->
+                <div style="position:relative;width:100%;height:184px;background:radial-gradient(120% 80% at 25% 0%,rgba(211,47,47,.3),transparent 58%),repeating-linear-gradient(118deg,#25242d 0 17px,#2b2a34 17px 34px)">
+                  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(24,23,28,.55))"></div>
+                  <!-- map panel, slanted -->
+                  <div style="position:absolute;top:0;bottom:0;right:0;width:47%;clip-path:polygon(20% 0,100% 0,100% 100%,0 100%);background:#1c1b22">
+                    <svg viewBox="0 0 320 190" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="display:block">
+                      <rect width="320" height="190" fill="#1c1b22"/>
+                      <path d="M0,47 H320 M0,95 H320 M0,143 H320 M64,0 V190 M128,0 V190 M192,0 V190 M256,0 V190" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+                      <path d="M-10,150 C80,140 120,60 210,72 C270,80 305,42 330,28" stroke="rgba(255,255,255,.06)" stroke-width="7" fill="none"/>
+                      <path d="{{ post.route }}" fill="none" stroke="#f9a825" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px rgba(249,168,37,.6))"/>
+                      <sc-for list="{{ post.poi }}" as="poi" hint-placeholder-count="1"><circle cx="{{ poi.x }}" cy="{{ poi.y }}" r="5" fill="#f9a825" stroke="#1c1b22" stroke-width="2.5"/></sc-for>
+                      <circle cx="{{ post.sx }}" cy="{{ post.sy }}" r="6.5" fill="#f5f5f5" stroke="#1c1b22" stroke-width="3"/>
+                      <circle cx="{{ post.ex }}" cy="{{ post.ey }}" r="7" fill="#d32f2f" stroke="#1c1b22" stroke-width="3"/>
+                    </svg>
+                  </div>
+                  <!-- amber seam -->
+                  <div style="position:absolute;top:-10px;bottom:-10px;right:47%;width:3px;background:#f9a825;transform:skewX(-12deg);transform-origin:top;box-shadow:0 0 12px rgba(249,168,37,.7)"></div>
+                  <div style="position:absolute;left:13px;top:13px;display:flex;align-items:center;gap:6px;font-family:'Saira',monospace;font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,245,245,.6)"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,245,.6)" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>Foto</div>
+                  <!-- stat chips -->
+                  <div style="position:absolute;left:12px;bottom:12px;display:flex;gap:7px">
+                    <sc-for list="{{ post.stats }}" as="st" hint-placeholder-count="3">
+                      <div style="padding:6px 10px;border-radius:11px;background:rgba(24,23,28,.66);backdrop-filter:blur(8px);border:1px solid rgba(249,168,37,.35)">
+                        <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f9a825;line-height:1">{{ st.n }}<span style="font-size:11px;color:#cfcdd4;margin-left:1px">{{ st.u }}</span></div>
+                        <div style="font-size:8.5px;letter-spacing:.1em;text-transform:uppercase;color:#9a99a2;margin-top:2px">{{ st.l }}</div>
+                      </div>
+                    </sc-for>
+                  </div>
+                </div>
+
+                <!-- body -->
+                <div style="padding:14px 15px 15px">
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:22px;line-height:1.05;color:#f5f5f5;letter-spacing:-.01em">{{ post.title }}</div>
+                  <div style="display:flex;align-items:center;gap:10px;margin-top:11px">
+                    <div style="position:relative;flex:none"><div style="width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#d32f2f,#f9a825);display:flex;align-items:center;justify-content:center;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:16px;color:#fff">{{ post.ini }}</div></div>
+                    <div style="flex:1;min-width:0">
+                      <div style="font-weight:600;font-size:14px;color:#f5f5f5;line-height:1.1">{{ post.author }}</div>
+                      <div style="font-size:12px;color:#9a99a2;margin-top:1px">{{ post.moto }} · {{ post.time }}</div>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:5px;color:#9a99a2;font-size:12.5px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#f9a825"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.4" fill="#232229"/></svg>{{ post.loc }}</div>
+                  </div>
+
+                  <div style="display:flex;align-items:center;gap:18px;margin-top:15px;padding-top:13px;border-top:1px solid rgba(255,255,255,.06)">
+                    <button onClick="{{ post.onLike }}" style="display:flex;align-items:center;gap:7px;background:none;border:none;padding:0;cursor:pointer;font-family:'Saira',sans-serif;font-size:14px;font-weight:600;color:#9a99a2">
+                      <svg width="22" height="22" viewBox="0 0 24 24" fill="{{ post.likeFill }}" stroke="{{ post.likeColor }}" stroke-width="2"><path d="M12 21s-7-4.7-9.5-9.2C1 8.5 2.5 5 6 5c2.1 0 3.4 1.2 4 2.3C10.6 6.2 11.9 5 14 5c3.5 0 5 3.5 3.5 6.8C19 16.3 12 21 12 21z" stroke-linejoin="round"/></svg>{{ post.likeCount }}
+                    </button>
+                    <div style="display:flex;align-items:center;gap:7px;color:#9a99a2;font-size:14px;font-weight:600"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M21 12a8 8 0 0 1-11.5 7.2L3 21l1.8-6.5A8 8 0 1 1 21 12z" stroke-linejoin="round"/></svg>{{ post.comments }}</div>
+                    <button onClick="{{ post.onSave }}" style="display:flex;background:none;border:none;padding:0;cursor:pointer"><svg width="21" height="21" viewBox="0 0 24 24" fill="{{ post.saveFill }}" stroke="{{ post.saveColor }}" stroke-width="2"><path d="M6 3h12v18l-6-4.2L6 21z" stroke-linejoin="round"/></svg></button>
+                    <div style="flex:1"></div>
+                    <button style="height:38px;padding:0 16px;border:none;border-radius:11px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:600;font-size:13.5px;cursor:pointer;display:flex;align-items:center;gap:6px" style-active="filter:brightness(.9)">Hacer ruta<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.6"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="position:sticky;bottom:0;z-index:30;display:flex;align-items:flex-end;justify-content:space-around;padding:9px 14px 30px;background:rgba(24,23,28,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.06)">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M3 11l9-8 9 8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v10h14V10" stroke-linejoin="round"/></svg><span style="font-size:10px;font-weight:600;color:#f9a825">Inicio</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" stroke-linejoin="round"/><path d="M9 4v14M15 6v14"/></svg><span style="font-size:10px;color:#9a99a2">Mapa</span></div>
+            <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:64px"><div style="width:58px;height:58px;border-radius:50%;background:#d32f2f;display:flex;align-items:center;justify-content:center;margin-top:-26px;border:4px solid #18171c;animation:recpulse 2.6s ease-in-out infinite"><div style="width:18px;height:18px;border-radius:5px;background:#fff"></div></div><span style="font-size:10px;font-weight:600;color:#d32f2f;margin-top:2px">Grabar</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H14a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h5.5" stroke-linecap="round"/></svg><span style="font-size:10px;color:#9a99a2">Rutas</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><div style="width:25px;height:25px;border-radius:50%;background:linear-gradient(135deg,#3a3942,#26252d);border:1px solid rgba(255,255,255,.12)"></div><span style="font-size:10px;color:#9a99a2">Perfil</span></div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+    <!-- ============ VARIANT C ============ -->
+    <div style="flex:none;width:402px">
+      <div style="font-family:'Saira',monospace;font-size:11px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:#8a8990;margin-bottom:14px">C · Inmersiva full-bleed</div>
+      <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+        <div style="min-height:100%;background:#18171c;color:#f5f5f5;display:flex;flex-direction:column;font-family:'Saira',sans-serif">
+
+          <div style="position:sticky;top:0;z-index:30;background:rgba(24,23,28,.55);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);padding:54px 18px 12px;display:flex;align-items:center;justify-content:space-between">
+            <img src="assets/asphalt-logo.svg" alt="Asphalt" style="height:24px;display:block"/>
+            <div style="display:flex;gap:8px;align-items:center">
+              <div style="width:38px;height:38px;border-radius:50%;background:rgba(35,34,41,.7);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-3.5-3.5" stroke-linecap="round"/></svg></div>
+              <div style="position:relative;width:38px;height:38px;border-radius:50%;background:rgba(35,34,41,.7);display:flex;align-items:center;justify-content:center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.7 21a2 2 0 0 1-3.4 0" stroke-linecap="round"/></svg><div style="position:absolute;top:8px;right:9px;width:8px;height:8px;border-radius:50%;background:#d32f2f;border:2px solid #18171c"></div></div>
+            </div>
+          </div>
+
+          <div style="flex:1;padding:14px 14px 24px;display:flex;flex-direction:column;gap:18px;margin-top:-72px">
+            <sc-for list="{{ postsC }}" as="post" hint-placeholder-count="2">
+              <div style="position:relative;border-radius:24px;overflow:hidden;height:472px;background:radial-gradient(120% 70% at 30% 0%,rgba(211,47,47,.3),transparent 55%),radial-gradient(120% 80% at 85% 95%,rgba(249,168,37,.22),transparent 50%),repeating-linear-gradient(118deg,#25242d 0 18px,#2b2a34 18px 36px);border:1px solid rgba(255,255,255,.06)">
+                <!-- overlays -->
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(24,23,28,.45) 0%,transparent 28%,transparent 42%,rgba(24,23,28,.7) 78%,rgba(24,23,28,.94) 100%)"></div>
+                <div style="position:absolute;left:14px;top:79px;display:flex;align-items:center;gap:5px;font-family:'Saira',monospace;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:rgba(245,245,245,.55)"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(245,245,245,.55)" stroke-width="2"><rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="13" r="3.5"/></svg>Foto de ruta</div>
+
+                <!-- author chip -->
+                <div style="position:absolute;left:14px;top:90px;display:none"></div>
+
+                <!-- map PiP top-right -->
+                <div style="position:absolute;right:14px;top:90px;width:100px;height:124px;border-radius:15px;overflow:hidden;border:2px solid rgba(245,245,245,.18);box-shadow:0 8px 22px rgba(0,0,0,.5)">
+                  <svg viewBox="0 0 200 250" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" style="display:block">
+                    <rect width="200" height="250" fill="#1c1b22"/>
+                    <path d="M0,50 H200 M0,100 H200 M0,150 H200 M0,200 H200 M50,0 V250 M100,0 V250 M150,0 V250" stroke="rgba(255,255,255,.05)" stroke-width="1"/>
+                    <path d="{{ post.routeV }}" fill="none" stroke="#f9a825" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" style="filter:drop-shadow(0 0 6px rgba(249,168,37,.6))"/>
+                    <circle cx="{{ post.vsx }}" cy="{{ post.vsy }}" r="8" fill="#f5f5f5" stroke="#1c1b22" stroke-width="3.5"/>
+                    <circle cx="{{ post.vex }}" cy="{{ post.vey }}" r="8.5" fill="#d32f2f" stroke="#1c1b22" stroke-width="3.5"/>
+                  </svg>
+                </div>
+
+                <!-- bottom content -->
+                <div style="position:absolute;left:0;right:0;bottom:0;padding:16px 16px 17px">
+                  <div style="display:flex;align-items:center;gap:9px;margin-bottom:11px">
+                    <div style="width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#d32f2f,#f9a825);display:flex;align-items:center;justify-content:center;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:15px;color:#fff;flex:none">{{ post.ini }}</div>
+                    <div style="min-width:0"><div style="font-weight:600;font-size:14px;color:#f5f5f5;line-height:1.1">{{ post.author }}</div><div style="font-size:11.5px;color:#cfcdd4;opacity:.8">{{ post.moto }} · {{ post.time }}</div></div>
+                  </div>
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:27px;line-height:1.02;color:#fff;letter-spacing:-.01em;text-shadow:0 2px 12px rgba(0,0,0,.5)">{{ post.title }}</div>
+                  <div style="display:flex;align-items:center;gap:5px;margin-top:6px;color:#e8e7ec;font-size:13px"><svg width="13" height="13" viewBox="0 0 24 24" fill="#f9a825"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.4" fill="#18171c"/></svg>{{ post.loc }}</div>
+
+                  <!-- stats inline -->
+                  <div style="display:flex;gap:22px;margin-top:14px">
+                    <sc-for list="{{ post.stats }}" as="st" hint-placeholder-count="3">
+                      <div><div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:20px;color:#fff;line-height:1">{{ st.n }}<span style="font-size:12px;color:#f9a825;margin-left:2px">{{ st.u }}</span></div><div style="font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#cfcdd4;opacity:.7;margin-top:3px">{{ st.l }}</div></div>
+                    </sc-for>
+                  </div>
+
+                  <!-- actions -->
+                  <div style="display:flex;align-items:center;gap:16px;margin-top:15px">
+                    <button onClick="{{ post.onLike }}" style="display:flex;align-items:center;gap:7px;background:rgba(245,245,245,.1);border:none;border-radius:11px;padding:9px 13px;cursor:pointer;font-family:'Saira',sans-serif;font-size:14px;font-weight:600;color:#f5f5f5"><svg width="20" height="20" viewBox="0 0 24 24" fill="{{ post.likeFill }}" stroke="{{ post.likeColor }}" stroke-width="2"><path d="M12 21s-7-4.7-9.5-9.2C1 8.5 2.5 5 6 5c2.1 0 3.4 1.2 4 2.3C10.6 6.2 11.9 5 14 5c3.5 0 5 3.5 3.5 6.8C19 16.3 12 21 12 21z" stroke-linejoin="round"/></svg>{{ post.likeCount }}</button>
+                    <button onClick="{{ post.onSave }}" style="display:flex;background:rgba(245,245,245,.1);border:none;border-radius:11px;padding:9px;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="{{ post.saveFill }}" stroke="{{ post.saveColor }}" stroke-width="2"><path d="M6 3h12v18l-6-4.2L6 21z" stroke-linejoin="round"/></svg></button>
+                    <div style="flex:1"></div>
+                    <button style="height:42px;padding:0 18px;border:none;border-radius:12px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:600;font-size:14.5px;cursor:pointer;display:flex;align-items:center;gap:7px" style-active="filter:brightness(.9)">Hacer esta ruta<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+                  </div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+
+          <div style="position:sticky;bottom:0;z-index:30;display:flex;align-items:flex-end;justify-content:space-around;padding:9px 14px 30px;background:rgba(24,23,28,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.06)">
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M3 11l9-8 9 8" stroke-linecap="round" stroke-linejoin="round"/><path d="M5 10v10h14V10" stroke-linejoin="round"/></svg><span style="font-size:10px;font-weight:600;color:#f9a825">Inicio</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M9 4L3 6v14l6-2 6 2 6-2V4l-6 2-6-2z" stroke-linejoin="round"/><path d="M9 4v14M15 6v14"/></svg><span style="font-size:10px;color:#9a99a2">Mapa</span></div>
+            <div style="flex:none;display:flex;flex-direction:column;align-items:center;width:64px"><div style="width:58px;height:58px;border-radius:50%;background:#d32f2f;display:flex;align-items:center;justify-content:center;margin-top:-26px;border:4px solid #18171c;animation:recpulse 2.6s ease-in-out infinite"><div style="width:18px;height:18px;border-radius:5px;background:#fff"></div></div><span style="font-size:10px;font-weight:600;color:#d32f2f;margin-top:2px">Grabar</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H14a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h5.5" stroke-linecap="round"/></svg><span style="font-size:10px;color:#9a99a2">Rutas</span></div>
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex:1"><div style="width:25px;height:25px;border-radius:50%;background:linear-gradient(135deg,#3a3942,#26252d);border:1px solid rgba(255,255,255,.12)"></div><span style="font-size:10px;color:#9a99a2">Perfil</span></div>
+          </div>
+        </div>
+      </x-import>
+    </div>
+
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { liked: {}, saved: {} };
+
+  renderVals() {
+    const { liked, saved } = this.state;
+    const toggleLike = (id) => this.setState((s) => ({ liked: { ...s.liked, [id]: !s.liked[id] } }));
+    const toggleSave = (id) => this.setState((s) => ({ saved: { ...s.saved, [id]: !s.saved[id] } }));
+
+    const base = [
+      {
+        key: '1', ini: 'MR', author: 'Marina Ruiz', moto: 'Ducati Monster 937', loc: 'Picos de Europa',
+        time: 'hace 2 h', title: 'Desfiladero de la Hermida', km: '142', likes: 284, comments: 37,
+        stats: [{ n: '142', u: 'km', l: 'Distancia' }, { n: '3h 12m', u: '', l: 'Tiempo' }, { n: '1.840', u: 'm', l: 'Desnivel' }],
+        route: 'M18,166 C70,150 78,92 126,102 C178,113 184,50 240,58 C274,63 290,40 308,28',
+        sx: 18, sy: 166, ex: 308, ey: 28, poi: [{ x: 126, y: 102 }, { x: 240, y: 58 }],
+        routeV: 'M40,30 C120,55 70,110 120,140 C170,170 90,200 150,230', vsx: 40, vsy: 30, vex: 150, vey: 230,
+      },
+      {
+        key: '2', ini: 'DS', author: 'Diego Salas', moto: 'Yamaha Ténéré 700', loc: 'Sierra de Gredos',
+        time: 'ayer', title: 'Puerto del Pico al amanecer', km: '98', likes: 512, comments: 64,
+        stats: [{ n: '98', u: 'km', l: 'Distancia' }, { n: '2h 04m', u: '', l: 'Tiempo' }, { n: '1.260', u: 'm', l: 'Desnivel' }],
+        route: 'M22,40 C74,52 70,118 130,114 C192,110 198,166 268,156 C292,153 302,150 308,150',
+        sx: 22, sy: 40, ex: 308, ey: 150, poi: [{ x: 130, y: 114 }],
+        routeV: 'M150,30 C90,60 160,100 110,135 C60,170 150,200 100,232', vsx: 150, vsy: 30, vex: 100, vey: 232,
+      },
+    ];
+
+    const build = (prefix) => base.map((p) => {
+      const id = prefix + p.key;
+      const isL = !!liked[id], isS = !!saved[id];
+      return {
+        ...p, id,
+        likeColor: isL ? '#f9a825' : '#9a99a2',
+        likeFill: isL ? '#f9a825' : 'none',
+        likeCount: p.likes + (isL ? 1 : 0),
+        saveColor: isS ? '#f9a825' : '#9a99a2',
+        saveFill: isS ? '#f9a825' : 'none',
+        onLike: () => toggleLike(id),
+        onSave: () => toggleSave(id),
+      };
+    });
+
+    return { postsA: build('A'), postsB: build('B'), postsC: build('C') };
+  }
+}
+</script>
+</body>
+</html>

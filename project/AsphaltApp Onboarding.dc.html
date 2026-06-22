@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  .hscroll::-webkit-scrollbar{height:0;width:0}
+  @keyframes recblink{0%,100%{opacity:1}50%{opacity:.4}}
+</style>
+</helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:56px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:402px;margin-bottom:22px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Onboarding</div>
+    <div style="font-family:'Saira',sans-serif;font-size:13.5px;color:#6b6a72;margin-top:2px">Bienvenida deslizable (desliza o usa el botón) y registro. Botón principal en rojo.</div>
+  </div>
+
+  <div style="width:402px">
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+      <div style="position:relative;height:100%;overflow:hidden;background:#18171c;color:#f5f5f5;font-family:'Saira',sans-serif">
+
+        <!-- ================= WELCOME ================= -->
+        <sc-if value="{{ isWelcome }}" hint-placeholder-val="{{ true }}">
+          <div style="position:absolute;inset:0">
+            <div ref="{{ setScroller }}" onScroll="{{ onScroll }}" class="hscroll" style="display:flex;height:100%;overflow-x:auto;scroll-snap-type:x mandatory">
+
+              <!-- SLIDE 1 · grabar -->
+              <div style="flex:none;width:402px;height:100%;scroll-snap-align:start;position:relative;overflow:hidden;background:radial-gradient(110% 70% at 70% 12%,rgba(211,47,47,.4),transparent 55%),#18171c">
+                <svg viewBox="0 0 402 874" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0">
+                  <path d="M0,170 H402 M0,300 H402 M0,430 H402 M100,0 V520 M200,0 V520 M300,0 V520" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+                  <path d="M40,470 C120,440 110,300 200,300 C300,300 300,150 220,110" fill="none" stroke="rgba(249,168,37,.22)" stroke-width="18" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M40,470 C120,440 110,300 200,300 C300,300 300,150 220,110" fill="none" stroke="#f9a825" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="40" cy="470" r="10" fill="#18171c" stroke="#f5f5f5" stroke-width="4"/>
+                  <circle cx="220" cy="110" r="30" fill="rgba(211,47,47,.25)" style="animation:recblink 1.8s ease-in-out infinite"/>
+                  <circle cx="220" cy="110" r="15" fill="#d32f2f" stroke="#18171c" stroke-width="4"/>
+                  <rect x="214" y="104" width="12" height="12" rx="3" fill="#fff"/>
+                </svg>
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(24,23,28,.85) 72%,#18171c 100%)"></div>
+                <div style="position:absolute;left:28px;right:28px;bottom:196px">
+                  <div style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:14px;background:rgba(249,168,37,.14);border:1px solid rgba(249,168,37,.4);font-size:12px;font-weight:600;letter-spacing:.06em;color:#f9a825;text-transform:uppercase">Graba en vivo</div>
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:38px;line-height:1.02;color:#f5f5f5;letter-spacing:-.01em;margin-top:14px;text-wrap:balance">Graba cada ruta que haces</div>
+                  <div style="font-size:15.5px;color:#cfcdd4;line-height:1.5;margin-top:12px;max-width:320px;text-wrap:pretty">Registra tu recorrido por GPS y guárdalo con foto, mapa y estadísticas. Tu cuaderno de ruta, siempre contigo.</div>
+                </div>
+              </div>
+
+              <!-- SLIDE 2 · descubrir -->
+              <div style="flex:none;width:402px;height:100%;scroll-snap-align:start;position:relative;overflow:hidden;background:radial-gradient(110% 70% at 30% 12%,rgba(249,168,37,.34),transparent 55%),#18171c">
+                <svg viewBox="0 0 402 874" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0">
+                  <path d="M0,170 H402 M0,300 H402 M0,430 H402 M100,0 V520 M200,0 V520 M300,0 V520" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+                  <path d="M30,180 C110,160 120,260 210,250 C300,240 320,140 388,170" fill="none" stroke="rgba(249,168,37,.5)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M20,430 C100,410 120,300 220,310 C320,320 340,420 388,400" fill="none" stroke="#f9a825" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                  <path d="M70,120 C60,220 130,260 120,360 C112,440 170,470 160,520" fill="none" stroke="rgba(249,168,37,.45)" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <g transform="translate(220,310)"><path d="M0,-26 C-12,-26 -18,-17 -18,-9 C-18,3 0,12 0,12 C0,12 18,3 18,-9 C18,-17 12,-26 0,-26 Z" fill="#f9a825" stroke="#18171c" stroke-width="2.5"/><circle cx="0" cy="-10" r="6.5" fill="#18171c"/></g>
+                  <g transform="translate(120,360)"><path d="M0,-22 C-10,-22 -15,-14 -15,-8 C-15,3 0,10 0,10 C0,10 15,3 15,-8 C15,-14 10,-22 0,-22 Z" fill="rgba(249,168,37,.85)" stroke="#18171c" stroke-width="2.5"/><circle cx="0" cy="-9" r="5" fill="#18171c"/></g>
+                  <g transform="translate(320,200)"><path d="M0,-22 C-10,-22 -15,-14 -15,-8 C-15,3 0,10 0,10 C0,10 15,3 15,-8 C15,-14 10,-22 0,-22 Z" fill="rgba(249,168,37,.85)" stroke="#18171c" stroke-width="2.5"/><circle cx="0" cy="-9" r="5" fill="#18171c"/></g>
+                </svg>
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(24,23,28,.85) 72%,#18171c 100%)"></div>
+                <div style="position:absolute;left:28px;right:28px;bottom:196px">
+                  <div style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:14px;background:rgba(249,168,37,.14);border:1px solid rgba(249,168,37,.4);font-size:12px;font-weight:600;letter-spacing:.06em;color:#f9a825;text-transform:uppercase">Explora</div>
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:38px;line-height:1.02;color:#f5f5f5;letter-spacing:-.01em;margin-top:14px;text-wrap:balance">Descubre rutas de otros moteros</div>
+                  <div style="font-size:15.5px;color:#cfcdd4;line-height:1.5;margin-top:12px;max-width:320px;text-wrap:pretty">Explora los mejores trazados cerca de ti, con puntos de interés, fotos y desnivel. Encuentra tu próxima curva.</div>
+                </div>
+              </div>
+
+              <!-- SLIDE 3 · comunidad -->
+              <div style="flex:none;width:402px;height:100%;scroll-snap-align:start;position:relative;overflow:hidden;background:radial-gradient(110% 70% at 60% 12%,rgba(211,47,47,.34),transparent 55%),#18171c">
+                <svg viewBox="0 0 402 874" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="position:absolute;inset:0">
+                  <path d="M0,170 H402 M0,300 H402 M0,430 H402 M100,0 V520 M200,0 V520 M300,0 V520" stroke="rgba(255,255,255,.04)" stroke-width="1"/>
+                  <circle cx="200" cy="250" r="58" fill="none" stroke="rgba(249,168,37,.18)" stroke-width="2"/>
+                  <circle cx="200" cy="250" r="92" fill="none" stroke="rgba(249,168,37,.1)" stroke-width="2"/>
+                  <g><circle cx="200" cy="250" r="42" fill="#232229" stroke="#f9a825" stroke-width="3"/><text x="200" y="262" font-family="Saira Condensed,sans-serif" font-weight="700" font-size="30" fill="#f5f5f5" text-anchor="middle">MR</text></g>
+                  <g><circle cx="110" cy="180" r="28" fill="#232229" stroke="#18171c" stroke-width="4"/><text x="110" y="190" font-family="Saira Condensed,sans-serif" font-weight="700" font-size="20" fill="#cfcdd4" text-anchor="middle">JL</text></g>
+                  <g><circle cx="300" cy="200" r="26" fill="#232229" stroke="#18171c" stroke-width="4"/><text x="300" y="209" font-family="Saira Condensed,sans-serif" font-weight="700" font-size="18" fill="#cfcdd4" text-anchor="middle">AC</text></g>
+                  <g><circle cx="120" cy="330" r="24" fill="#232229" stroke="#18171c" stroke-width="4"/><text x="120" y="338" font-family="Saira Condensed,sans-serif" font-weight="700" font-size="17" fill="#cfcdd4" text-anchor="middle">TR</text></g>
+                  <g><circle cx="296" cy="332" r="30" fill="#232229" stroke="#18171c" stroke-width="4"/><text x="296" y="342" font-family="Saira Condensed,sans-serif" font-weight="700" font-size="21" fill="#cfcdd4" text-anchor="middle">DS</text></g>
+                </svg>
+                <div style="position:absolute;inset:0;background:linear-gradient(180deg,transparent 38%,rgba(24,23,28,.85) 72%,#18171c 100%)"></div>
+                <div style="position:absolute;left:28px;right:28px;bottom:196px">
+                  <div style="display:inline-flex;align-items:center;gap:6px;height:28px;padding:0 12px;border-radius:14px;background:rgba(249,168,37,.14);border:1px solid rgba(249,168,37,.4);font-size:12px;font-weight:600;letter-spacing:.06em;color:#f9a825;text-transform:uppercase">Comunidad</div>
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:38px;line-height:1.02;color:#f5f5f5;letter-spacing:-.01em;margin-top:14px;text-wrap:balance">Una comunidad que vive la carretera</div>
+                  <div style="font-size:15.5px;color:#cfcdd4;line-height:1.5;margin-top:12px;max-width:320px;text-wrap:pretty">Comparte tus rutas, comenta las de otros y sigue a los moteros que te inspiran. Rodamos juntos.</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- skip -->
+            <div onClick="{{ goRegister }}" style="position:absolute;top:60px;right:20px;z-index:6;font-size:14px;font-weight:600;color:#cfcdd4;cursor:pointer">Saltar</div>
+
+            <!-- controls -->
+            <div style="position:absolute;left:0;right:0;bottom:0;z-index:6;padding:0 24px 42px">
+              <div style="display:flex;align-items:center;justify-content:center;gap:7px;margin-bottom:22px">
+                <sc-for list="{{ dots }}" as="d" hint-placeholder-count="3">
+                  <div onClick="{{ d.go }}" style="height:7px;width:{{ d.w }};border-radius:99px;background:{{ d.bg }};cursor:pointer;transition:all .25s"></div>
+                </sc-for>
+              </div>
+              <button onClick="{{ onPrimary }}" style="width:100%;height:54px;border:none;border-radius:15px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:700;font-size:16.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 10px 26px rgba(211,47,47,.45)" style-active="filter:brightness(.92)">{{ primaryLabel }}<svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.4"><path d="M5 12h13M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- ================= REGISTER ================= -->
+        <sc-if value="{{ isRegister }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;inset:0;background:radial-gradient(120% 55% at 50% 0%,rgba(211,47,47,.28),transparent 60%),#18171c;display:flex;flex-direction:column;padding:0 26px 38px">
+            <div onClick="{{ backToWelcome }}" style="position:absolute;top:60px;left:20px;width:40px;height:40px;border-radius:50%;background:rgba(35,34,41,.85);display:flex;align-items:center;justify-content:center;cursor:pointer"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2.4"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center">
+              <img src="assets/asphalt-logo.svg" alt="Asphalt" style="height:34px;display:block"/>
+              <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:27px;color:#f5f5f5;margin-top:24px;text-align:center;line-height:1.06;text-wrap:balance">Crea tu cuenta y empieza a rodar</div>
+              <div style="font-size:14.5px;color:#9a99a2;margin-top:8px;text-align:center;max-width:280px;text-wrap:pretty">Guarda tus rutas, descubre nuevas y únete a la comunidad motera.</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <button style="width:100%;height:54px;border:none;border-radius:15px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:700;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;box-shadow:0 10px 26px rgba(211,47,47,.4)" style-active="filter:brightness(.92)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2.5"/><path d="M4 7l8 6 8-6" stroke-linecap="round" stroke-linejoin="round"/></svg>Continuar con correo</button>
+
+              <div style="display:flex;align-items:center;gap:12px;margin:6px 0">
+                <div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div>
+                <div style="font-size:12.5px;color:#9a99a2">o continúa con</div>
+                <div style="flex:1;height:1px;background:rgba(255,255,255,.1)"></div>
+              </div>
+
+              <button style="width:100%;height:52px;border:none;border-radius:15px;background:#f5f5f5;color:#18171c;font-family:'Saira',sans-serif;font-weight:600;font-size:15.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px" style-active="filter:brightness(.94)"><svg width="19" height="19" viewBox="0 0 24 24" fill="#18171c"><path d="M16.3 12.8c0-1.3.9-2.2 1.4-2.6-.8-1.1-2-1.3-2.4-1.3-1-.1-2 .6-2.5.6s-1.3-.6-2.2-.6c-1.1 0-2.2.7-2.8 1.7-1.2 2.1-.3 5.2.9 6.9.6.8 1.2 1.8 2.1 1.7.9 0 1.2-.5 2.2-.5s1.3.5 2.2.5 1.5-.8 2-1.6c.6-.9.9-1.8.9-1.9-.1 0-1.5-.6-1.5-2.3zM14.7 7.2c.5-.6.8-1.4.7-2.2-.7 0-1.5.5-2 1-.4.5-.8 1.3-.7 2 .8.1 1.5-.3 2-.8z"/></svg>Continuar con Apple</button>
+
+              <button style="width:100%;height:52px;border:none;border-radius:15px;background:#f5f5f5;color:#18171c;font-family:'Saira',sans-serif;font-weight:600;font-size:15.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px" style-active="filter:brightness(.94)"><svg width="19" height="19" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="#18171c" stroke-width="2"/><path d="M12 11v2.4h3.4c-.2 1-1.3 2.9-3.4 2.9a3.9 3.9 0 0 1 0-7.8c1.1 0 1.9.5 2.3.9l1.6-1.5C15.3 6.5 13.8 6 12 6a6 6 0 1 0 0 12c3.5 0 5.8-2.4 5.8-5.9 0-.4 0-.7-.1-1H12z" fill="#18171c"/></svg>Continuar con Google</button>
+            </div>
+
+            <div style="text-align:center;margin-top:22px;font-size:14.5px;color:#9a99a2">¿Ya tienes cuenta? <span style="color:#f9a825;font-weight:600;cursor:pointer">Inicia sesión</span></div>
+            <div style="text-align:center;margin-top:14px;font-size:11px;color:#6a6972;line-height:1.5;max-width:300px;margin-left:auto;margin-right:auto;text-wrap:pretty">Al continuar aceptas los Términos y la Política de privacidad de AsphaltApp.</div>
+          </div>
+        </sc-if>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { view: 'welcome', idx: 0 };
+
+  setScroller = (el) => { this._sc = el; };
+
+  onScroll = (e) => {
+    const el = e.currentTarget;
+    if (!el || !el.clientWidth) return;
+    const i = Math.round(el.scrollLeft / el.clientWidth);
+    if (i !== this.state.idx) this.setState({ idx: i });
+  };
+
+  goTo = (i) => {
+    if (this._sc) this._sc.scrollTo({ left: i * this._sc.clientWidth, behavior: 'smooth' });
+  };
+
+  renderVals() {
+    const { view, idx } = this.state;
+    const dots = [0, 1, 2].map((i) => ({
+      w: i === idx ? '24px' : '7px',
+      bg: i === idx ? '#f9a825' : 'rgba(255,255,255,.22)',
+      go: () => this.goTo(i),
+    }));
+
+    return {
+      isWelcome: view === 'welcome',
+      isRegister: view === 'register',
+      idx,
+      dots,
+      primaryLabel: idx >= 2 ? 'Crear cuenta' : 'Siguiente',
+      onPrimary: () => { if (idx >= 2) this.setState({ view: 'register' }); else this.goTo(idx + 1); },
+      goRegister: () => this.setState({ view: 'register' }),
+      backToWelcome: () => this.setState({ view: 'welcome' }),
+      onScroll: this.onScroll,
+      setScroller: this.setScroller,
+    };
+  }
+}
+</script>
+</body>
+</html>

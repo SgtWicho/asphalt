@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  .hscroll::-webkit-scrollbar{height:0}
+</style>
+</helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:56px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:402px;margin-bottom:22px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Perfil</div>
+    <div style="font-family:'Saira',sans-serif;font-size:13.5px;color:#6b6a72;margin-top:2px">Perfil de motero: stats totales, sus motos, logros desbloqueados y sus rutas y fotos.</div>
+  </div>
+
+  <div style="width:402px">
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+      <div style="height:100%;overflow-y:auto;background:#18171c;color:#f5f5f5;font-family:'Saira',sans-serif">
+
+        <!-- top bar -->
+        <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:54px 16px 10px;background:linear-gradient(180deg,#18171c 60%,transparent)">
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(35,34,41,.85);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2.4"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div style="width:40px;height:40px;border-radius:50%;background:rgba(35,34,41,.85);display:flex;align-items:center;justify-content:center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.6 1.6 0 0 0-2.7 1.1V21a2 2 0 0 1-4 0v-.1A1.6 1.6 0 0 0 6.6 19l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.6 1.6 0 0 0-1.1-2.7H2a2 2 0 0 1 0-4h.1A1.6 1.6 0 0 0 3.8 6.6l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.6 1.6 0 0 0 2.7-1.1V2a2 2 0 0 1 4 0v.1A1.6 1.6 0 0 0 18 3.8l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.6 1.6 0 0 0-1.1 2.7v.1a2 2 0 0 1 0 4h-.1a1.6 1.6 0 0 0-1.2 1.5z" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        </div>
+
+        <!-- HEADER -->
+        <div style="padding:2px 18px 0;display:flex;flex-direction:column;align-items:center;text-align:center">
+          <div style="padding:3px;border-radius:50%;background:linear-gradient(135deg,#d32f2f,#f9a825)">
+            <div style="width:92px;height:92px;border-radius:50%;background:#232229;border:3px solid #18171c;display:flex;align-items:center;justify-content:center;font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:36px;color:#f5f5f5">MR</div>
+          </div>
+          <div style="width:100%;font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:25px;color:#f5f5f5;margin-top:12px;line-height:1.1;white-space:nowrap">Marina Ruiz</div>
+          <div style="width:100%;font-size:13px;color:#9a99a2;margin-top:2px">@marina.rides · León, España</div>
+          <div style="font-size:13.5px;color:#cfcdd4;line-height:1.5;margin-top:10px;max-width:300px;text-wrap:pretty">Rodando por el norte buscando curvas y miradores. Ducati + café de madrugada. Comparto cada ruta.</div>
+          <div style="display:flex;gap:9px;margin-top:16px;width:100%">
+            <button style="flex:1;height:44px;border:none;border-radius:13px;background:#232229;border:1px solid rgba(255,255,255,.1);color:#f5f5f5;font-family:'Saira',sans-serif;font-weight:600;font-size:14.5px;cursor:pointer" style-active="background:#2c2b33">Editar perfil</button>
+            <button style="width:44px;height:44px;border:none;border-radius:13px;background:#232229;border:1px solid rgba(255,255,255,.1);cursor:pointer;display:flex;align-items:center;justify-content:center" style-active="background:#2c2b33"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7M12 3v13M7 8l5-5 5 5" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+          </div>
+        </div>
+
+        <!-- STATS -->
+        <div style="margin:18px 16px 0;padding:16px 6px;background:#232229;border-radius:18px;display:flex;align-items:stretch">
+          <sc-for list="{{ stats }}" as="st" hint-placeholder-count="3">
+            <div style="flex:1;text-align:center;padding:0 4px">
+              <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:27px;color:#f9a825;line-height:1">{{ st.n }}</div>
+              <div style="font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:#9a99a2;margin-top:5px">{{ st.l }}</div>
+            </div>
+          </sc-for>
+        </div>
+
+        <!-- MIS MOTOS -->
+        <div style="margin:26px 0 0">
+          <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px;color:#f5f5f5;padding:0 18px;margin-bottom:12px">Mis motos</div>
+          <div class="hscroll" style="display:flex;gap:13px;padding:0 16px;overflow-x:auto">
+            <sc-for list="{{ bikes }}" as="b" hint-placeholder-count="2">
+              <div style="flex:none;width:224px;background:#232229;border-radius:18px;overflow:hidden;border:1px solid rgba(255,255,255,.05)">
+                <div style="position:relative;height:122px;background:radial-gradient(120% 85% at 25% 0%,rgba(211,47,47,.28),transparent 56%),radial-gradient(130% 95% at 92% 100%,rgba(249,168,37,.2),transparent 52%),repeating-linear-gradient(118deg,#26252f 0 15px,#2b2a34 15px 30px)">
+                  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.03),rgba(24,23,28,.45))"></div>
+                  <div style="position:absolute;left:10px;top:10px;display:flex;align-items:center;gap:5px;font-family:'Saira',monospace;font-size:9.5px;letter-spacing:.12em;text-transform:uppercase;color:rgba(245,245,245,.62)">Foto moto</div>
+                </div>
+                <div style="padding:12px 13px 14px">
+                  <div style="font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:#f9a825">{{ b.brand }}</div>
+                  <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px;color:#f5f5f5;line-height:1.1;margin-top:2px">{{ b.model }}</div>
+                  <div style="font-size:12px;color:#9a99a2;margin-top:4px">{{ b.spec }}</div>
+                </div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- LOGROS -->
+        <div style="margin:26px 0 0">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:14px">
+            <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:18px;color:#f5f5f5">Logros desbloqueados</div>
+            <div style="font-size:12.5px;font-weight:600;color:#f9a825">4 / 6</div>
+          </div>
+          <div class="hscroll" style="display:flex;gap:16px;padding:0 18px 2px;overflow-x:auto">
+            <sc-for list="{{ badges }}" as="bd" hint-placeholder-count="5">
+              <div style="flex:none;width:76px;display:flex;flex-direction:column;align-items:center;gap:8px">
+                <div style="position:relative;width:66px;height:66px;border-radius:50%;padding:3px;background:{{ bd.ring }}">
+                  <div style="width:100%;height:100%;border-radius:50%;background:#1e1d24;display:flex;align-items:center;justify-content:center">
+                    <sc-if value="{{ bd.isTrophy }}" hint-placeholder-val="{{ true }}"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="{{ bd.icon }}" stroke-width="1.8"><path d="M7 4h10v4a5 5 0 0 1-10 0V4z"/><path d="M7 5H4v2a3 3 0 0 0 3 3M17 5h3v2a3 3 0 0 1-3 3M9 18h6M10 18v-2.5M14 18v-2.5M8 21h8" stroke-linecap="round" stroke-linejoin="round"/></svg></sc-if>
+                    <sc-if value="{{ bd.isDawn }}" hint-placeholder-val="{{ false }}"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="{{ bd.icon }}" stroke-width="1.8"><path d="M3 18h18M5 14a7 7 0 0 1 14 0M12 3v3M5 7l1.5 1.5M19 7l-1.5 1.5M2 14h1M21 14h1" stroke-linecap="round" stroke-linejoin="round"/></svg></sc-if>
+                    <sc-if value="{{ bd.isPeak }}" hint-placeholder-val="{{ false }}"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="{{ bd.icon }}" stroke-width="1.8"><path d="M3 20l6-11 4 6 2-3 6 8z" stroke-linejoin="round"/></svg></sc-if>
+                    <sc-if value="{{ bd.isWave }}" hint-placeholder-val="{{ false }}"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="{{ bd.icon }}" stroke-width="1.8"><path d="M2 8c2-2 4-2 6 0s4 2 6 0 4-2 6 0M2 14c2-2 4-2 6 0s4 2 6 0 4-2 6 0" stroke-linecap="round" stroke-linejoin="round"/></svg></sc-if>
+                  </div>
+                  <sc-if value="{{ bd.locked }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;right:-2px;bottom:-2px;width:24px;height:24px;border-radius:50%;background:#2c2b33;border:2px solid #18171c;display:flex;align-items:center;justify-content:center"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2.4"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke-linecap="round"/></svg></div></sc-if>
+                </div>
+                <div style="font-size:11px;font-weight:600;line-height:1.15;color:{{ bd.label }};text-align:center">{{ bd.name }}</div>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+
+        <!-- TABS -->
+        <div style="margin:28px 16px 0;display:flex;gap:6px;padding:5px;background:#232229;border-radius:14px">
+          <button onClick="{{ showRutas }}" style="flex:1;height:40px;border:none;border-radius:10px;cursor:pointer;font-family:'Saira',sans-serif;font-weight:600;font-size:14.5px;background:{{ rutasBg }};color:{{ rutasFg }};display:flex;align-items:center;justify-content:center;gap:7px"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{ rutasFg }}" stroke-width="2"><circle cx="6" cy="19" r="2.5"/><circle cx="18" cy="5" r="2.5"/><path d="M8.5 19H14a4 4 0 0 0 0-8H10a4 4 0 0 1 0-8h5.5" stroke-linecap="round"/></svg>Rutas · 84</button>
+          <button onClick="{{ showFotos }}" style="flex:1;height:40px;border:none;border-radius:10px;cursor:pointer;font-family:'Saira',sans-serif;font-weight:600;font-size:14.5px;background:{{ fotosBg }};color:{{ fotosFg }};display:flex;align-items:center;justify-content:center;gap:7px"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{{ fotosFg }}" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2.5"/><circle cx="9" cy="10" r="2"/><path d="M5 18l5-4 4 3 2-2 3 3" stroke-linejoin="round"/></svg>Fotos · 312</button>
+        </div>
+
+        <!-- TAB CONTENT -->
+        <div style="padding:16px 16px 28px">
+          <sc-if value="{{ isRutas }}" hint-placeholder-val="{{ true }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <sc-for list="{{ routes }}" as="r" hint-placeholder-count="4">
+                <div style="background:#232229;border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.05)">
+                  <div style="height:96px;background:#1c1b22">
+                    <svg viewBox="0 0 200 110" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block">
+                      <rect width="200" height="110" fill="#1c1b22"/>
+                      <path d="M0,55 H200 M0,28 H200 M0,82 H200 M50,0 V110 M100,0 V110 M150,0 V110" stroke="rgba(255,255,255,.045)" stroke-width="1"/>
+                      <path d="{{ r.route }}" fill="none" stroke="#f9a825" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                      <circle cx="{{ r.sx }}" cy="{{ r.sy }}" r="5" fill="#1c1b22" stroke="#f5f5f5" stroke-width="2.5"/>
+                      <circle cx="{{ r.ex }}" cy="{{ r.ey }}" r="5.5" fill="#d32f2f" stroke="#1c1b22" stroke-width="2.5"/>
+                    </svg>
+                  </div>
+                  <div style="padding:10px 11px 12px">
+                    <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:14.5px;color:#f5f5f5;line-height:1.12">{{ r.name }}</div>
+                    <div style="display:flex;gap:10px;margin-top:6px;font-family:'Saira Semi Condensed',sans-serif;font-weight:700;font-size:13px;color:#f9a825"><span>{{ r.km }} km</span><span style="color:#9a99a2;font-weight:600">{{ r.desn }} m</span></div>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{ isFotos }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px">
+              <sc-for list="{{ photos }}" as="ph" hint-placeholder-count="9">
+                <div style="aspect-ratio:1;border-radius:9px;background:radial-gradient(120% 85% at 25% 0%,rgba(211,47,47,.24),transparent 56%),radial-gradient(130% 95% at 92% 100%,rgba(249,168,37,.18),transparent 52%),repeating-linear-gradient(118deg,#26252f 0 13px,#2b2a34 13px 26px)"></div>
+              </sc-for>
+            </div>
+          </sc-if>
+        </div>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = { tab: 'rutas' };
+
+  renderVals() {
+    const tab = this.state.tab;
+    const isRutas = tab === 'rutas';
+    const seg = (on) => ({ bg: on ? '#f9a825' : 'transparent', fg: on ? '#18171c' : '#9a99a2' });
+    const r1 = seg(isRutas), f1 = seg(!isRutas);
+
+    const amberRing = 'linear-gradient(135deg,#f9a825,#d32f2f)';
+    const lockRing = 'rgba(255,255,255,.1)';
+    const mk = (name, kind, locked) => ({
+      name, locked,
+      isTrophy: kind === 'trophy', isDawn: kind === 'dawn', isPeak: kind === 'peak', isWave: kind === 'wave',
+      ring: locked ? lockRing : amberRing,
+      icon: locked ? '#6a6972' : '#f9a825',
+      label: locked ? '#6a6972' : '#cfcdd4',
+    });
+
+    return {
+      stats: [
+        { n: '12.480', l: 'Km totales' },
+        { n: '84', l: 'Rutas' },
+        { n: '1.243', l: 'Seguidores' },
+      ],
+      bikes: [
+        { brand: 'Ducati', model: 'Monster 937', spec: '937 cc · 2024' },
+        { brand: 'Yamaha', model: 'Ténéré 700', spec: '689 cc · 2021' },
+      ],
+      badges: [
+        mk('10.000 km', 'trophy', false),
+        mk('Madrugador', 'dawn', false),
+        mk('Rey de la montaña', 'peak', false),
+        mk('Ruta de costa', 'wave', false),
+        mk('100 rutas', 'trophy', true),
+        mk('Cima legendaria', 'peak', true),
+      ],
+      routes: [
+        { name: 'Desfiladero de la Hermida', km: '142', desn: '1.840', route: 'M18,92 C60,80 70,40 110,46 C150,52 156,18 188,22', sx: 18, sy: 92, ex: 188, ey: 22 },
+        { name: 'Puerto del Pico', km: '98', desn: '1.260', route: 'M16,24 C58,34 56,80 104,76 C152,72 158,96 188,90', sx: 16, sy: 24, ex: 188, ey: 90 },
+        { name: 'Costa da Morte', km: '76', desn: '540', route: 'M16,60 C56,46 72,72 110,62 C150,52 160,40 188,52', sx: 16, sy: 60, ex: 188, ey: 52 },
+        { name: 'Lagos de Covadonga', km: '64', desn: '1.100', route: 'M18,88 C50,70 60,30 100,34 C146,38 150,72 188,40', sx: 18, sy: 88, ex: 188, ey: 40 },
+      ],
+      photos: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+      isRutas, isFotos: !isRutas,
+      rutasBg: r1.bg, rutasFg: r1.fg, fotosBg: f1.bg, fotosFg: f1.fg,
+      showRutas: () => this.setState({ tab: 'rutas' }),
+      showFotos: () => this.setState({ tab: 'fotos' }),
+    };
+  }
+}
+</script>
+</body>
+</html>

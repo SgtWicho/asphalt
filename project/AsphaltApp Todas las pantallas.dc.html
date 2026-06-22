@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+</style>
+</helmet>
+
+<div style="background:#e7e5df;font-family:'Saira',system-ui,sans-serif">
+
+  <!-- master header -->
+  <div style="display:flex;align-items:center;gap:16px;padding:48px 56px 28px">
+    <img src="assets/asphalt-logo.svg" alt="Asphalt" style="height:42px;display:block"/>
+    <div style="width:1px;height:42px;background:rgba(0,0,0,.12)"></div>
+    <div>
+      <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f;line-height:1">AsphaltApp · Todas las pantallas</div>
+      <div style="font-family:'Saira',sans-serif;font-size:14px;color:#6b6a72;margin-top:3px">Red social para moteros · 10 pantallas · modo oscuro · desplázate para recorrerlas</div>
+    </div>
+  </div>
+
+  <!-- stacked screens -->
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Onboarding" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Feed" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Explorar" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Planificador" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Navegacion" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Grabar" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Publicar" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Detalle" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp POI" hint-size="100%,960px"></dc-import></div>
+  <div style="border-top:1px solid rgba(0,0,0,.08)"><dc-import name="AsphaltApp Perfil" hint-size="100%,960px"></dc-import></div>
+
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  renderVals() {
+    const list = [
+      'AsphaltApp Onboarding',
+      'AsphaltApp Feed',
+      'AsphaltApp Explorar',
+      'AsphaltApp Planificador',
+      'AsphaltApp Navegacion',
+      'AsphaltApp Grabar',
+      'AsphaltApp Publicar',
+      'AsphaltApp Detalle',
+      'AsphaltApp POI',
+      'AsphaltApp Perfil',
+    ];
+    return { screens: list.map((name) => ({ name })) };
+  }
+}
+</script>
+</body>
+</html>

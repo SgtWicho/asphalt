@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Saira:wght@400;500;600;700&family=Saira+Condensed:wght@500;600;700;800&family=Saira+Semi+Condensed:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;background:#e7e5df}
+  .hscroll::-webkit-scrollbar{height:0}
+</style>
+</helmet>
+
+<div style="min-height:100vh;box-sizing:border-box;padding:56px;background:#e7e5df;font-family:'Saira',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center">
+
+  <div style="width:402px;margin-bottom:22px">
+    <div style="font-family:'Saira Condensed',sans-serif;font-weight:800;font-size:28px;letter-spacing:-.01em;color:#1b1a1f">AsphaltApp · Publicar ruta</div>
+    <div style="font-family:'Saira',sans-serif;font-size:13.5px;color:#6b6a72;margin-top:2px">Revisa la ruta recién grabada, añade título, fotos, puntos de interés, etiquetas y privacidad antes de publicar.</div>
+  </div>
+
+  <div style="width:402px">
+    <x-import component="IOSDevice" from="./ios-frame.jsx" dark="{{ true }}" hint-size="402px,874px">
+      <div style="height:100%;overflow-y:auto;background:#18171c;color:#f5f5f5;font-family:'Saira',sans-serif;display:flex;flex-direction:column">
+
+        <div style="flex:1">
+          <!-- TOP BAR -->
+          <div style="position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:54px 16px 12px;background:rgba(24,23,28,.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.06)">
+            <div style="display:flex;align-items:center;gap:12px">
+              <div style="width:38px;height:38px;border-radius:50%;background:#232229;display:flex;align-items:center;justify-content:center"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#f5f5f5" stroke-width="2.4"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg></div>
+              <span style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:20px;color:#f5f5f5">Nueva publicación</span>
+            </div>
+            <span style="font-size:14px;font-weight:600;color:#9a99a2">Borrador</span>
+          </div>
+
+          <!-- MAP PREVIEW + STATS -->
+          <div style="margin:16px 16px 0;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.06);background:#232229">
+            <div style="position:relative;height:182px">
+              <svg viewBox="0 0 370 182" width="100%" height="100%" preserveAspectRatio="xMidYMid slice" style="display:block">
+                <rect width="370" height="182" fill="#1c1b22"/>
+                <path d="M0,46 H370 M0,92 H370 M0,138 H370 M74,0 V182 M148,0 V182 M222,0 V182 M296,0 V182" stroke="rgba(255,255,255,.045)" stroke-width="1"/>
+                <path d="M-10,150 C80,138 110,64 200,76 C280,87 300,40 380,30" stroke="rgba(255,255,255,.05)" stroke-width="8" fill="none" stroke-linecap="round"/>
+                <path d="M30,158 C100,144 120,80 196,90 C272,100 286,44 344,40" fill="none" stroke="rgba(249,168,37,.2)" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M30,158 C100,144 120,80 196,90 C272,100 286,44 344,40" fill="none" stroke="#f9a825" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+                <g transform="translate(196,90)"><path d="M0,-20 C-9,-20 -14,-13 -14,-7 C-14,3 0,10 0,10 C0,10 14,3 14,-7 C14,-13 9,-20 0,-20 Z" fill="#f9a825" stroke="#1c1b22" stroke-width="2.5"/><circle cx="0" cy="-8" r="5" fill="#1c1b22"/></g>
+                <circle cx="30" cy="158" r="8" fill="#1c1b22" stroke="#f5f5f5" stroke-width="3.5"/>
+                <circle cx="344" cy="40" r="8.5" fill="#d32f2f" stroke="#1c1b22" stroke-width="3.5"/>
+              </svg>
+              <div style="position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;padding:5px 11px;border-radius:9px;background:rgba(24,23,28,.66);backdrop-filter:blur(6px);font-size:12px;font-weight:700;color:#f9a825"><div style="width:7px;height:7px;border-radius:50%;background:#d32f2f"></div>Grabada hoy · 08:24</div>
+            </div>
+            <!-- stats -->
+            <div style="display:flex;align-items:stretch;padding:13px 6px">
+              <div style="flex:1;text-align:center">
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:23px;color:#f9a825;line-height:1">142<span style="font-size:11px;color:#9a99a2;margin-left:1px">km</span></div>
+                <div style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#9a99a2;margin-top:4px">Distancia</div>
+              </div>
+              <div style="width:1px;background:rgba(255,255,255,.08);margin:2px 0"></div>
+              <div style="flex:1;text-align:center">
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:23px;color:#f9a825;line-height:1">3h 12m</div>
+                <div style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#9a99a2;margin-top:4px">Duración</div>
+              </div>
+              <div style="width:1px;background:rgba(255,255,255,.08);margin:2px 0"></div>
+              <div style="flex:1;text-align:center">
+                <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:23px;color:#f9a825;line-height:1">1.840<span style="font-size:11px;color:#9a99a2;margin-left:1px">m</span></div>
+                <div style="font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#9a99a2;margin-top:4px">Desnivel</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- TITLE -->
+          <div style="margin:22px 16px 0">
+            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9a99a2;margin-bottom:8px">Título de la ruta</div>
+            <div style="display:flex;align-items:center;height:52px;padding:0 15px;background:#232229;border-radius:14px;border:1px solid rgba(249,168,37,.35)">
+              <span style="font-size:16px;font-weight:600;color:#f5f5f5">Desfiladero de la Hermida</span>
+              <span style="width:2px;height:22px;background:#f9a825;margin-left:2px"></span>
+            </div>
+          </div>
+
+          <!-- DESCRIPTION -->
+          <div style="margin:16px 16px 0">
+            <div style="font-size:11px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:#9a99a2;margin-bottom:8px">Descripción</div>
+            <div style="min-height:88px;padding:13px 15px;background:#232229;border-radius:14px;border:1px solid rgba(255,255,255,.08)">
+              <span style="font-size:14.5px;color:#cfcdd4;line-height:1.5">Mañana redonda subiendo el desfiladero con el río al lado. Asfalto impecable y un café de madrugada en el mirador…</span>
+            </div>
+          </div>
+
+          <!-- PHOTOS -->
+          <div style="margin:22px 0 0">
+            <div style="display:flex;align-items:center;justify-content:space-between;padding:0 18px;margin-bottom:11px">
+              <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f5f5f5">Fotos del recorrido</div>
+              <div style="font-size:12.5px;color:#9a99a2">3 seleccionadas</div>
+            </div>
+            <div class="hscroll" style="display:flex;gap:10px;padding:0 16px;overflow-x:auto">
+              <!-- add -->
+              <div style="flex:none;width:104px;height:104px;border-radius:14px;border:1.5px dashed rgba(249,168,37,.5);background:rgba(249,168,37,.07);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;cursor:pointer">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#f9a825" stroke-width="2"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+                <span style="font-size:11.5px;font-weight:600;color:#f9a825">Añadir</span>
+              </div>
+              <sc-for list="{{ photos }}" as="ph" hint-placeholder-count="4">
+                <div style="flex:none;width:104px;height:104px;border-radius:14px;overflow:hidden;position:relative;background:radial-gradient(120% 80% at 25% 0%,rgba(211,47,47,.24),transparent 56%),radial-gradient(130% 95% at 92% 100%,rgba(249,168,37,.2),transparent 52%),repeating-linear-gradient(118deg,#26252f 0 14px,#2b2a34 14px 28px)">
+                  <div style="position:absolute;left:8px;bottom:7px;font-family:'Saira',monospace;font-size:9px;letter-spacing:.08em;text-transform:uppercase;color:rgba(245,245,245,.7)">{{ ph.label }}</div>
+                  <!-- selection check -->
+                  <sc-if value="{{ ph.sel }}" hint-placeholder-val="{{ true }}"><div style="position:absolute;right:7px;top:7px;width:22px;height:22px;border-radius:50%;background:#f9a825;display:flex;align-items:center;justify-content:center"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#18171c" stroke-width="3.2"><path d="M5 12l4.5 4.5L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></div></sc-if>
+                  <sc-if value="{{ ph.unsel }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;right:7px;top:7px;width:22px;height:22px;border-radius:50%;background:rgba(24,23,28,.5);border:1.5px solid rgba(255,255,255,.6)"></div></sc-if>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- POIs -->
+          <div style="margin:24px 18px 0">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:5px">
+              <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f5f5f5">Puntos de interés marcados</div>
+              <div style="font-size:12.5px;font-weight:600;color:#f9a825">3</div>
+            </div>
+            <div style="font-size:12.5px;color:#9a99a2;margin-bottom:13px;line-height:1.4">Marcados durante la grabación. Edita su nombre y tipo antes de publicar.</div>
+            <div style="display:flex;flex-direction:column;gap:11px">
+              <sc-for list="{{ pois }}" as="p" hint-placeholder-count="3">
+                <div style="padding:13px 14px;background:#232229;border-radius:16px;border:1px solid rgba(255,255,255,.06)">
+                  <!-- editable name row -->
+                  <div style="display:flex;align-items:center;gap:11px">
+                    <div style="display:flex;align-items:center;gap:5px;height:24px;padding:0 9px;border-radius:12px;background:rgba(249,168,37,.13);flex:none"><svg width="12" height="12" viewBox="0 0 24 24" fill="#f9a825"><path d="M12 2C8 2 5 5 5 9c0 5 7 13 7 13s7-8 7-13c0-4-3-7-7-7z"/><circle cx="12" cy="9" r="2.3" fill="#232229"/></svg><span style="font-size:11px;font-weight:700;color:#f9a825">{{ p.km }}</span></div>
+                    <div style="flex:1"></div>
+                  </div>
+                  <!-- name field -->
+                  <div style="display:flex;align-items:center;gap:8px;margin-top:11px;height:44px;padding:0 13px;background:#1e1d24;border-radius:12px;border:1px solid {{ p.nameBorder }}">
+                    <input value="{{ p.name }}" onInput="{{ p.onName }}" placeholder="Nombre del lugar" style="flex:1;min-width:0;background:none;border:none;outline:none;font-family:'Saira',sans-serif;font-size:15px;font-weight:600;color:#f5f5f5;padding:0"/>
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#9a99a2" stroke-width="2"><path d="M4 20h4L18.5 9.5a2.1 2.1 0 0 0-3-3L5 17v3z" stroke-linejoin="round"/><path d="M13.5 6.5l3 3" stroke-linecap="round"/></svg>
+                  </div>
+                  <!-- type selector -->
+                  <div style="display:flex;gap:7px;margin-top:9px">
+                    <sc-for list="{{ p.types }}" as="ty" hint-placeholder-count="4">
+                      <button onClick="{{ ty.onSelect }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 2px;border-radius:11px;cursor:pointer;background:{{ ty.bg }};border:1px solid {{ ty.border }}">
+                        <sc-if value="{{ ty.isView }}" hint-placeholder-val="{{ true }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ ty.color }}" stroke-width="2"><path d="M3 20l5-9 4 5 3-4 6 8z" stroke-linejoin="round"/><circle cx="8" cy="6" r="2.5"/></svg></sc-if>
+                        <sc-if value="{{ ty.isFuel }}" hint-placeholder-val="{{ false }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ ty.color }}" stroke-width="2"><path d="M5 21V5a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v16M3 21h14" stroke-linejoin="round"/><path d="M15 9h2.5a1.5 1.5 0 0 1 1.5 1.5V16a2 2 0 0 0 2 2" stroke-linecap="round"/><path d="M7 8h6" stroke-linecap="round"/></svg></sc-if>
+                        <sc-if value="{{ ty.isFood }}" hint-placeholder-val="{{ false }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ ty.color }}" stroke-width="2"><path d="M5 3v7a2 2 0 0 0 4 0V3M7 3v18M16 3c-1.5 1.5-2 3.5-2 6s.5 4 2 4v8" stroke-linecap="round" stroke-linejoin="round"/></svg></sc-if>
+                        <sc-if value="{{ ty.isShop }}" hint-placeholder-val="{{ false }}"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="{{ ty.color }}" stroke-width="2"><path d="M14.7 6.3a3 3 0 0 1-4.2 4.2L4 17l3 3 6.5-6.5a3 3 0 0 1 4.2-4.2l-2 2-2-2z" stroke-linejoin="round"/></svg></sc-if>
+                        <span style="font-size:10.5px;font-weight:600;color:{{ ty.color }}">{{ ty.label }}</span>
+                      </button>
+                    </sc-for>
+                  </div>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- TAGS -->
+          <div style="margin:24px 18px 0">
+            <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f5f5f5;margin-bottom:12px">Etiquetas de la ruta</div>
+            <div style="display:flex;flex-wrap:wrap;gap:9px">
+              <sc-for list="{{ tags }}" as="t" hint-placeholder-count="5">
+                <button onClick="{{ t.onToggle }}" style="display:flex;align-items:center;gap:6px;height:38px;padding:0 15px;border-radius:19px;cursor:pointer;font-family:'Saira',sans-serif;font-size:14px;font-weight:600;background:{{ t.bg }};color:{{ t.fg }};border:1px solid {{ t.border }}">
+                  <sc-if value="{{ t.on }}" hint-placeholder-val="{{ true }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ t.fg }}" stroke-width="3"><path d="M5 12l4.5 4.5L19 7" stroke-linecap="round" stroke-linejoin="round"/></svg></sc-if>
+                  <sc-if value="{{ t.off }}" hint-placeholder-val="{{ false }}"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="{{ t.fg }}" stroke-width="2.4"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg></sc-if>{{ t.label }}
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <!-- PRIVACY -->
+          <div style="margin:24px 16px 0">
+            <div style="font-family:'Saira Condensed',sans-serif;font-weight:700;font-size:17px;color:#f5f5f5;padding:0 2px;margin-bottom:12px">Privacidad</div>
+            <div style="display:flex;flex-direction:column;gap:9px">
+              <sc-for list="{{ privacy }}" as="pv" hint-placeholder-count="3">
+                <button onClick="{{ pv.onSelect }}" style="display:flex;align-items:center;gap:13px;width:100%;padding:13px 14px;border-radius:14px;cursor:pointer;text-align:left;background:{{ pv.bg }};border:1px solid {{ pv.border }}">
+                  <div style="width:38px;height:38px;border-radius:11px;background:{{ pv.iconBg }};display:flex;align-items:center;justify-content:center;flex:none">
+                    <sc-if value="{{ pv.isPublic }}" hint-placeholder-val="{{ true }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ pv.iconColor }}" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18" stroke-linecap="round"/></svg></sc-if>
+                    <sc-if value="{{ pv.isFollowers }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ pv.iconColor }}" stroke-width="2"><circle cx="9" cy="8" r="3.5"/><path d="M3 20a6 6 0 0 1 12 0M16 5.5a3.5 3.5 0 0 1 0 6.5M17 14a6 6 0 0 1 4 6" stroke-linecap="round"/></svg></sc-if>
+                    <sc-if value="{{ pv.isPrivate }}" hint-placeholder-val="{{ false }}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="{{ pv.iconColor }}" stroke-width="2"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke-linecap="round"/></svg></sc-if>
+                  </div>
+                  <div style="flex:1;min-width:0">
+                    <div style="font-weight:600;font-size:14.5px;color:#f5f5f5">{{ pv.label }}</div>
+                    <div style="font-size:12px;color:#9a99a2;margin-top:1px">{{ pv.desc }}</div>
+                  </div>
+                  <div style="width:22px;height:22px;border-radius:50%;border:2px solid {{ pv.radioBorder }};display:flex;align-items:center;justify-content:center;flex:none"><sc-if value="{{ pv.on }}" hint-placeholder-val="{{ true }}"><div style="width:11px;height:11px;border-radius:50%;background:#f9a825"></div></sc-if></div>
+                </button>
+              </sc-for>
+            </div>
+          </div>
+
+          <div style="height:18px"></div>
+        </div>
+
+        <!-- STICKY PUBLISH -->
+        <div style="position:sticky;bottom:0;z-index:10;padding:12px 16px 30px;background:rgba(24,23,28,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-top:1px solid rgba(255,255,255,.08)">
+          <button style="width:100%;height:54px;border:none;border-radius:15px;background:#d32f2f;color:#fff;font-family:'Saira',sans-serif;font-weight:700;font-size:16.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;box-shadow:0 10px 26px rgba(211,47,47,.45)" style-active="filter:brightness(.92)"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"><path d="M3 11l18-8-8 18-2-8-8-2z" stroke-linejoin="round"/></svg>Publicar ruta</button>
+        </div>
+      </div>
+    </x-import>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{}">
+class Component extends DCLogic {
+  state = {
+    tags: { curvas: true, montana: true, costa: false, amanecer: false, larga: false },
+    privacy: 'public',
+    pois: [
+      { name: 'Mirador de Santa Catalina', type: 'view', km: 'km 38' },
+      { name: 'Repsol La Hermida', type: 'fuel', km: 'km 52' },
+      { name: 'Mesón El Puente', type: 'food', km: 'km 74' },
+    ],
+  };
+
+  renderVals() {
+    const photos = [
+      { label: 'km 12', sel: true },
+      { label: 'km 38', sel: true },
+      { label: 'km 71', sel: true },
+      { label: 'km 96', sel: false },
+      { label: 'km 128', sel: false },
+    ].map((p) => ({ ...p, unsel: !p.sel }));
+
+    const typeDefs = [
+      { key: 'view', label: 'Mirador' },
+      { key: 'fuel', label: 'Gasolinera' },
+      { key: 'food', label: 'Comida' },
+      { key: 'shop', label: 'Taller' },
+    ];
+    const setPoi = (idx, patch) => this.setState((s) => ({
+      pois: s.pois.map((p, i) => (i === idx ? { ...p, ...patch } : p)),
+    }));
+    const pois = this.state.pois.map((p, idx) => ({
+      name: p.name,
+      km: p.km,
+      nameBorder: 'rgba(249,168,37,.3)',
+      onName: (e) => setPoi(idx, { name: e.target.value }),
+      types: typeDefs.map((t) => {
+        const on = p.type === t.key;
+        return {
+          label: t.label,
+          isView: t.key === 'view', isFuel: t.key === 'fuel', isFood: t.key === 'food', isShop: t.key === 'shop',
+          color: on ? '#f9a825' : '#9a99a2',
+          bg: on ? 'rgba(249,168,37,.14)' : 'rgba(255,255,255,.04)',
+          border: on ? 'rgba(249,168,37,.5)' : 'rgba(255,255,255,.07)',
+          onSelect: () => setPoi(idx, { type: t.key }),
+        };
+      }),
+    }));
+
+    const tagDefs = [['curvas', 'Curvas'], ['montana', 'Montaña'], ['costa', 'Costa'], ['amanecer', 'Amanecer'], ['larga', 'Larga distancia']];
+    const tags = tagDefs.map(([key, label]) => {
+      const on = !!this.state.tags[key];
+      return {
+        label, on, off: !on,
+        bg: on ? '#f9a825' : 'rgba(35,34,41,.92)',
+        fg: on ? '#18171c' : '#cfcdd4',
+        border: on ? '#f9a825' : 'rgba(255,255,255,.1)',
+        onToggle: () => this.setState((s) => ({ tags: { ...s.tags, [key]: !s.tags[key] } })),
+      };
+    });
+
+    const privDefs = [
+      { key: 'public', label: 'Pública', desc: 'Cualquiera puede verla y descubrirla en Explorar' },
+      { key: 'followers', label: 'Solo seguidores', desc: 'Visible únicamente para quienes te siguen' },
+      { key: 'private', label: 'Privada', desc: 'Solo para ti, guardada en tu perfil' },
+    ];
+    const privacy = privDefs.map((p) => {
+      const on = this.state.privacy === p.key;
+      return {
+        label: p.label, desc: p.desc, on,
+        isPublic: p.key === 'public', isFollowers: p.key === 'followers', isPrivate: p.key === 'private',
+        bg: on ? 'rgba(249,168,37,.1)' : '#232229',
+        border: on ? 'rgba(249,168,37,.45)' : 'rgba(255,255,255,.06)',
+        iconBg: on ? 'rgba(249,168,37,.16)' : 'rgba(255,255,255,.06)',
+        iconColor: on ? '#f9a825' : '#9a99a2',
+        radioBorder: on ? '#f9a825' : 'rgba(255,255,255,.2)',
+        onSelect: () => this.setState({ privacy: p.key }),
+      };
+    });
+
+    return { photos, pois, tags, privacy };
+  }
+}
+</script>
+</body>
+</html>
