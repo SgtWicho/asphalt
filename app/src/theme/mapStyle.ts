@@ -1,0 +1,17 @@
+export const darkMapStyle = [
+  { elementType: 'geometry', stylers: [{ color: '#18171c' }] },
+  { elementType: 'labels.icon', stylers: [{ visibility: 'off' }] },
+  { elementType: 'labels.text.fill', stylers: [{ color: '#9a99a2' }] },
+  { elementType: 'labels.text.stroke', stylers: [{ color: '#18171c' }] },
+  { featureType: 'administrative', elementType: 'geometry', stylers: [{ color: '#3a3942' }] },
+  { featureType: 'poi', elementType: 'geometry', stylers: [{ color: '#232229' }] },
+  { featureType: 'poi.park', elementType: 'geometry', stylers: [{ color: '#1f2a1f' }] },
+  { featureType: 'road', elementType: 'geometry', stylers: [{ color: '#2c2b33' }] },
+  { featureType: 'road', elementType: 'geometry.stroke', stylers: [{ color: '#1e1d24' }] },
+  { featureType: 'road.highway', elementType: 'geometry', stylers: [{ color: '#3a3340' }] },
+  { featureType: 'road.highway', elementType: 'geometry.stroke', stylers: [{ color: '#f9a825' }, { weight: 0.3 }] },
+  { featureType: 'road.arterial', elementType: 'geometry', stylers: [{ color: '#2c2b33' }] },
+  { featureType: 'transit', elementType: 'geometry', stylers: [{ color: '#232229' }] },
+  { featureType: 'water', elementType: 'geometry', stylers: [{ color: '#101019' }] },
+  { featureType: 'water', elementType: 'labels.text.fill', stylers: [{ color: '#6a6972' }] },
+];

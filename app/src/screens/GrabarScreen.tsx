@@ -1,13 +1,16 @@
-import { useMemo } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
-import Svg, { Path, Circle } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
+import MapView, { Marker, Polyline, Region } from 'react-native-maps';
+import * as Location from 'expo-location';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
 import { colors } from '../theme/colors';
+import { darkMapStyle } from '../theme/mapStyle';
 import { fonts } from '../theme/typography';
 import { GpsBarsIcon, PlayIcon, PauseIcon, AddPoiIcon } from '../components/Icons';
-import { useRouteRecorder, TrackPoint } from '../hooks/useRouteRecorder';
+import { useRouteRecorder } from '../hooks/useRouteRecorder';
 
 function fmt(t: number) {
   const h = Math.floor(t / 3600);
@@ -17,34 +20,30 @@ function fmt(t: number) {
   return h > 0 ? `${h}:${pad(m)}:${pad(s)}` : `${pad(m)}:${pad(s)}`;
 }
 
-function pathToSvg(path: TrackPoint[]) {
-  if (path.length < 2) return null;
-  const lats = path.map((p) => p.latitude);
-  const lons = path.map((p) => p.longitude);
-  const minLat = Math.min(...lats);
-  const maxLat = Math.max(...lats);
-  const minLon = Math.min(...lons);
-  const maxLon = Math.max(...lons);
-  const w = 360;
-  const h = 480;
-  const pad = 30;
-  const spanLat = maxLat - minLat || 1e-6;
-  const spanLon = maxLon - minLon || 1e-6;
-  const scale = Math.min((w - pad * 2) / spanLon, (h - pad * 2) / spanLat);
-  const project = (p: TrackPoint) => {
-    const x = pad + (p.longitude - minLon) * scale;
-    const y = h - pad - (p.latitude - minLat) * scale;
-    return { x, y };
-  };
-  const pts = path.map(project);
-  const d = pts.reduce((acc, p, i) => acc + (i === 0 ? `M${p.x},${p.y}` : ` L${p.x},${p.y}`), '');
-  return { d, start: pts[0], end: pts[pts.length - 1] };
-}
-
 export default function GrabarScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const rec = useRouteRecorder();
-  const svgPath = useMemo(() => pathToSvg(rec.path), [rec.path]);
+  const mapRef = useRef<MapView>(null);
+  const [initialRegion, setInitialRegion] = useState<Region | null>(null);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') return;
+      const loc = await Location.getCurrentPositionAsync({});
+      setInitialRegion({
+        latitude: loc.coords.latitude,
+        longitude: loc.coords.longitude,
+        latitudeDelta: 0.01,
+        longitudeDelta: 0.01,
+      });
+    })();
+  }, []);
+
+  useEffect(() => {
+    const last = rec.path[rec.path.length - 1];
+    if (last) mapRef.current?.animateCamera({ center: last }, { duration: 500 });
+  }, [rec.path]);
 
   const onRecordPress = async () => {
     if (!rec.recording) {
@@ -57,20 +56,28 @@ export default function GrabarScreen() {
   return (
     <View style={styles.screen}>
       <View style={styles.mapWrap}>
-        <Svg width="100%" height="100%" viewBox="0 0 360 480">
-          <Path
-            d="M0,60 H360 M0,140 H360 M0,220 H360 M0,300 H360 M0,380 H360 M60,0 V480 M120,0 V480 M180,0 V480 M240,0 V480 M300,0 V480"
-            stroke="rgba(255,255,255,.045)"
-          />
-          {svgPath && (
-            <>
-              <Path d={svgPath.d} fill="none" stroke="rgba(249,168,37,.25)" strokeWidth={14} strokeLinecap="round" strokeLinejoin="round" />
-              <Path d={svgPath.d} fill="none" stroke={colors.amber} strokeWidth={6} strokeLinecap="round" strokeLinejoin="round" />
-              <Circle cx={svgPath.start.x} cy={svgPath.start.y} r={9} fill="#191820" stroke="#f5f5f5" strokeWidth={3.5} />
-              <Circle cx={svgPath.end.x} cy={svgPath.end.y} r={9.5} fill={colors.red} stroke="#191820" strokeWidth={3.5} />
-            </>
-          )}
-        </Svg>
+        {initialRegion && (
+          <MapView
+            ref={mapRef}
+            style={styles.map}
+            initialRegion={initialRegion}
+            customMapStyle={darkMapStyle}
+            showsUserLocation
+            showsMyLocationButton={false}
+          >
+            {rec.path.length > 1 && (
+              <>
+                <Polyline coordinates={rec.path} strokeColor="rgba(249,168,37,.25)" strokeWidth={14} />
+                <Polyline coordinates={rec.path} strokeColor={colors.amber} strokeWidth={6} />
+              </>
+            )}
+            {rec.path.length > 0 && (
+              <Marker coordinate={rec.path[0]} anchor={{ x: 0.5, y: 0.5 }}>
+                <View style={styles.startMarker} />
+              </Marker>
+            )}
+          </MapView>
+        )}
 
         <Pressable style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Svg width={14} height={20} viewBox="0 0 12 20" fill="none">
@@ -147,6 +154,8 @@ export default function GrabarScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   mapWrap: { flex: 1, backgroundColor: '#191820' },
+  map: { flex: 1 },
+  startMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: '#f5f5f5' },
   backBtn: { position: 'absolute', top: 60, left: 20, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' },
   gpsBadge: { position: 'absolute', top: 60, right: 20, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 9, borderRadius: 20, backgroundColor: 'rgba(24,23,28,.7)' },
   gpsText: { fontFamily: fonts.sairaSemiBold, fontSize: 12.5, color: colors.textPrimary },
