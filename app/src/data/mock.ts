@@ -224,3 +224,41 @@ export const routeDetail = {
   likes: 284,
   comments_count: 37,
 };
+
+export type NavStep = {
+  id: string;
+  instruction: string;
+  street: string;
+  distance: string;
+  bearing: number;
+  done: boolean;
+};
+
+export const navSteps: NavStep[] = [
+  { id: 'n1', instruction: 'Continúa recto', street: 'CL-6 hacia La Hermida', distance: '4,2 km', bearing: 0, done: true },
+  { id: 'n2', instruction: 'Gira a la derecha', street: 'Desfiladero de la Hermida', distance: '1,8 km', bearing: 90, done: false },
+  { id: 'n3', instruction: 'Gira a la izquierda', street: 'N-621 hacia Potes', distance: '6,5 km', bearing: -90, done: false },
+  { id: 'n4', instruction: 'Llegada a destino', street: 'Mirador de Santa Catalina', distance: '0 km', bearing: 0, done: false },
+];
+
+export const navSummary = {
+  eta: '12:48',
+  remainingKm: '38',
+  remainingTime: '52 min',
+  nextTurnIn: '350 m',
+};
+
+export const draftRoute = {
+  title: 'Desfiladero de la Hermida',
+  distance: '142',
+  duration: '3h 12m',
+  desnivel: '1.840',
+  date: '14 jun 2026',
+  photos: [
+    { label: 'km 12 · valle' },
+    { label: 'km 38 · mirador' },
+    { label: 'km 96 · curvas' },
+  ],
+  poiCount: 3,
+  defaultTags: ['Curvas', 'Montaña'],
+};

@@ -22,6 +22,7 @@ export function useRouteRecorder() {
   const [poiCount, setPoiCount] = useState(0);
   const [path, setPath] = useState<TrackPoint[]>([]);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [heading, setHeading] = useState(0);
 
   const subRef = useRef<Location.LocationSubscription | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
@@ -59,6 +60,7 @@ export function useRouteRecorder() {
         const point: TrackPoint = { latitude: loc.coords.latitude, longitude: loc.coords.longitude };
         const speed = loc.coords.speed ?? 0;
         setSpeedKmh(speed > 0 ? speed * 3.6 : 0);
+        if (loc.coords.heading != null && loc.coords.heading >= 0) setHeading(loc.coords.heading);
         if (lastPointRef.current) {
           const d = haversine(lastPointRef.current, point);
           if (d > 1) setDistanceM((prev) => prev + d);
@@ -87,6 +89,7 @@ export function useRouteRecorder() {
         const point: TrackPoint = { latitude: loc.coords.latitude, longitude: loc.coords.longitude };
         const speed = loc.coords.speed ?? 0;
         setSpeedKmh(speed > 0 ? speed * 3.6 : 0);
+        if (loc.coords.heading != null && loc.coords.heading >= 0) setHeading(loc.coords.heading);
         if (lastPointRef.current) {
           const d = haversine(lastPointRef.current, point);
           if (d > 1) setDistanceM((prev) => prev + d);
@@ -117,6 +120,7 @@ export function useRouteRecorder() {
     poiCount,
     path,
     errorMsg,
+    heading,
     start,
     pause,
     resume,

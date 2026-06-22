@@ -9,7 +9,7 @@ import type { RootStackParamList } from '../navigation/types';
 import { colors } from '../theme/colors';
 import { darkMapStyle } from '../theme/mapStyle';
 import { fonts } from '../theme/typography';
-import { GpsBarsIcon, PlayIcon, PauseIcon, AddPoiIcon } from '../components/Icons';
+import { GpsBarsIcon, PlayIcon, PauseIcon, AddPoiIcon, MotoIcon } from '../components/Icons';
 import { useRouteRecorder } from '../hooks/useRouteRecorder';
 
 function fmt(t: number) {
@@ -62,7 +62,6 @@ export default function GrabarScreen() {
             style={styles.map}
             initialRegion={initialRegion}
             customMapStyle={darkMapStyle}
-            showsUserLocation
             showsMyLocationButton={false}
           >
             {rec.path.length > 1 && (
@@ -74,6 +73,17 @@ export default function GrabarScreen() {
             {rec.path.length > 0 && (
               <Marker coordinate={rec.path[0]} anchor={{ x: 0.5, y: 0.5 }}>
                 <View style={styles.startMarker} />
+              </Marker>
+            )}
+            {initialRegion && (
+              <Marker
+                coordinate={rec.path[rec.path.length - 1] ?? { latitude: initialRegion.latitude, longitude: initialRegion.longitude }}
+                anchor={{ x: 0.5, y: 0.5 }}
+                flat
+              >
+                <View style={[styles.motoMarker, { transform: [{ rotate: `${rec.heading}deg` }] }]}>
+                  <MotoIcon size={26} color={colors.amber} />
+                </View>
               </Marker>
             )}
           </MapView>
@@ -156,6 +166,7 @@ const styles = StyleSheet.create({
   mapWrap: { flex: 1, backgroundColor: '#191820' },
   map: { flex: 1 },
   startMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: '#f5f5f5' },
+  motoMarker: { width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(24,23,28,.85)', alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.amber },
   backBtn: { position: 'absolute', top: 60, left: 20, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' },
   gpsBadge: { position: 'absolute', top: 60, right: 20, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 9, borderRadius: 20, backgroundColor: 'rgba(24,23,28,.7)' },
   gpsText: { fontFamily: fonts.sairaSemiBold, fontSize: 12.5, color: colors.textPrimary },
