@@ -5,6 +5,8 @@ import type { MainTabParamList, RootStackParamList } from './types';
 import { colors } from '../theme/colors';
 import { HomeIcon, MapIcon, RouteIcon, PlayIcon } from '../components/Icons';
 import FeedScreen from '../screens/FeedScreen';
+import ExplorarScreen from '../screens/ExplorarScreen';
+import PerfilScreen from '../screens/PerfilScreen';
 import Placeholder from '../screens/Placeholder';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
@@ -31,7 +33,7 @@ export default function MainTabs() {
       <Tab.Screen name="Feed" component={FeedScreen} options={{ tabBarIcon: ({ color }) => <HomeIcon color={color} /> }} />
       <Tab.Screen
         name="Explorar"
-        children={() => <Placeholder name="Explorar" />}
+        component={ExplorarScreen}
         options={{ tabBarIcon: ({ color }) => <MapIcon color={color} /> }}
       />
       <Tab.Screen
@@ -58,7 +60,7 @@ export default function MainTabs() {
       />
       <Tab.Screen
         name="Perfil"
-        children={() => <Placeholder name="Perfil" />}
+        component={PerfilScreen}
         options={{ tabBarIcon: ({ color }) => <HomeIcon color={color} /> }}
       />
     </Tab.Navigator>

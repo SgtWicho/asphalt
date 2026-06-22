@@ -2,7 +2,11 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import type { RootStackParamList } from './types';
 import OnboardingScreen from '../screens/OnboardingScreen';
 import GrabarScreen from '../screens/GrabarScreen';
-import Placeholder from '../screens/Placeholder';
+import PlanificadorScreen from '../screens/PlanificadorScreen';
+import NavegacionScreen from '../screens/NavegacionScreen';
+import PublicarScreen from '../screens/PublicarScreen';
+import DetalleScreen from '../screens/DetalleScreen';
+import POIScreen from '../screens/POIScreen';
 import MainTabs from './MainTabs';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -13,11 +17,11 @@ export default function RootNavigator() {
       <Stack.Screen name="Onboarding" component={OnboardingScreen} />
       <Stack.Screen name="Main" component={MainTabs} />
       <Stack.Screen name="Grabar" component={GrabarScreen} />
-      <Stack.Screen name="Planificador" children={() => <Placeholder name="Planificador" />} />
-      <Stack.Screen name="Navegacion" children={() => <Placeholder name="Navegación" />} />
-      <Stack.Screen name="Publicar" children={() => <Placeholder name="Publicar" />} />
-      <Stack.Screen name="Detalle" children={() => <Placeholder name="Detalle" />} />
-      <Stack.Screen name="POI" children={() => <Placeholder name="POI" />} />
+      <Stack.Screen name="Planificador" component={PlanificadorScreen} />
+      <Stack.Screen name="Navegacion" component={NavegacionScreen} />
+      <Stack.Screen name="Publicar" component={PublicarScreen} />
+      <Stack.Screen name="Detalle" component={DetalleScreen} />
+      <Stack.Screen name="POI" component={POIScreen} />
     </Stack.Navigator>
   );
 }
