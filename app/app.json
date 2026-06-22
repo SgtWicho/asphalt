@@ -31,7 +31,8 @@
         {
           "locationWhenInUsePermission": "AsphaltApp necesita tu ubicación para grabar tus rutas en moto."
         }
-      ]
+      ],
+      "react-native-maps"
     ]
   }
 }
