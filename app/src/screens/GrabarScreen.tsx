@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import MapView, { Marker, Polyline, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -82,7 +82,7 @@ export default function GrabarScreen() {
                 flat
               >
                 <View style={[styles.motoMarker, { transform: [{ rotate: `${rec.heading}deg` }] }]}>
-                  <MotoIcon size={26} color={colors.amber} />
+                  <Image source={require('../../assets/moto_marker.png')} style={{ width: 44, height: 44 }} resizeMode="contain" />
                 </View>
               </Marker>
             )}

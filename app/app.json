@@ -11,8 +11,11 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "AsphaltApp necesita tu ubicación para grabar tus rutas en moto.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "AsphaltApp necesita acceso a tu ubicación en segundo plano para seguir grabando tu ruta mientras conduces con la pantalla apagada.",
-        "UIBackgroundModes": ["location"]
-      }
+        "UIBackgroundModes": [
+          "location"
+        ]
+      },
+      "bundleIdentifier": "com.sgtwicho.asphalt"
     },
     "android": {
       "adaptiveIcon": {
@@ -22,7 +25,17 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "ACCESS_BACKGROUND_LOCATION"]
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION",
+        "android.permission.ACCESS_COARSE_LOCATION",
+        "android.permission.ACCESS_FINE_LOCATION",
+        "android.permission.ACCESS_BACKGROUND_LOCATION",
+        "android.permission.FOREGROUND_SERVICE",
+        "android.permission.FOREGROUND_SERVICE_LOCATION"
+      ],
+      "package": "com.anonymous.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

@@ -31,7 +31,7 @@ export default function ExplorarScreen() {
       <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filters} contentContainerStyle={{ gap: 10 }}>
         {filters.map((f) => (
           <Pressable key={f} style={[styles.chip, active === f && styles.chipActive]} onPress={() => setActive(f)}>
-            <Text style={[styles.chipText, active === f && styles.chipTextActive]} numberOfLines={1}>{f}</Text>
+            <Text style={[styles.chipText, active === f && styles.chipTextActive]}>{f}</Text>
           </Pressable>
         ))}
       </ScrollView>
