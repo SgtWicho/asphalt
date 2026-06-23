@@ -14,5 +14,6 @@ export type MainTabParamList = {
   Explorar: undefined;
   GrabarTab: undefined;
   Rutas: undefined;
+  Anuncios: undefined;
   Perfil: undefined;
 };
