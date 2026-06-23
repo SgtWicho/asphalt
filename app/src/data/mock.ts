@@ -265,6 +265,50 @@ export const navSummary = {
   nextTurnIn: '350 m',
 };
 
+export type Ad = {
+  id: string;
+  brand: string;
+  brandIni: string;
+  sponsored: boolean;
+  text: string;
+  media: { type: 'photo' | 'video'; uri: string };
+  ctaLabel: string;
+  url: string;
+};
+
+export const ads: Ad[] = [
+  {
+    id: 'ad1',
+    brand: 'AshBorn',
+    brandIni: 'AB',
+    sponsored: true,
+    text: 'Nueva colección de chaquetas técnicas AshBorn. Protección homologada para tus rutas de montaña.',
+    media: { type: 'photo', uri: 'https://images.ashborn.com/jacket-promo.jpg' },
+    ctaLabel: 'Comprar',
+    url: 'https://www.ashborn.com',
+  },
+  {
+    id: 'ad2',
+    brand: 'AshBorn',
+    brandIni: 'AB',
+    sponsored: true,
+    text: 'Mira el nuevo casco AshBorn Apex en acción: ligero, aerodinámico y listo para cualquier curva.',
+    media: { type: 'video', uri: 'https://videos.ashborn.com/apex-helmet.mp4' },
+    ctaLabel: 'Ver más',
+    url: 'https://www.ashborn.com/apex',
+  },
+  {
+    id: 'ad3',
+    brand: 'AshBorn',
+    brandIni: 'AB',
+    sponsored: true,
+    text: 'Guantes AshBorn Grip Pro: agarre superior y máxima sensibilidad en el manillar.',
+    media: { type: 'photo', uri: 'https://images.ashborn.com/gloves-promo.jpg' },
+    ctaLabel: 'Comprar',
+    url: 'https://www.ashborn.com/grip-pro',
+  },
+];
+
 export const draftRoute = {
   title: 'Desfiladero de la Hermida',
   distance: '142',
