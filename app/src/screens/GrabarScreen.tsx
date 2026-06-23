@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import MapView, { Marker, Polyline, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -9,7 +9,7 @@ import type { RootStackParamList } from '../navigation/types';
 import { colors } from '../theme/colors';
 import { darkMapStyle } from '../theme/mapStyle';
 import { fonts } from '../theme/typography';
-import { GpsBarsIcon, PlayIcon, PauseIcon, AddPoiIcon, MotoIcon } from '../components/Icons';
+import { GpsBarsIcon, PlayIcon, PauseIcon, AddPoiIcon } from '../components/Icons';
 import { useRouteRecorder } from '../hooks/useRouteRecorder';
 
 function fmt(t: number) {
@@ -81,9 +81,11 @@ export default function GrabarScreen() {
                 anchor={{ x: 0.5, y: 0.5 }}
                 flat
               >
-                <View style={[styles.motoMarker, { transform: [{ rotate: `${rec.heading}deg` }] }]}>
-                  <MotoIcon size={26} color={colors.amber} />
-                </View>
+                <Image
+                  source={require('../../assets/moto_marker.png')}
+                  style={[styles.motoMarker, { transform: [{ rotate: `${rec.heading}deg` }] }]}
+                  resizeMode="contain"
+                />
               </Marker>
             )}
           </MapView>
@@ -166,7 +168,7 @@ const styles = StyleSheet.create({
   mapWrap: { flex: 1, backgroundColor: '#191820' },
   map: { flex: 1 },
   startMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: '#f5f5f5' },
-  motoMarker: { width: 36, height: 36, borderRadius: 18, backgroundColor: 'rgba(24,23,28,.85)', alignItems: 'center', justifyContent: 'center', borderWidth: 2, borderColor: colors.amber },
+  motoMarker: { width: 44, height: 44 },
   backBtn: { position: 'absolute', top: 60, left: 20, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' },
   gpsBadge: { position: 'absolute', top: 60, right: 20, flexDirection: 'row', alignItems: 'center', gap: 8, paddingHorizontal: 12, paddingVertical: 9, borderRadius: 20, backgroundColor: 'rgba(24,23,28,.7)' },
   gpsText: { fontFamily: fonts.sairaSemiBold, fontSize: 12.5, color: colors.textPrimary },
