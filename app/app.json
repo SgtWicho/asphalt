@@ -38,6 +38,7 @@
         }
       ],
       "expo-task-manager",
+      "expo-video",
       "react-native-maps"
     ]
   }
