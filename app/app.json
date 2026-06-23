@@ -9,7 +9,9 @@
     "ios": {
       "supportsTablet": true,
       "infoPlist": {
-        "NSLocationWhenInUseUsageDescription": "AsphaltApp necesita tu ubicación para grabar tus rutas en moto."
+        "NSLocationWhenInUseUsageDescription": "AsphaltApp necesita tu ubicación para grabar tus rutas en moto.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "AsphaltApp necesita acceso a tu ubicación en segundo plano para seguir grabando tu ruta mientras conduces con la pantalla apagada.",
+        "UIBackgroundModes": ["location"]
       }
     },
     "android": {
@@ -20,7 +22,7 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "predictiveBackGestureEnabled": false,
-      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION"]
+      "permissions": ["ACCESS_FINE_LOCATION", "ACCESS_COARSE_LOCATION", "ACCESS_BACKGROUND_LOCATION"]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -29,9 +31,13 @@
       [
         "expo-location",
         {
-          "locationWhenInUsePermission": "AsphaltApp necesita tu ubicación para grabar tus rutas en moto."
+          "locationWhenInUsePermission": "AsphaltApp necesita tu ubicación para grabar tus rutas en moto.",
+          "locationAlwaysAndWhenInUsePermission": "AsphaltApp necesita acceso a tu ubicación en segundo plano para seguir grabando tu ruta mientras conduces con la pantalla apagada.",
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
         }
       ],
+      "expo-task-manager",
       "react-native-maps"
     ]
   }
