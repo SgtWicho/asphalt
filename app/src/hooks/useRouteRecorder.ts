@@ -1,5 +1,6 @@
 import { useCallback, useRef, useState } from 'react';
 import * as Location from 'expo-location';
+import { LOCATION_TASK_NAME, setLocationTaskListener } from '../tasks/locationTask';
 
 export type TrackPoint = { latitude: number; longitude: number };
 
@@ -13,6 +14,17 @@ function haversine(a: TrackPoint, b: TrackPoint) {
   return 2 * R * Math.asin(Math.sqrt(h));
 }
 
+const locationTaskOptions: Location.LocationTaskOptions = {
+  accuracy: Location.Accuracy.High,
+  timeInterval: 1000,
+  distanceInterval: 5,
+  showsBackgroundLocationIndicator: true,
+  foregroundService: {
+    notificationTitle: 'Grabando ruta',
+    notificationBody: 'AsphaltApp está registrando tu ruta en segundo plano',
+  },
+};
+
 export function useRouteRecorder() {
   const [recording, setRecording] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -24,7 +36,6 @@ export function useRouteRecorder() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [heading, setHeading] = useState(0);
 
-  const subRef = useRef<Location.LocationSubscription | null>(null);
   const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   const lastPointRef = useRef<TrackPoint | null>(null);
 
@@ -35,18 +46,43 @@ export function useRouteRecorder() {
     }
   };
 
-  const stopWatch = () => {
-    subRef.current?.remove();
-    subRef.current = null;
+  const startTimer = () => {
+    timerRef.current = setInterval(() => setElapsed((t) => t + 1), 1000);
+  };
+
+  const processLocations = useCallback((locations: Location.LocationObject[]) => {
+    for (const loc of locations) {
+      const point: TrackPoint = { latitude: loc.coords.latitude, longitude: loc.coords.longitude };
+      const speed = loc.coords.speed ?? 0;
+      setSpeedKmh(speed > 0 ? speed * 3.6 : 0);
+      if (loc.coords.heading != null && loc.coords.heading >= 0) setHeading(loc.coords.heading);
+      if (lastPointRef.current) {
+        const d = haversine(lastPointRef.current, point);
+        if (d > 1) setDistanceM((prev) => prev + d);
+      }
+      lastPointRef.current = point;
+      setPath((prev) => [...prev, point]);
+    }
+  }, []);
+
+  const stopLocationTask = async () => {
+    setLocationTaskListener(null);
+    if (await Location.hasStartedLocationUpdatesAsync(LOCATION_TASK_NAME)) {
+      await Location.stopLocationUpdatesAsync(LOCATION_TASK_NAME);
+    }
   };
 
   const start = useCallback(async () => {
-    const { status } = await Location.requestForegroundPermissionsAsync();
-    if (status !== 'granted') {
+    const { status: fgStatus } = await Location.requestForegroundPermissionsAsync();
+    if (fgStatus !== 'granted') {
       setErrorMsg('Permiso de ubicación denegado');
       return false;
     }
-    setErrorMsg(null);
+    const { status: bgStatus } = await Location.requestBackgroundPermissionsAsync();
+    setErrorMsg(
+      bgStatus !== 'granted' ? 'Activa "Permitir siempre" en ajustes para grabar con la pantalla apagada' : null
+    );
+
     setElapsed(0);
     setDistanceM(0);
     setSpeedKmh(0);
@@ -54,57 +90,31 @@ export function useRouteRecorder() {
     setPath([]);
     lastPointRef.current = null;
 
-    subRef.current = await Location.watchPositionAsync(
-      { accuracy: Location.Accuracy.High, timeInterval: 1000, distanceInterval: 5 },
-      (loc) => {
-        const point: TrackPoint = { latitude: loc.coords.latitude, longitude: loc.coords.longitude };
-        const speed = loc.coords.speed ?? 0;
-        setSpeedKmh(speed > 0 ? speed * 3.6 : 0);
-        if (loc.coords.heading != null && loc.coords.heading >= 0) setHeading(loc.coords.heading);
-        if (lastPointRef.current) {
-          const d = haversine(lastPointRef.current, point);
-          if (d > 1) setDistanceM((prev) => prev + d);
-        }
-        lastPointRef.current = point;
-        setPath((prev) => [...prev, point]);
-      }
-    );
+    setLocationTaskListener(processLocations);
+    await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, locationTaskOptions);
 
-    timerRef.current = setInterval(() => setElapsed((t) => t + 1), 1000);
+    startTimer();
     setRecording(true);
     setPaused(false);
     return true;
-  }, []);
+  }, [processLocations]);
 
-  const pause = useCallback(() => {
+  const pause = useCallback(async () => {
     stopTimer();
-    stopWatch();
+    await stopLocationTask();
     setPaused(true);
   }, []);
 
   const resume = useCallback(async () => {
-    subRef.current = await Location.watchPositionAsync(
-      { accuracy: Location.Accuracy.High, timeInterval: 1000, distanceInterval: 5 },
-      (loc) => {
-        const point: TrackPoint = { latitude: loc.coords.latitude, longitude: loc.coords.longitude };
-        const speed = loc.coords.speed ?? 0;
-        setSpeedKmh(speed > 0 ? speed * 3.6 : 0);
-        if (loc.coords.heading != null && loc.coords.heading >= 0) setHeading(loc.coords.heading);
-        if (lastPointRef.current) {
-          const d = haversine(lastPointRef.current, point);
-          if (d > 1) setDistanceM((prev) => prev + d);
-        }
-        lastPointRef.current = point;
-        setPath((prev) => [...prev, point]);
-      }
-    );
-    timerRef.current = setInterval(() => setElapsed((t) => t + 1), 1000);
+    setLocationTaskListener(processLocations);
+    await Location.startLocationUpdatesAsync(LOCATION_TASK_NAME, locationTaskOptions);
+    startTimer();
     setPaused(false);
-  }, []);
+  }, [processLocations]);
 
-  const stop = useCallback(() => {
+  const stop = useCallback(async () => {
     stopTimer();
-    stopWatch();
+    await stopLocationTask();
     setRecording(false);
     setPaused(false);
   }, []);
