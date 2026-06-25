@@ -1,5 +1,4 @@
 export type RootStackParamList = {
-  Onboarding: undefined;
   Main: undefined;
   Planificador: undefined;
   Navegacion: undefined;
@@ -14,6 +13,5 @@ export type MainTabParamList = {
   Explorar: undefined;
   GrabarTab: undefined;
   Rutas: undefined;
-  Anuncios: undefined;
   Perfil: undefined;
 };

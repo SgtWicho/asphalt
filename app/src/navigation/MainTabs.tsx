@@ -3,12 +3,11 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { MainTabParamList, RootStackParamList } from './types';
 import { colors } from '../theme/colors';
-import { HomeIcon, MapIcon, RouteIcon, PlayIcon, UserIcon, MegaphoneIcon } from '../components/Icons';
+import { HomeIcon, MapIcon, RouteIcon, PlayIcon, UserIcon } from '../components/Icons';
 import FeedScreen from '../screens/FeedScreen';
 import ExplorarScreen from '../screens/ExplorarScreen';
 import PerfilScreen from '../screens/PerfilScreen';
 import SavedRoutesScreen from '../screens/SavedRoutesScreen';
-import AnunciosScreen from '../screens/AnunciosScreen';
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
 
@@ -58,11 +57,6 @@ export default function MainTabs() {
         name="Rutas"
         component={SavedRoutesScreen}
         options={{ tabBarIcon: ({ color }) => <RouteIcon color={color} /> }}
-      />
-      <Tab.Screen
-        name="Anuncios"
-        component={AnunciosScreen}
-        options={{ tabBarIcon: ({ color }) => <MegaphoneIcon color={color} /> }}
       />
       <Tab.Screen
         name="Perfil"

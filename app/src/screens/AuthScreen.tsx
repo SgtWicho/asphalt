@@ -4,6 +4,7 @@ import { colors } from '../theme/colors';
 import { fonts } from '../theme/typography';
 import { AsphaltMark } from '../components/Logo';
 import { useAuth } from '../auth/AuthProvider';
+import OtpScreen from './OtpScreen';
 
 export default function AuthScreen() {
   const { signIn, signUp } = useAuth();
@@ -13,6 +14,7 @@ export default function AuthScreen() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [info, setInfo] = useState<string | null>(null);
+  const [pendingOtpEmail, setPendingOtpEmail] = useState<string | null>(null);
 
   const onSubmit = async () => {
     setError(null);
@@ -24,8 +26,12 @@ export default function AuthScreen() {
       setError(result.error);
       return;
     }
-    if (mode === 'signUp') setInfo('Cuenta creada. Revisa tu correo para confirmar.');
+    if (mode === 'signUp') setPendingOtpEmail(email);
   };
+
+  if (pendingOtpEmail) {
+    return <OtpScreen email={pendingOtpEmail} onBack={() => setPendingOtpEmail(null)} />;
+  }
 
   return (
     <KeyboardAvoidingView
