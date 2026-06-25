@@ -81,11 +81,9 @@ export default function GrabarScreen() {
                 anchor={{ x: 0.5, y: 0.5 }}
                 flat
               >
-                <Image
-                  source={require('../../assets/moto_marker.png')}
-                  style={[styles.motoMarker, { transform: [{ rotate: `${rec.heading}deg` }] }]}
-                  resizeMode="contain"
-                />
+                <View style={[styles.motoMarker, { transform: [{ rotate: `${rec.heading}deg` }] }]}>
+                  <Image source={require('../../assets/moto_marker.png')} style={{ width: 44, height: 44 }} resizeMode="contain" />
+                </View>
               </Marker>
             )}
           </MapView>
