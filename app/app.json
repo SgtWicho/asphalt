@@ -1,25 +1,26 @@
 {
   "expo": {
-    "name": "app",
-    "slug": "app",
+    "name": "AsphaltApp",
+    "slug": "asphaltapp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "dark",
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.sgtwicho.asphalt",
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "AsphaltApp necesita tu ubicación para grabar tus rutas en moto.",
         "NSLocationAlwaysAndWhenInUseUsageDescription": "AsphaltApp necesita acceso a tu ubicación en segundo plano para seguir grabando tu ruta mientras conduces con la pantalla apagada.",
         "UIBackgroundModes": [
           "location"
         ]
-      },
-      "bundleIdentifier": "com.sgtwicho.asphalt"
+      }
     },
     "android": {
+      "package": "com.sgtwicho.asphalt",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#18171c",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -34,8 +35,7 @@
         "android.permission.ACCESS_BACKGROUND_LOCATION",
         "android.permission.FOREGROUND_SERVICE",
         "android.permission.FOREGROUND_SERVICE_LOCATION"
-      ],
-      "package": "com.anonymous.app"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png"
@@ -52,6 +52,14 @@
       ],
       "expo-task-manager",
       "expo-video",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "imageWidth": 220,
+          "backgroundColor": "#18171c"
+        }
+      ],
       "react-native-maps"
     ]
   }

@@ -21,9 +21,23 @@ import {
   SairaSemiCondensed_700Bold,
 } from '@expo-google-fonts/saira-semi-condensed';
 import RootNavigator from './src/navigation/RootNavigator';
+import AuthScreen from './src/screens/AuthScreen';
+import { AuthProvider, useAuth } from './src/auth/AuthProvider';
 import { colors } from './src/theme/colors';
 
 SplashScreen.preventAutoHideAsync();
+
+function AppContent() {
+  const { session, loading } = useAuth();
+
+  if (loading) return null;
+
+  return (
+    <NavigationContainer>
+      {session ? <RootNavigator /> : <AuthScreen />}
+    </NavigationContainer>
+  );
+}
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -48,9 +62,9 @@ export default function App() {
   return (
     <View style={{ flex: 1, backgroundColor: colors.bg }} onLayout={onLayout}>
       <StatusBar style="light" />
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
+      <AuthProvider>
+        <AppContent />
+      </AuthProvider>
     </View>
   );
 }
