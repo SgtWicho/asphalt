@@ -323,13 +323,3 @@ export function UserIcon({ size = 24, color = '#9a99a2' }: IconProps) {
     </Svg>
   );
 }
-
-export function MegaphoneIcon({ size = 24, color = '#9a99a2' }: IconProps) {
-  return (
-    <Svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round">
-      <Path d="M3 11v2a2 2 0 002 2h1l3.4 4.2c.5.6 1.6.2 1.6-.6V6.4c0-.8-1.1-1.2-1.6-.6L6 10H5a2 2 0 00-2 1z" />
-      <Path d="M14 9.5c1 .7 1 4.3 0 5" />
-      <Path d="M17 7c2 1.8 2 8.2 0 10" />
-    </Svg>
-  );
-}
