@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   searchPlaceholder: { fontFamily: fonts.sairaRegular, fontSize: 13.5, color: colors.textSecondary },
   filters: { flexGrow: 0, marginTop: 16 },
   filtersContent: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 20 },
-  chip: { flexShrink: 0, flexGrow: 0, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 18, paddingVertical: 10, borderRadius: 16, backgroundColor: colors.surface },
+  chip: { flexShrink: 0, flexGrow: 0, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 16, backgroundColor: colors.surface },
   chipActive: { backgroundColor: colors.amber },
   chipText: { fontFamily: fonts.sairaSemiBold, fontSize: 12.5, lineHeight: 16, color: colors.textSecondary, flexShrink: 0 },
   chipTextActive: { color: colors.bg },
