@@ -6,6 +6,7 @@ export type RootStackParamList = {
   Publicar: undefined;
   Detalle: { routeId?: string } | undefined;
   POI: { poiId?: string } | undefined;
+  EditarPerfil: undefined;
 };
 
 export type MainTabParamList = {

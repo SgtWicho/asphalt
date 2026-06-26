@@ -6,6 +6,7 @@ import NavegacionScreen from '../screens/NavegacionScreen';
 import PublicarScreen from '../screens/PublicarScreen';
 import DetalleScreen from '../screens/DetalleScreen';
 import POIScreen from '../screens/POIScreen';
+import EditarPerfilScreen from '../screens/EditarPerfilScreen';
 import MainTabs from './MainTabs';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,6 +21,7 @@ export default function RootNavigator() {
       <Stack.Screen name="Publicar" component={PublicarScreen} />
       <Stack.Screen name="Detalle" component={DetalleScreen} />
       <Stack.Screen name="POI" component={POIScreen} />
+      <Stack.Screen name="EditarPerfil" component={EditarPerfilScreen} />
     </Stack.Navigator>
   );
 }
