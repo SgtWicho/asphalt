@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { View, Text, TextInput, Pressable, StyleSheet, Image, ActivityIndicator, ScrollView } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ import { fonts } from '../theme/typography';
 import { supabase } from '../lib/supabase';
 import { useAuth } from '../auth/AuthProvider';
 import { useProfile } from '../hooks/useProfile';
+import { uploadAvatar } from '../lib/uploadAvatar';
 
 export default function EditarPerfilScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
@@ -23,6 +24,14 @@ export default function EditarPerfilScreen() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (!profile) return;
+    setFullName(profile.full_name ?? '');
+    setUsername(profile.username ?? '');
+    setBio(profile.bio ?? '');
+    setAvatarUrl(profile.avatar_url ?? null);
+  }, [profile]);
+
   const pickAvatar = async () => {
     setError(null);
     const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -35,25 +44,30 @@ export default function EditarPerfilScreen() {
       allowsEditing: true,
       aspect: [1, 1],
       quality: 0.8,
+      base64: true,
     });
     if (result.canceled || !session?.user.id) return;
 
+    const asset = result.assets[0];
+    if (!asset.base64) {
+      setError('No se pudo leer la imagen seleccionada.');
+      return;
+    }
+
     setUploading(true);
     try {
-      const asset = result.assets[0];
-      const response = await fetch(asset.uri);
-      const arrayBuffer = await response.arrayBuffer();
       const ext = asset.uri.split('.').pop()?.toLowerCase() || 'jpg';
-      const path = `${session.user.id}-${Date.now()}.${ext}`;
-      const { error: uploadError } = await supabase.storage
-        .from('avatars')
-        .upload(path, arrayBuffer, { contentType: asset.mimeType ?? 'image/jpeg', upsert: true });
+      const { url, error: uploadError } = await uploadAvatar(
+        session.user.id,
+        asset.base64,
+        ext,
+        asset.mimeType ?? 'image/jpeg'
+      );
       if (uploadError) {
-        setError(uploadError.message);
+        setError(uploadError);
         return;
       }
-      const { data } = supabase.storage.from('avatars').getPublicUrl(path);
-      setAvatarUrl(data.publicUrl);
+      setAvatarUrl(url);
     } finally {
       setUploading(false);
     }
