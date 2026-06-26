@@ -53,6 +53,12 @@
       "expo-task-manager",
       "expo-video",
       [
+        "expo-image-picker",
+        {
+          "photosPermission": "AsphaltApp necesita acceso a tus fotos para que elijas tu foto de perfil."
+        }
+      ],
+      [
         "expo-splash-screen",
         {
           "image": "./assets/splash-icon.png",
