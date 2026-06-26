@@ -86,7 +86,7 @@ export const exploreRoutes: ExploreRoute[] = [
   { id: 'e4', name: 'Sa Calobra', region: 'Mallorca', dist: '52', desn: '820', rating: '5,0' },
 ];
 
-export const exploreFilters = ['Cerca de mí', 'Curvas', 'Costa', 'Montaña'];
+export const exploreFilters = ['Cerca', 'Curvas', 'Costa', 'Montaña'];
 
 export type RouteStyleKey = 'curvas' | 'paisaje' | 'rapida';
 

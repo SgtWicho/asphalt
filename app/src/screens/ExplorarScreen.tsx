@@ -28,18 +28,13 @@ export default function ExplorarScreen() {
         <Text style={styles.searchPlaceholder}>Buscar rutas, regiones...</Text>
       </View>
 
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.filters}
-        contentContainerStyle={styles.filtersContent}
-      >
+      <View style={styles.filters}>
         {filters.map((f) => (
           <Pressable key={f} style={[styles.chip, active === f && styles.chipActive]} onPress={() => setActive(f)}>
-            <Text style={[styles.chipText, active === f && styles.chipTextActive]}>{f}</Text>
+            <Text style={[styles.chipText, active === f && styles.chipTextActive]} numberOfLines={1}>{f}</Text>
           </Pressable>
         ))}
-      </ScrollView>
+      </View>
 
       <ScrollView contentContainerStyle={styles.list}>
         {routes.map((r) => (
@@ -73,11 +68,10 @@ const styles = StyleSheet.create({
   planBtnText: { fontFamily: fonts.sairaSemiBold, fontSize: 12.5, color: colors.amber },
   searchBar: { flexDirection: 'row', alignItems: 'center', gap: 10, marginHorizontal: 20, marginTop: 16, paddingHorizontal: 14, paddingVertical: 12, borderRadius: 14, backgroundColor: colors.surface },
   searchPlaceholder: { fontFamily: fonts.sairaRegular, fontSize: 13.5, color: colors.textSecondary },
-  filters: { flexGrow: 0, marginTop: 16 },
-  filtersContent: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 20 },
-  chip: { flexShrink: 0, flexGrow: 0, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 24, paddingVertical: 12, borderRadius: 16, backgroundColor: colors.surface },
+  filters: { flexDirection: 'row', justifyContent: 'space-between', gap: 8, marginTop: 16, paddingHorizontal: 20 },
+  chip: { flex: 1, alignItems: 'center', justifyContent: 'center', paddingHorizontal: 14, paddingVertical: 12, borderRadius: 16, backgroundColor: colors.surface },
   chipActive: { backgroundColor: colors.amber },
-  chipText: { fontFamily: fonts.sairaSemiBold, fontSize: 12.5, lineHeight: 16, color: colors.textSecondary, flexShrink: 0 },
+  chipText: { fontFamily: fonts.sairaSemiBold, fontSize: 12, lineHeight: 20, color: colors.textSecondary },
   chipTextActive: { color: colors.bg },
   list: { padding: 20, gap: 14, paddingBottom: 40 },
   card: { backgroundColor: colors.surface, borderRadius: 16, overflow: 'hidden' },
