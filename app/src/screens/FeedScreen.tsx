@@ -1,12 +1,11 @@
 import { useState } from 'react';
-import { View, Text, ScrollView, Pressable, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Pressable, StyleSheet, Image } from 'react-native';
 import Svg, { Path, Circle, Rect } from 'react-native-svg';
 import { BlurView } from 'expo-blur';
 import { colors } from '../theme/colors';
 import { fonts } from '../theme/typography';
 import { feedPosts, FeedPost } from '../data/mock';
 import { SearchIcon, BellIcon, DotsIcon, HeartIcon, CommentIcon, ShareIcon, BookmarkIcon, ArrowRightIcon, CameraIcon, RouteOutlineIcon, ExpandIcon } from '../components/Icons';
-import { AsphaltLogo } from '../components/Logo';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
@@ -139,7 +138,7 @@ export default function FeedScreen() {
   return (
     <View style={styles.screen}>
       <BlurView intensity={40} tint="dark" style={styles.appBar}>
-        <AsphaltLogo height={24} />
+        <Image source={require('../../assets/asphaltapp-logo.png')} style={styles.headerLogo} resizeMode="contain" />
         <View style={styles.appBarIcons}>
           <View style={styles.iconCircle}>
             <SearchIcon />
@@ -171,6 +170,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: colors.borderSoft,
   },
+  headerLogo: { height: 26, width: 130 },
   appBarIcons: { flexDirection: 'row', gap: 8, alignItems: 'center' },
   iconCircle: { width: 38, height: 38, borderRadius: 19, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' },
   iconBadge: { position: 'absolute', top: 8, right: 9, width: 8, height: 8, borderRadius: 4, backgroundColor: colors.red, borderWidth: 2, borderColor: colors.bg },
