@@ -36,5 +36,18 @@ export function useProfile() {
     refresh();
   }, [refresh]);
 
-  return { profile, loading, refresh };
+  const updateAvatarUrl = useCallback(
+    async (avatarUrl: string) => {
+      if (!session?.user.id) return { error: 'No autenticado' };
+      const { error } = await supabase
+        .from('profiles')
+        .update({ avatar_url: avatarUrl })
+        .eq('id', session.user.id);
+      if (!error) await refresh();
+      return { error: error?.message ?? null };
+    },
+    [session?.user.id, refresh]
+  );
+
+  return { profile, loading, refresh, updateAvatarUrl };
 }

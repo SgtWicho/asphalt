@@ -1,5 +1,6 @@
 import { useCallback, useState } from 'react';
 import { View, Text, Pressable, ScrollView, StyleSheet, Image, TextInput, ActivityIndicator } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
@@ -7,6 +8,8 @@ import { colors } from '../theme/colors';
 import { fonts } from '../theme/typography';
 import { useProfile } from '../hooks/useProfile';
 import { useMotorcycles } from '../hooks/useMotorcycles';
+import { useAuth } from '../auth/AuthProvider';
+import { uploadAvatar } from '../lib/uploadAvatar';
 
 const STATS = [
   { l: 'Publicaciones', n: 0 },
@@ -55,9 +58,12 @@ function AddMotorcycleForm({ onAdd, onCancel }: { onAdd: (brand: string, model: 
 
 export default function PerfilScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { profile, loading, refresh: refreshProfile } = useProfile();
+  const { session } = useAuth();
+  const { profile, loading, refresh: refreshProfile, updateAvatarUrl } = useProfile();
   const { motorcycles, addMotorcycle, removeMotorcycle, refresh: refreshMotorcycles } = useMotorcycles();
   const [showAddMoto, setShowAddMoto] = useState(false);
+  const [changingAvatar, setChangingAvatar] = useState(false);
+  const [avatarError, setAvatarError] = useState<string | null>(null);
 
   useFocusEffect(
     useCallback(() => {
@@ -70,16 +76,65 @@ export default function PerfilScreen() {
   const username = profile?.username ? `@${profile.username}` : '@sin-username';
   const initial = (profile?.full_name || profile?.username || '?').charAt(0).toUpperCase();
 
+  const onChangeAvatar = async () => {
+    setAvatarError(null);
+    const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permission.granted) {
+      setAvatarError('Necesitamos permiso para acceder a tus fotos.');
+      return;
+    }
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+      base64: true,
+    });
+    if (result.canceled || !session?.user.id) return;
+
+    const asset = result.assets[0];
+    if (!asset.base64) {
+      setAvatarError('No se pudo leer la imagen seleccionada.');
+      return;
+    }
+
+    setChangingAvatar(true);
+    try {
+      const ext = asset.uri.split('.').pop()?.toLowerCase() || 'jpg';
+      const { url, error: uploadError } = await uploadAvatar(
+        session.user.id,
+        asset.base64,
+        ext,
+        asset.mimeType ?? 'image/jpeg'
+      );
+      if (uploadError || !url) {
+        setAvatarError(uploadError ?? 'No se pudo subir la foto.');
+        return;
+      }
+      const { error: saveError } = await updateAvatarUrl(url);
+      if (saveError) setAvatarError(saveError);
+    } finally {
+      setChangingAvatar(false);
+    }
+  };
+
   return (
     <ScrollView style={styles.screen} contentContainerStyle={{ paddingBottom: 40 }}>
       <View style={styles.topRow}>
-        {profile?.avatar_url ? (
-          <Image source={{ uri: profile.avatar_url }} style={styles.avatar} />
-        ) : (
-          <View style={styles.avatarFallback}>
-            <Text style={styles.avatarText}>{initial}</Text>
-          </View>
-        )}
+        <Pressable onPress={onChangeAvatar} disabled={changingAvatar} style={styles.avatarWrap}>
+          {profile?.avatar_url ? (
+            <Image source={{ uri: profile.avatar_url }} style={styles.avatar} />
+          ) : (
+            <View style={styles.avatarFallback}>
+              <Text style={styles.avatarText}>{initial}</Text>
+            </View>
+          )}
+          {changingAvatar && (
+            <View style={styles.avatarOverlay}>
+              <ActivityIndicator color="#fff" />
+            </View>
+          )}
+        </Pressable>
         <View style={styles.statsRow}>
           {STATS.map((s) => (
             <View key={s.l} style={styles.statItem}>
@@ -94,6 +149,7 @@ export default function PerfilScreen() {
         <Text style={styles.name}>{loading ? 'Cargando...' : displayName}</Text>
         <Text style={styles.handle}>{username}</Text>
         <Text style={styles.bio}>{profile?.bio || 'Sin biografía todavía.'}</Text>
+        {avatarError && <Text style={styles.avatarErrorText}>{avatarError}</Text>}
       </View>
 
       <Pressable style={styles.editBtn} onPress={() => navigation.navigate('EditarPerfil')}>
@@ -140,9 +196,12 @@ export default function PerfilScreen() {
 const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   topRow: { flexDirection: 'row', alignItems: 'center', paddingTop: 70, paddingHorizontal: 24, gap: 20 },
+  avatarWrap: { width: 84, height: 84, borderRadius: 42, overflow: 'hidden' },
   avatar: { width: 84, height: 84, borderRadius: 42, backgroundColor: colors.surface },
   avatarFallback: { width: 84, height: 84, borderRadius: 42, backgroundColor: colors.amber, alignItems: 'center', justifyContent: 'center' },
   avatarText: { fontFamily: fonts.condensedBold, fontSize: 28, color: colors.bg },
+  avatarOverlay: { position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.45)', alignItems: 'center', justifyContent: 'center' },
+  avatarErrorText: { fontFamily: fonts.sairaRegular, fontSize: 12, color: colors.red, marginTop: 6 },
   statsRow: { flex: 1, flexDirection: 'row' },
   statItem: { flex: 1, alignItems: 'center' },
   statNum: { fontFamily: fonts.condensedBold, fontSize: 20, color: colors.textPrimary },
