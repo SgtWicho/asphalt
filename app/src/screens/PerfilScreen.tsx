@@ -139,7 +139,7 @@ export default function PerfilScreen() {
           {STATS.map((s) => (
             <View key={s.l} style={styles.statItem}>
               <Text style={styles.statNum}>{s.n}</Text>
-              <Text style={styles.statLabel}>{s.l}</Text>
+              <Text style={styles.statLabel} numberOfLines={1}>{s.l}</Text>
             </View>
           ))}
         </View>
@@ -205,7 +205,7 @@ const styles = StyleSheet.create({
   statsRow: { flex: 1, flexDirection: 'row' },
   statItem: { flex: 1, alignItems: 'center' },
   statNum: { fontFamily: fonts.condensedBold, fontSize: 20, color: colors.textPrimary },
-  statLabel: { fontFamily: fonts.sairaRegular, fontSize: 10, letterSpacing: 1, textTransform: 'uppercase', color: colors.textSecondary, marginTop: 4 },
+  statLabel: { fontFamily: fonts.sairaRegular, fontSize: 9, letterSpacing: 0.3, textTransform: 'uppercase', color: colors.textSecondary, marginTop: 4, textAlign: 'center' },
   infoBlock: { paddingHorizontal: 24, marginTop: 18, gap: 4 },
   name: { fontFamily: fonts.condensedBold, fontSize: 20, color: colors.textPrimary },
   handle: { fontFamily: fonts.sairaRegular, fontSize: 13, color: colors.textSecondary },
