@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { View, Text, Pressable, ScrollView, StyleSheet, Image, TextInput, ActivityIndicator } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
 import { colors } from '../theme/colors';
@@ -55,9 +55,16 @@ function AddMotorcycleForm({ onAdd, onCancel }: { onAdd: (brand: string, model: 
 
 export default function PerfilScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
-  const { profile, loading } = useProfile();
-  const { motorcycles, addMotorcycle, removeMotorcycle } = useMotorcycles();
+  const { profile, loading, refresh: refreshProfile } = useProfile();
+  const { motorcycles, addMotorcycle, removeMotorcycle, refresh: refreshMotorcycles } = useMotorcycles();
   const [showAddMoto, setShowAddMoto] = useState(false);
+
+  useFocusEffect(
+    useCallback(() => {
+      refreshProfile();
+      refreshMotorcycles();
+    }, [refreshProfile, refreshMotorcycles])
+  );
 
   const displayName = profile?.full_name || 'Sin nombre';
   const username = profile?.username ? `@${profile.username}` : '@sin-username';
