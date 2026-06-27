@@ -62,7 +62,7 @@ export default function GrabarScreen() {
 
   const onSelectNavigate = () => {
     setRideModeSheetVisible(false);
-    console.log('Navegar próximamente');
+    navigation.navigate('Navegar');
   };
 
   return (

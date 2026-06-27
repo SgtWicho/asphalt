@@ -2,6 +2,7 @@ export type RootStackParamList = {
   Main: undefined;
   Planificador: undefined;
   Navegacion: undefined;
+  Navegar: undefined;
   Grabar: undefined;
   Publicar: undefined;
   Detalle: { routeId?: string } | undefined;
