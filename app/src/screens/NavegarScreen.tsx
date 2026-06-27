@@ -127,7 +127,8 @@ export default function NavegarScreen() {
     searchDebounceRef.current = setTimeout(async () => {
       try {
         const apiKey = process.env.EXPO_PUBLIC_TOMTOM_API_KEY;
-        const url = `https://api.tomtom.com/search/2/search/${encodeURIComponent(text)}.json?key=${apiKey}&countrySet=PR&limit=5`;
+        const biasParams = origin ? `&lat=${origin.latitude}&lon=${origin.longitude}` : '';
+        const url = `https://api.tomtom.com/search/2/search/${encodeURIComponent(text)}.json?key=${apiKey}&limit=5${biasParams}`;
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Error de red (${res.status})`);
         const data = await res.json();
