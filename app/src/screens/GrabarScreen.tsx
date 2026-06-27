@@ -1,8 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, Pressable, StyleSheet, Image } from 'react-native';
+import { View, Text, Pressable, StyleSheet, Image, Modal } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import MapView, { Marker, Polyline, Region } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
@@ -25,6 +26,7 @@ export default function GrabarScreen() {
   const rec = useRouteRecorder();
   const mapRef = useRef<MapView>(null);
   const [initialRegion, setInitialRegion] = useState<Region | null>(null);
+  const [rideModeSheetVisible, setRideModeSheetVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -45,12 +47,22 @@ export default function GrabarScreen() {
     if (last) mapRef.current?.animateCamera({ center: last }, { duration: 500 });
   }, [rec.path]);
 
-  const onRecordPress = async () => {
+  const onRecordPress = () => {
     if (!rec.recording) {
-      await rec.start();
+      setRideModeSheetVisible(true);
     } else {
       rec.stop();
     }
+  };
+
+  const onSelectJustRecord = async () => {
+    setRideModeSheetVisible(false);
+    await rec.start();
+  };
+
+  const onSelectNavigate = () => {
+    setRideModeSheetVisible(false);
+    console.log('Navegar próximamente');
   };
 
   return (
@@ -157,6 +169,40 @@ export default function GrabarScreen() {
         </View>
         {rec.poiCount > 0 && <Text style={styles.poiCount}>{rec.poiCount} puntos de interés añadidos</Text>}
       </View>
+
+      <Modal
+        visible={rideModeSheetVisible}
+        transparent
+        animationType="slide"
+        onRequestClose={() => setRideModeSheetVisible(false)}
+      >
+        <Pressable style={styles.sheetOverlay} onPress={() => setRideModeSheetVisible(false)}>
+          <Pressable style={styles.sheet} onPress={() => {}}>
+            <View style={styles.sheetHandle} />
+            <Text style={styles.sheetTitle}>¿Cómo quieres rodar?</Text>
+
+            <Pressable style={styles.sheetOption} onPress={onSelectJustRecord}>
+              <View style={[styles.sheetIconCircle, { backgroundColor: colors.redSoft }]}>
+                <View style={styles.recordDotSmall} />
+              </View>
+              <View style={styles.sheetOptionText}>
+                <Text style={styles.sheetOptionTitle}>Solo grabar la ruta</Text>
+                <Text style={styles.sheetOptionSubtitle}>Yo conozco el camino</Text>
+              </View>
+            </Pressable>
+
+            <Pressable style={styles.sheetOption} onPress={onSelectNavigate}>
+              <View style={[styles.sheetIconCircle, { backgroundColor: colors.amberSoft }]}>
+                <Ionicons name="navigate" size={20} color={colors.amber} />
+              </View>
+              <View style={styles.sheetOptionText}>
+                <Text style={styles.sheetOptionTitle}>Navegar a un destino</Text>
+                <Text style={styles.sheetOptionSubtitle}>Guíame de A a B</Text>
+              </View>
+            </Pressable>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </View>
   );
 }
@@ -188,4 +234,14 @@ const styles = StyleSheet.create({
   stopSquare: { width: 32, height: 32, borderRadius: 8, backgroundColor: '#fff' },
   recordPulse: { position: 'absolute', width: 104, height: 104, borderRadius: 52, borderWidth: 2, borderColor: colors.red },
   poiCount: { textAlign: 'center', fontFamily: fonts.sairaRegular, fontSize: 12.5, color: colors.amber },
+  sheetOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,.5)', justifyContent: 'flex-end' },
+  sheet: { backgroundColor: colors.surface, borderTopLeftRadius: 26, borderTopRightRadius: 26, paddingTop: 12, paddingBottom: 38, paddingHorizontal: 24, gap: 18 },
+  sheetHandle: { width: 40, height: 4, borderRadius: 2, backgroundColor: colors.textQuaternary, alignSelf: 'center', marginBottom: 8 },
+  sheetTitle: { fontFamily: fonts.sairaSemiBold, fontSize: 17, color: colors.textPrimary, textAlign: 'center', marginBottom: 6 },
+  sheetOption: { flexDirection: 'row', alignItems: 'center', gap: 14, backgroundColor: colors.surfaceAlt, borderRadius: 16, padding: 14 },
+  sheetIconCircle: { width: 44, height: 44, borderRadius: 22, alignItems: 'center', justifyContent: 'center' },
+  recordDotSmall: { width: 16, height: 16, borderRadius: 8, backgroundColor: colors.red },
+  sheetOptionText: { flex: 1 },
+  sheetOptionTitle: { fontFamily: fonts.sairaSemiBold, fontSize: 15, color: colors.textPrimary },
+  sheetOptionSubtitle: { fontFamily: fonts.sairaRegular, fontSize: 12.5, color: colors.textSecondary, marginTop: 2 },
 });
