@@ -14,6 +14,8 @@ export const colors = {
   amberSoft: 'rgba(249,168,37,0.14)',
   amberBorder: 'rgba(249,168,37,0.4)',
   redSoft: 'rgba(211,47,47,0.14)',
+  routeBlue: '#2D7FF9',
+  routeBlueDark: '#16467F',
 };
 
 export type Colors = typeof colors;
