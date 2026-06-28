@@ -230,7 +230,9 @@ export default function NavegarScreen() {
           )}
           {to && (
             <Marker coordinate={to.coordinate} anchor={{ x: 0.5, y: 1 }}>
-              <Image source={require('../../assets/destino_pin.png')} style={styles.destinoPin} resizeMode="contain" />
+              <View style={styles.destinoPinWrap}>
+                <Image source={require('../../assets/destino_pin.png')} style={styles.destinoPin} resizeMode="contain" />
+              </View>
             </Marker>
           )}
         </MapView>
@@ -357,7 +359,8 @@ const styles = StyleSheet.create({
   mapWrap: { flex: 1, backgroundColor: '#191820' },
   map: { flex: 1 },
   startMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: '#f5f5f5' },
-  destinoPin: { width: 42, height: 54 },
+  destinoPinWrap: { width: 34, height: 44, alignItems: 'center', justifyContent: 'flex-end' },
+  destinoPin: { width: 34, height: 44 },
   backBtn: { position: 'absolute', top: 60, left: 20, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', zIndex: 2 },
   panelTop: { position: 'absolute', top: 112, left: 20, right: 20 },
   fieldsRow: { flexDirection: 'row', alignItems: 'stretch', backgroundColor: colors.surface, borderRadius: 18, padding: 12, gap: 10 },
