@@ -1,14 +1,21 @@
 import { useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, TextInput, FlatList, ActivityIndicator } from 'react-native';
-import Svg, { Path, Circle } from 'react-native-svg';
+import Svg, { Path } from 'react-native-svg';
 import MapView, { Marker, Polyline, LatLng, MapPressEvent } from 'react-native-maps';
 import * as Location from 'expo-location';
+import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import type { RootStackParamList } from '../navigation/types';
 import { colors } from '../theme/colors';
 import { darkMapStyle } from '../theme/mapStyle';
 import { fonts } from '../theme/typography';
+import { PinFillIcon, SearchIcon } from '../components/Icons';
+
+type Point = {
+  label: string;
+  coordinate: LatLng;
+};
 
 type Suggestion = {
   id: string;
@@ -16,6 +23,8 @@ type Suggestion = {
   municipality: string;
   coordinate: LatLng;
 };
+
+type FieldKey = 'from' | 'to';
 
 function fmtDuration(seconds: number) {
   const m = Math.round(seconds / 60);
@@ -25,65 +34,45 @@ function fmtDuration(seconds: number) {
   return `${h} h ${rem} min`;
 }
 
-function SearchIcon() {
-  return (
-    <Svg width={16} height={16} viewBox="0 0 24 24" fill="none">
-      <Circle cx={11} cy={11} r={7} stroke={colors.textSecondary} strokeWidth={2} />
-      <Path d="M20 20l-4.35-4.35" stroke={colors.textSecondary} strokeWidth={2} strokeLinecap="round" />
-    </Svg>
-  );
-}
-
 export default function NavegarScreen() {
   const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const mapRef = useRef<MapView>(null);
   const searchDebounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [origin, setOrigin] = useState<LatLng | null>(null);
-  const [destination, setDestination] = useState<LatLng | null>(null);
+  const [from, setFrom] = useState<Point | null>(null);
+  const [to, setTo] = useState<Point | null>(null);
+  const [activeField, setActiveField] = useState<FieldKey | null>(null);
+
+  const [fromText, setFromText] = useState('');
+  const [toText, setToText] = useState('');
+
   const [routePoints, setRoutePoints] = useState<LatLng[]>([]);
   const [distanceM, setDistanceM] = useState<number | null>(null);
   const [durationS, setDurationS] = useState<number | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [loadingRoute, setLoadingRoute] = useState(false);
-  const [loadingLocation, setLoadingLocation] = useState(true);
+  const [loadingLocation, setLoadingLocation] = useState(false);
 
-  const [query, setQuery] = useState('');
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [searching, setSearching] = useState(false);
 
   useEffect(() => {
-    (async () => {
-      try {
-        setLoadingLocation(true);
-        const { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          setErrorMsg('Se necesita permiso de ubicación para navegar');
-          return;
-        }
-        const loc = await Location.getCurrentPositionAsync({});
-        setOrigin({ latitude: loc.coords.latitude, longitude: loc.coords.longitude });
-      } catch {
-        setErrorMsg('No se pudo obtener tu ubicación actual');
-      } finally {
-        setLoadingLocation(false);
-      }
-    })();
-  }, []);
-
-  useEffect(() => {
-    if (origin && destination) {
-      calculateRoute(origin, destination);
+    if (from && to) {
+      calculateRoute(from.coordinate, to.coordinate);
+    } else {
+      setRoutePoints([]);
+      setDistanceM(null);
+      setDurationS(null);
     }
-  }, [origin, destination]);
+  }, [from, to]);
 
-  const calculateRoute = async (from: LatLng, to: LatLng) => {
+  const calculateRoute = async (fromCoord: LatLng, toCoord: LatLng) => {
     try {
       setLoadingRoute(true);
       setErrorMsg(null);
       setRoutePoints([]);
       const apiKey = process.env.EXPO_PUBLIC_TOMTOM_API_KEY;
-      const url = `https://api.tomtom.com/routing/1/calculateRoute/${from.latitude},${from.longitude}:${to.latitude},${to.longitude}/json?key=${apiKey}`;
+      const url = `https://api.tomtom.com/routing/1/calculateRoute/${fromCoord.latitude},${fromCoord.longitude}:${toCoord.latitude},${toCoord.longitude}/json?key=${apiKey}`;
       const res = await fetch(url);
       if (!res.ok) throw new Error(`Error de red (${res.status})`);
       const data = await res.json();
@@ -101,7 +90,7 @@ export default function NavegarScreen() {
       if (points.length > 0) {
         setTimeout(() => {
           mapRef.current?.fitToCoordinates(points, {
-            edgePadding: { top: 80, right: 60, bottom: 280, left: 60 },
+            edgePadding: { top: 220, right: 60, bottom: 220, left: 60 },
             animated: true,
           });
         }, 300);
@@ -113,8 +102,7 @@ export default function NavegarScreen() {
     }
   };
 
-  const onChangeQuery = (text: string) => {
-    setQuery(text);
+  const runSearch = (text: string) => {
     if (searchDebounceRef.current) clearTimeout(searchDebounceRef.current);
 
     if (text.trim().length < 3) {
@@ -127,8 +115,7 @@ export default function NavegarScreen() {
     searchDebounceRef.current = setTimeout(async () => {
       try {
         const apiKey = process.env.EXPO_PUBLIC_TOMTOM_API_KEY;
-        const biasParams = origin ? `&lat=${origin.latitude}&lon=${origin.longitude}` : '';
-        const url = `https://api.tomtom.com/search/2/search/${encodeURIComponent(text)}.json?key=${apiKey}&limit=5${biasParams}`;
+        const url = `https://api.tomtom.com/search/2/search/${encodeURIComponent(text)}.json?key=${apiKey}&limit=5`;
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Error de red (${res.status})`);
         const data = await res.json();
@@ -145,19 +132,71 @@ export default function NavegarScreen() {
       } finally {
         setSearching(false);
       }
-    }, 400);
+    }, 300);
+  };
+
+  const onChangeFieldText = (field: FieldKey, text: string) => {
+    if (field === 'from') setFromText(text);
+    else setToText(text);
+    setActiveField(field);
+    runSearch(text);
+  };
+
+  const onFocusField = (field: FieldKey) => {
+    setActiveField(field);
+    setSuggestions([]);
+  };
+
+  const assignPoint = (field: FieldKey, point: Point) => {
+    if (field === 'from') {
+      setFrom(point);
+      setFromText(point.label);
+    } else {
+      setTo(point);
+      setToText(point.label);
+    }
+    setSuggestions([]);
   };
 
   const onSelectSuggestion = (s: Suggestion) => {
-    setQuery(s.name);
-    setSuggestions([]);
-    setDestination(s.coordinate);
+    if (!activeField) return;
+    assignPoint(activeField, { label: s.name, coordinate: s.coordinate });
+  };
+
+  const onUseMyLocation = async (field: FieldKey) => {
+    try {
+      setLoadingLocation(true);
+      setErrorMsg(null);
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setErrorMsg('Se necesita permiso de ubicación');
+        return;
+      }
+      const loc = await Location.getCurrentPositionAsync({});
+      assignPoint(field, {
+        label: 'Mi ubicación actual',
+        coordinate: { latitude: loc.coords.latitude, longitude: loc.coords.longitude },
+      });
+    } catch {
+      setErrorMsg('No se pudo obtener tu ubicación actual');
+    } finally {
+      setLoadingLocation(false);
+    }
   };
 
   const onMapPress = (e: MapPressEvent) => {
-    setQuery('');
-    setSuggestions([]);
-    setDestination(e.nativeEvent.coordinate);
+    if (!activeField) return;
+    const coordinate = e.nativeEvent.coordinate;
+    assignPoint(activeField, { label: 'Punto en el mapa', coordinate });
+  };
+
+  const onSwap = () => {
+    const prevFrom = from;
+    const prevFromText = fromText;
+    setFrom(to);
+    setFromText(toText);
+    setTo(prevFrom);
+    setToText(prevFromText);
   };
 
   return (
@@ -171,10 +210,10 @@ export default function NavegarScreen() {
           showsUserLocation
           onPress={onMapPress}
           initialRegion={{
-            latitude: origin?.latitude ?? 18.2208,
-            longitude: origin?.longitude ?? -66.5901,
-            latitudeDelta: origin ? 0.05 : 1.2,
-            longitudeDelta: origin ? 0.05 : 1.2,
+            latitude: 18.2208,
+            longitude: -66.5901,
+            latitudeDelta: 1.2,
+            longitudeDelta: 1.2,
           }}
         >
           {routePoints.length > 1 && (
@@ -184,13 +223,13 @@ export default function NavegarScreen() {
             </>
           )}
 
-          {origin && (
-            <Marker coordinate={origin} anchor={{ x: 0.5, y: 0.5 }}>
+          {from && (
+            <Marker coordinate={from.coordinate} anchor={{ x: 0.5, y: 0.5 }}>
               <View style={styles.startMarker} />
             </Marker>
           )}
-          {destination && (
-            <Marker coordinate={destination} anchor={{ x: 0.5, y: 0.5 }}>
+          {to && (
+            <Marker coordinate={to.coordinate} anchor={{ x: 0.5, y: 0.5 }}>
               <View style={styles.endMarker} />
             </Marker>
           )}
@@ -202,18 +241,64 @@ export default function NavegarScreen() {
           </Svg>
         </Pressable>
 
-        <View style={styles.searchWrap}>
-          <View style={styles.searchBar}>
-            <SearchIcon />
-            <TextInput
-              value={query}
-              onChangeText={onChangeQuery}
-              placeholder="Buscar destino en Puerto Rico"
-              placeholderTextColor={colors.textSecondary}
-              style={styles.searchInput}
-            />
-            {searching && <ActivityIndicator size="small" color={colors.amber} />}
+        <View style={styles.panelTop}>
+          <View style={styles.fieldsRow}>
+            <View style={styles.connectorCol}>
+              <View style={styles.connectorDot} />
+              <View style={styles.connectorLine} />
+              <PinFillIcon size={14} color={colors.amber} />
+            </View>
+
+            <View style={styles.fieldsCol}>
+              <View style={[styles.fieldBox, activeField === 'from' && styles.fieldBoxActive]}>
+                <TextInput
+                  value={fromText}
+                  onChangeText={(t) => onChangeFieldText('from', t)}
+                  onFocus={() => onFocusField('from')}
+                  placeholder="Desde"
+                  placeholderTextColor={colors.textSecondary}
+                  style={styles.fieldInput}
+                />
+                <Pressable onPress={() => onUseMyLocation('from')} style={styles.locationBtn}>
+                  {loadingLocation && activeField === 'from' ? (
+                    <ActivityIndicator size="small" color={colors.amber} />
+                  ) : (
+                    <Ionicons name="locate" size={16} color={colors.amber} />
+                  )}
+                </Pressable>
+              </View>
+
+              <View style={styles.fieldDivider} />
+
+              <View style={[styles.fieldBox, activeField === 'to' && styles.fieldBoxActive]}>
+                <TextInput
+                  value={toText}
+                  onChangeText={(t) => onChangeFieldText('to', t)}
+                  onFocus={() => onFocusField('to')}
+                  placeholder="Hasta"
+                  placeholderTextColor={colors.textSecondary}
+                  style={styles.fieldInput}
+                />
+                <Pressable onPress={() => onUseMyLocation('to')} style={styles.locationBtn}>
+                  {loadingLocation && activeField === 'to' ? (
+                    <ActivityIndicator size="small" color={colors.amber} />
+                  ) : (
+                    <Ionicons name="locate" size={16} color={colors.amber} />
+                  )}
+                </Pressable>
+              </View>
+            </View>
+
+            <Pressable style={styles.swapBtn} onPress={onSwap}>
+              <Ionicons name="swap-vertical" size={18} color={colors.textPrimary} />
+            </Pressable>
           </View>
+
+          {activeField && (
+            <Text style={styles.hintText}>
+              {searching ? 'Buscando…' : `Escribe, toca "usar mi ubicación" o toca el mapa para "${activeField === 'from' ? 'Desde' : 'Hasta'}"`}
+            </Text>
+          )}
 
           {suggestions.length > 0 && (
             <FlatList
@@ -223,8 +308,11 @@ export default function NavegarScreen() {
               keyboardShouldPersistTaps="handled"
               renderItem={({ item }) => (
                 <Pressable style={styles.suggestionItem} onPress={() => onSelectSuggestion(item)}>
-                  <Text style={styles.suggestionName}>{item.name}</Text>
-                  {!!item.municipality && <Text style={styles.suggestionMunicipality}>{item.municipality}</Text>}
+                  <SearchIcon size={14} />
+                  <View style={styles.suggestionTextWrap}>
+                    <Text style={styles.suggestionName}>{item.name}</Text>
+                    {!!item.municipality && <Text style={styles.suggestionMunicipality}>{item.municipality}</Text>}
+                  </View>
                 </Pressable>
               )}
             />
@@ -239,10 +327,8 @@ export default function NavegarScreen() {
       </View>
 
       <View style={styles.panel}>
-        {loadingLocation ? (
-          <Text style={styles.loadingText}>Obteniendo tu ubicación…</Text>
-        ) : !destination ? (
-          <Text style={styles.loadingText}>Busca un destino o toca el mapa</Text>
+        {!from || !to ? (
+          <Text style={styles.loadingText}>Elige el punto Desde y Hasta para trazar la ruta</Text>
         ) : loadingRoute ? (
           <Text style={styles.loadingText}>Calculando ruta…</Text>
         ) : (
@@ -272,15 +358,26 @@ const styles = StyleSheet.create({
   map: { flex: 1 },
   startMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: '#f5f5f5' },
   endMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: colors.amber },
-  backBtn: { position: 'absolute', top: 60, left: 20, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center' },
-  searchWrap: { position: 'absolute', top: 60, left: 72, right: 20 },
-  searchBar: { flexDirection: 'row', alignItems: 'center', gap: 10, backgroundColor: colors.surface, borderRadius: 20, paddingHorizontal: 16, height: 40 },
-  searchInput: { flex: 1, fontFamily: fonts.sairaRegular, fontSize: 14, color: colors.textPrimary },
+  backBtn: { position: 'absolute', top: 60, left: 20, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', zIndex: 2 },
+  panelTop: { position: 'absolute', top: 112, left: 20, right: 20 },
+  fieldsRow: { flexDirection: 'row', alignItems: 'stretch', backgroundColor: colors.surface, borderRadius: 18, padding: 12, gap: 10 },
+  connectorCol: { width: 16, alignItems: 'center', justifyContent: 'space-between', paddingVertical: 4 },
+  connectorDot: { width: 9, height: 9, borderRadius: 4.5, borderWidth: 2, borderColor: '#f5f5f5', backgroundColor: 'transparent' },
+  connectorLine: { width: 1.5, flex: 1, backgroundColor: colors.borderSoft, marginVertical: 3 },
+  fieldsCol: { flex: 1 },
+  fieldBox: { flexDirection: 'row', alignItems: 'center', backgroundColor: colors.surfaceAlt, borderRadius: 12, paddingHorizontal: 12, height: 40, borderWidth: 1, borderColor: 'transparent' },
+  fieldBoxActive: { borderColor: colors.amberBorder },
+  fieldInput: { flex: 1, fontFamily: fonts.sairaRegular, fontSize: 14, color: colors.textPrimary },
+  fieldDivider: { height: 8 },
+  locationBtn: { width: 26, height: 26, borderRadius: 13, alignItems: 'center', justifyContent: 'center' },
+  swapBtn: { width: 36, height: 36, borderRadius: 18, backgroundColor: colors.surfaceAlt, alignItems: 'center', justifyContent: 'center', alignSelf: 'center' },
+  hintText: { fontFamily: fonts.sairaRegular, fontSize: 11.5, color: colors.textSecondary, marginTop: 8, marginLeft: 6 },
   suggestionsList: { marginTop: 8, backgroundColor: colors.surface, borderRadius: 16, maxHeight: 220 },
-  suggestionItem: { paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: colors.borderSoft },
+  suggestionItem: { flexDirection: 'row', alignItems: 'center', gap: 10, paddingHorizontal: 16, paddingVertical: 12, borderBottomWidth: 1, borderBottomColor: colors.borderSoft },
+  suggestionTextWrap: { flex: 1 },
   suggestionName: { fontFamily: fonts.sairaSemiBold, fontSize: 13.5, color: colors.textPrimary },
   suggestionMunicipality: { fontFamily: fonts.sairaRegular, fontSize: 12, color: colors.textSecondary, marginTop: 2 },
-  errorBanner: { position: 'absolute', top: 112, left: 20, right: 20, padding: 12, borderRadius: 12, backgroundColor: 'rgba(211,47,47,.18)', borderWidth: 1, borderColor: 'rgba(211,47,47,.4)' },
+  errorBanner: { position: 'absolute', top: 60, left: 72, right: 20, padding: 12, borderRadius: 12, backgroundColor: 'rgba(211,47,47,.18)', borderWidth: 1, borderColor: 'rgba(211,47,47,.4)' },
   errorText: { fontFamily: fonts.sairaSemiBold, fontSize: 13, color: '#ff8a80', textAlign: 'center' },
   panel: { backgroundColor: colors.surface, borderTopLeftRadius: 26, borderTopRightRadius: 26, paddingTop: 22, paddingBottom: 38, paddingHorizontal: 24, gap: 22, minHeight: 110 },
   loadingText: { fontFamily: fonts.sairaRegular, fontSize: 14, color: colors.textSecondary, textAlign: 'center' },
