@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, TextInput, FlatList, ActivityIndicator, Image } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import MapView, { Marker, Polyline, LatLng, MapPressEvent } from 'react-native-maps';
@@ -25,6 +25,30 @@ type Suggestion = {
 };
 
 type FieldKey = 'from' | 'to';
+
+type ArrowPoint = {
+  coordinate: LatLng;
+  bearing: number;
+};
+
+function getBearing(from: LatLng, to: LatLng): number {
+  const lat1 = (from.latitude * Math.PI) / 180;
+  const lat2 = (to.latitude * Math.PI) / 180;
+  const dLon = ((to.longitude - from.longitude) * Math.PI) / 180;
+  const y = Math.sin(dLon) * Math.cos(lat2);
+  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
+  const bearing = (Math.atan2(y, x) * 180) / Math.PI;
+  return (bearing + 360) % 360;
+}
+
+function getRouteArrows(points: LatLng[], step: number): ArrowPoint[] {
+  if (points.length < 2) return [];
+  const arrows: ArrowPoint[] = [];
+  for (let i = step; i < points.length; i += step) {
+    arrows.push({ coordinate: points[i], bearing: getBearing(points[i - 1], points[i]) });
+  }
+  return arrows;
+}
 
 function fmtDuration(seconds: number) {
   const m = Math.round(seconds / 60);
@@ -55,6 +79,15 @@ export default function NavegarScreen() {
 
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [searching, setSearching] = useState(false);
+
+  const routeArrows = useMemo(() => {
+    try {
+      const step = Math.max(4, Math.floor(routePoints.length / 10));
+      return getRouteArrows(routePoints, step);
+    } catch {
+      return [];
+    }
+  }, [routePoints]);
 
   useEffect(() => {
     if (from && to) {
@@ -218,8 +251,20 @@ export default function NavegarScreen() {
         >
           {routePoints.length > 1 && (
             <>
-              <Polyline coordinates={routePoints} strokeColor="rgba(249,168,37,.25)" strokeWidth={14} />
-              <Polyline coordinates={routePoints} strokeColor={colors.amber} strokeWidth={6} />
+              <Polyline coordinates={routePoints} strokeColor={colors.routeBlueDark} strokeWidth={14} />
+              <Polyline coordinates={routePoints} strokeColor={colors.routeBlue} strokeWidth={6} />
+              {routeArrows.map((arrow, idx) => (
+                <Marker
+                  key={`arrow-${idx}`}
+                  coordinate={arrow.coordinate}
+                  anchor={{ x: 0.5, y: 0.5 }}
+                  rotation={arrow.bearing}
+                  flat
+                  tracksViewChanges={false}
+                >
+                  <Ionicons name="chevron-up" size={16} color="#eaf2ff" />
+                </Marker>
+              ))}
             </>
           )}
 
