@@ -41,11 +41,39 @@ function getBearing(from: LatLng, to: LatLng): number {
   return (bearing + 360) % 360;
 }
 
-function getRouteArrows(points: LatLng[], step: number): ArrowPoint[] {
+function getDistanceMeters(from: LatLng, to: LatLng): number {
+  const R = 6371000;
+  const lat1 = (from.latitude * Math.PI) / 180;
+  const lat2 = (to.latitude * Math.PI) / 180;
+  const dLat = ((to.latitude - from.latitude) * Math.PI) / 180;
+  const dLon = ((to.longitude - from.longitude) * Math.PI) / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+function getRouteArrows(points: LatLng[], desiredCount: number): ArrowPoint[] {
   if (points.length < 2) return [];
+
+  const segmentLengths: number[] = [];
+  let totalDistance = 0;
+  for (let i = 1; i < points.length; i++) {
+    const d = getDistanceMeters(points[i - 1], points[i]);
+    segmentLengths.push(d);
+    totalDistance += d;
+  }
+  if (totalDistance === 0) return [];
+
+  const interval = totalDistance / desiredCount;
   const arrows: ArrowPoint[] = [];
-  for (let i = step; i < points.length; i += step) {
-    arrows.push({ coordinate: points[i], bearing: getBearing(points[i - 1], points[i]) });
+  let distanceSinceLastArrow = 0;
+
+  for (let i = 1; i < points.length; i++) {
+    distanceSinceLastArrow += segmentLengths[i - 1];
+    if (distanceSinceLastArrow >= interval) {
+      arrows.push({ coordinate: points[i], bearing: getBearing(points[i - 1], points[i]) });
+      distanceSinceLastArrow = 0;
+    }
   }
   return arrows;
 }
@@ -82,8 +110,7 @@ export default function NavegarScreen() {
 
   const routeArrows = useMemo(() => {
     try {
-      const step = Math.max(4, Math.floor(routePoints.length / 10));
-      return getRouteArrows(routePoints, step);
+      return getRouteArrows(routePoints, 13);
     } catch {
       return [];
     }
@@ -258,11 +285,11 @@ export default function NavegarScreen() {
                   key={`arrow-${idx}`}
                   coordinate={arrow.coordinate}
                   anchor={{ x: 0.5, y: 0.5 }}
-                  rotation={arrow.bearing}
-                  flat
                   tracksViewChanges={false}
                 >
-                  <Ionicons name="chevron-up" size={16} color="#eaf2ff" />
+                  <View style={{ transform: [{ rotate: `${arrow.bearing}deg` }] }}>
+                    <Ionicons name="chevron-up" size={16} color="#eaf2ff" />
+                  </View>
                 </Marker>
               ))}
             </>
