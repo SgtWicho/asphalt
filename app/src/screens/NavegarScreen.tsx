@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { View, Text, Pressable, StyleSheet, TextInput, FlatList, ActivityIndicator } from 'react-native';
+import { View, Text, Pressable, StyleSheet, TextInput, FlatList, ActivityIndicator, Image } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import MapView, { Marker, Polyline, LatLng, MapPressEvent } from 'react-native-maps';
 import * as Location from 'expo-location';
@@ -229,8 +229,8 @@ export default function NavegarScreen() {
             </Marker>
           )}
           {to && (
-            <Marker coordinate={to.coordinate} anchor={{ x: 0.5, y: 0.5 }}>
-              <View style={styles.endMarker} />
+            <Marker coordinate={to.coordinate} anchor={{ x: 0.5, y: 1 }}>
+              <Image source={require('../../assets/destino_pin.png')} style={styles.destinoPin} resizeMode="contain" />
             </Marker>
           )}
         </MapView>
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
   mapWrap: { flex: 1, backgroundColor: '#191820' },
   map: { flex: 1 },
   startMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: '#f5f5f5' },
-  endMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: colors.amber },
+  destinoPin: { width: 42, height: 54 },
   backBtn: { position: 'absolute', top: 60, left: 20, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', zIndex: 2 },
   panelTop: { position: 'absolute', top: 112, left: 20, right: 20 },
   fieldsRow: { flexDirection: 'row', alignItems: 'stretch', backgroundColor: colors.surface, borderRadius: 18, padding: 12, gap: 10 },
