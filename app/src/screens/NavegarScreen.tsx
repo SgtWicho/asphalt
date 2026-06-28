@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, StyleSheet, TextInput, FlatList, ActivityIndicator, Image } from 'react-native';
 import Svg, { Path } from 'react-native-svg';
 import MapView, { Marker, Polyline, LatLng, MapPressEvent } from 'react-native-maps';
@@ -25,58 +25,6 @@ type Suggestion = {
 };
 
 type FieldKey = 'from' | 'to';
-
-type ArrowPoint = {
-  coordinate: LatLng;
-  bearing: number;
-};
-
-function getBearing(from: LatLng, to: LatLng): number {
-  const lat1 = (from.latitude * Math.PI) / 180;
-  const lat2 = (to.latitude * Math.PI) / 180;
-  const dLon = ((to.longitude - from.longitude) * Math.PI) / 180;
-  const y = Math.sin(dLon) * Math.cos(lat2);
-  const x = Math.cos(lat1) * Math.sin(lat2) - Math.sin(lat1) * Math.cos(lat2) * Math.cos(dLon);
-  const bearing = (Math.atan2(y, x) * 180) / Math.PI;
-  return (bearing + 360) % 360;
-}
-
-function getDistanceMeters(from: LatLng, to: LatLng): number {
-  const R = 6371000;
-  const lat1 = (from.latitude * Math.PI) / 180;
-  const lat2 = (to.latitude * Math.PI) / 180;
-  const dLat = ((to.latitude - from.latitude) * Math.PI) / 180;
-  const dLon = ((to.longitude - from.longitude) * Math.PI) / 180;
-  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1) * Math.cos(lat2) * Math.sin(dLon / 2) ** 2;
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
-}
-
-function getRouteArrows(points: LatLng[], desiredCount: number): ArrowPoint[] {
-  if (points.length < 2) return [];
-
-  const segmentLengths: number[] = [];
-  let totalDistance = 0;
-  for (let i = 1; i < points.length; i++) {
-    const d = getDistanceMeters(points[i - 1], points[i]);
-    segmentLengths.push(d);
-    totalDistance += d;
-  }
-  if (totalDistance === 0) return [];
-
-  const interval = totalDistance / desiredCount;
-  const arrows: ArrowPoint[] = [];
-  let distanceSinceLastArrow = 0;
-
-  for (let i = 1; i < points.length; i++) {
-    distanceSinceLastArrow += segmentLengths[i - 1];
-    if (distanceSinceLastArrow >= interval) {
-      arrows.push({ coordinate: points[i], bearing: getBearing(points[i - 1], points[i]) });
-      distanceSinceLastArrow = 0;
-    }
-  }
-  return arrows;
-}
 
 function fmtDuration(seconds: number) {
   const m = Math.round(seconds / 60);
@@ -107,14 +55,6 @@ export default function NavegarScreen() {
 
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [searching, setSearching] = useState(false);
-
-  const routeArrows = useMemo(() => {
-    try {
-      return getRouteArrows(routePoints, 13);
-    } catch {
-      return [];
-    }
-  }, [routePoints]);
 
   useEffect(() => {
     if (from && to) {
@@ -280,28 +220,18 @@ export default function NavegarScreen() {
             <>
               <Polyline coordinates={routePoints} strokeColor={colors.routeBlueDark} strokeWidth={14} />
               <Polyline coordinates={routePoints} strokeColor={colors.routeBlue} strokeWidth={6} />
-              {routeArrows.map((arrow, idx) => (
-                <Marker
-                  key={`arrow-${idx}`}
-                  coordinate={arrow.coordinate}
-                  anchor={{ x: 0.5, y: 0.5 }}
-                  tracksViewChanges={false}
-                >
-                  <View style={{ transform: [{ rotate: `${arrow.bearing}deg` }] }}>
-                    <Ionicons name="chevron-up" size={16} color="#eaf2ff" />
-                  </View>
-                </Marker>
-              ))}
             </>
           )}
 
           {from && (
-            <Marker coordinate={from.coordinate} anchor={{ x: 0.5, y: 0.5 }}>
-              <View style={styles.startMarker} />
+            <Marker coordinate={from.coordinate} anchor={{ x: 0.5, y: 1 }}>
+              <View style={styles.originPinWrap}>
+                <Ionicons name="location-sharp" size={32} color="#2BB673" />
+              </View>
             </Marker>
           )}
           {to && (
-            <Marker coordinate={to.coordinate} anchor={{ x: 0.5, y: 1 }} centerOffset={{ x: 0, y: -22 }}>
+            <Marker coordinate={to.coordinate} anchor={{ x: 0.5, y: 1 }} centerOffset={{ x: 0, y: -18 }}>
               <View style={styles.destinoPinWrap}>
                 <Image source={require('../../assets/destino_pin.png')} style={styles.destinoPin} resizeMode="contain" />
               </View>
@@ -430,9 +360,9 @@ const styles = StyleSheet.create({
   screen: { flex: 1, backgroundColor: colors.bg },
   mapWrap: { flex: 1, backgroundColor: '#191820' },
   map: { flex: 1 },
-  startMarker: { width: 18, height: 18, borderRadius: 9, backgroundColor: '#191820', borderWidth: 3.5, borderColor: '#f5f5f5' },
-  destinoPinWrap: { width: 34, height: 44, alignItems: 'center', justifyContent: 'flex-end', overflow: 'hidden' },
-  destinoPin: { width: 34, height: 44 },
+  originPinWrap: { width: 32, height: 32, alignItems: 'center', justifyContent: 'flex-end' },
+  destinoPinWrap: { width: 28, height: 36, alignItems: 'center', justifyContent: 'flex-end', overflow: 'hidden' },
+  destinoPin: { width: 28, height: 36 },
   backBtn: { position: 'absolute', top: 60, left: 20, width: 40, height: 40, borderRadius: 20, backgroundColor: colors.surface, alignItems: 'center', justifyContent: 'center', zIndex: 2 },
   panelTop: { position: 'absolute', top: 112, left: 20, right: 20 },
   fieldsRow: { flexDirection: 'row', alignItems: 'stretch', backgroundColor: colors.surface, borderRadius: 18, padding: 12, gap: 10 },
